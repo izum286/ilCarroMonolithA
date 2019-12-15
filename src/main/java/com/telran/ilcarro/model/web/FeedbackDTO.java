@@ -10,7 +10,6 @@ import lombok.*;
 @Builder
 public class FeedbackDTO {
     private String id;
-    private String ownerImg;
     private String message;
     private String owner;
     private String date;
