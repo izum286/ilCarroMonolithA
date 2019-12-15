@@ -12,7 +12,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
      *
-     * General exception handler for Services
+     * General exception handler for Services error response
      *
      * @return Response entity with code 400 Bad request
      * @author Konkin Anton
