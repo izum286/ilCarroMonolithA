@@ -9,6 +9,13 @@ import java.util.List;
 
 @RestController
 public class FeedbackControllerImpl implements FeedbackController{
+    /**
+     * Feedback controller implementation
+     * @see FeedbackController
+     *
+     * @author Konkin Anton
+     * @since 1.0
+     */
 
     @Autowired
     FeedbackService feedbackService;
