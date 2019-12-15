@@ -10,7 +10,9 @@ public interface FeedbackController {
 
     List<FeedbackDTO> getFeedbacksByOwner(String owner);
 
-    List<FeedbackDTO> getPopularFeedbacks();
+    List<FeedbackDTO> getPopularFeedbacks(Integer num);
+
+    List<FeedbackDTO> getLastFeedbacks(Integer num);
 
     FeedbackDTO createFeedback(FeedbackDTO feedback);
 

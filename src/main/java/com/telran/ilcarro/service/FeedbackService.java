@@ -11,7 +11,9 @@ public interface FeedbackService {
 
     List<FeedbackDTO> getFeedbacksByOwner(String owner);
 
-    List<FeedbackDTO> getPopularFeedbacks();
+    List<FeedbackDTO> getPopularFeedbacks(Integer num);
+
+    List<FeedbackDTO> getLastFeedbacks(Integer num);
 
     Optional<FeedbackDTO> createFeedback(FeedbackDTO feedback);
 
