@@ -1,6 +1,6 @@
 package com.telran.ilcarro.controller;
 
-import com.telran.ilcarro.model.web.FeedbackDTO;
+import com.telran.ilcarro.model.web.feedback.FeedbackDTO;
 
 import java.util.List;
 

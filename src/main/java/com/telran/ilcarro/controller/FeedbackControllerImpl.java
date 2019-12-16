@@ -1,9 +1,8 @@
 package com.telran.ilcarro.controller;
 
-import com.telran.ilcarro.model.web.FeedbackDTO;
+import com.telran.ilcarro.model.web.feedback.FeedbackDTO;
 import com.telran.ilcarro.service.FeedbackService;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;

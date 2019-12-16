@@ -1,6 +1,6 @@
 package com.telran.ilcarro.service.converters;
 
-import com.telran.ilcarro.model.web.FeedbackDTO;
+import com.telran.ilcarro.model.web.feedback.FeedbackDTO;
 import com.telran.ilcarro.repository.entity.FeedbackEntity;
 
 public class FeedbackDtoEntityConverter {
