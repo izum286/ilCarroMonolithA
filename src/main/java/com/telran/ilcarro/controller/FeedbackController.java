@@ -1,6 +1,8 @@
 package com.telran.ilcarro.controller;
 
+import com.telran.ilcarro.model.web.feedback.AddFeedbackDto;
 import com.telran.ilcarro.model.web.feedback.FeedbackDTO;
+import com.telran.ilcarro.model.web.feedback.UpdFeedbackDTO;
 
 import java.util.List;
 
@@ -49,14 +51,14 @@ public interface FeedbackController {
      * @param feedback - new feedback
      * @return created feedback feedbackDTOs
      */
-    FeedbackDTO createFeedback(FeedbackDTO feedback);
+    FeedbackDTO createFeedback(AddFeedbackDto feedback);
 
     /**
      * (@code updateFeedback) update information inside selected feedback.
      * @param feedback - new feedback
      * @return updated feedback feedbackDTOs
      */
-    FeedbackDTO updateFeedback(FeedbackDTO feedback);
+    FeedbackDTO updateFeedback(UpdFeedbackDTO feedback);
     /**
      * (@code deleteFeedback) delete selected feedback by id.
      * @param id - feedback id

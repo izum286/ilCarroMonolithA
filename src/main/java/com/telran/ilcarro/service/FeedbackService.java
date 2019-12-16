@@ -1,6 +1,8 @@
 package com.telran.ilcarro.service;
 
+import com.telran.ilcarro.model.web.feedback.AddFeedbackDto;
 import com.telran.ilcarro.model.web.feedback.FeedbackDTO;
+import com.telran.ilcarro.model.web.feedback.UpdFeedbackDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,9 +17,9 @@ public interface FeedbackService {
 
     List<FeedbackDTO> getLastFeedbacks(Integer num);
 
-    Optional<FeedbackDTO> createFeedback(FeedbackDTO feedback);
+    Optional<FeedbackDTO> createFeedback(AddFeedbackDto feedback);
 
-    Optional<FeedbackDTO> updateFeedback(FeedbackDTO feedback);
+    Optional<FeedbackDTO> updateFeedback(UpdFeedbackDTO feedback);
 
     boolean deleteFeedback(String id);
 

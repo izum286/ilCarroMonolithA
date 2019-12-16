@@ -1,6 +1,8 @@
 package com.telran.ilcarro.service;
 
+import com.telran.ilcarro.model.web.feedback.AddFeedbackDto;
 import com.telran.ilcarro.model.web.feedback.FeedbackDTO;
+import com.telran.ilcarro.model.web.feedback.UpdFeedbackDTO;
 import com.telran.ilcarro.repository.FeedbackRepo;
 import com.telran.ilcarro.repository.entity.FeedbackEntity;
 import com.telran.ilcarro.repository.exception.RepositoryException;
@@ -9,6 +11,7 @@ import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -71,16 +74,16 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public Optional<FeedbackDTO> createFeedback(FeedbackDTO feedback) {
+    public Optional<FeedbackDTO> createFeedback(AddFeedbackDto feedback) {
         FeedbackEntity feedbackEntity = feedbackRepo.createFeedback(map(feedback));
         return Optional.of(map(feedbackEntity));
     }
 
     @Override
-    public Optional<FeedbackDTO> updateFeedback(FeedbackDTO feedback) {
+    public Optional<FeedbackDTO> updateFeedback(UpdFeedbackDTO feedback) {
         try {
             FeedbackEntity feedbackEntity = feedbackRepo.getFeedbackById(feedback.getId());
-            feedbackEntity.setDate(feedback.getDate());
+            feedbackEntity.setDate(LocalDateTime.now());
             feedbackEntity.setMessage(feedback.getMessage());
             feedbackEntity.setOwner(feedback.getOwner());
             return Optional.of(map(feedbackEntity));

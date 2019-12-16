@@ -1,6 +1,8 @@
 package com.telran.ilcarro.controller;
 
+import com.telran.ilcarro.model.web.feedback.AddFeedbackDto;
 import com.telran.ilcarro.model.web.feedback.FeedbackDTO;
+import com.telran.ilcarro.model.web.feedback.UpdFeedbackDTO;
 import com.telran.ilcarro.service.FeedbackService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -77,7 +79,7 @@ public class FeedbackControllerImpl implements FeedbackController{
     )
     @PostMapping
     @Override
-    public FeedbackDTO createFeedback(@RequestBody FeedbackDTO feedback) {
+    public FeedbackDTO createFeedback(@RequestBody AddFeedbackDto feedback) {
         return feedbackService.createFeedback(feedback).orElseThrow();
     }
 
@@ -88,7 +90,7 @@ public class FeedbackControllerImpl implements FeedbackController{
     )
     @PutMapping
     @Override
-    public FeedbackDTO updateFeedback(@RequestBody FeedbackDTO feedback) {
+    public FeedbackDTO updateFeedback(@RequestBody UpdFeedbackDTO feedback) {
         return feedbackService.updateFeedback(feedback).orElseThrow();
     }
 
