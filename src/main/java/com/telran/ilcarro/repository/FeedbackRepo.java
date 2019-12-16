@@ -1,7 +1,9 @@
 package com.telran.ilcarro.repository;
 
 import com.telran.ilcarro.repository.entity.FeedbackEntity;
+import com.telran.ilcarro.repository.exception.ConflictRepositoryException;
 import com.telran.ilcarro.repository.exception.NotFoundRepositoryException;
+import com.telran.ilcarro.repository.exception.RepositoryException;
 import org.springframework.stereotype.Repository;
 
 import java.util.Comparator;
@@ -44,8 +46,11 @@ public class FeedbackRepo implements FeedbackRepository{
 
     @Override
     public List<FeedbackEntity> getLastFeedbacks(Integer num) {
+        if (num < 0) {
+            throw new RepositoryException(String.format("Illegal argument %d must be bigger then 0", num));
+        }
         List<FeedbackEntity> feedbackList = feedbackEntities.values().stream()
-                .sorted(Comparator.comparing(FeedbackEntity::getDate))
+                .sorted(Comparator.comparing(FeedbackEntity::getDate).reversed())
                 .collect(Collectors.toList());
         if (feedbackList.isEmpty()) {
             throw new NotFoundRepositoryException("Feedback's not found");
@@ -58,8 +63,10 @@ public class FeedbackRepo implements FeedbackRepository{
 
     @Override
     public FeedbackEntity createFeedback(FeedbackEntity feedback) {
-        feedback.setId(UUID.randomUUID().toString());
-        return feedbackEntities.putIfAbsent(feedback.getId(), feedback);
+        if (feedbackEntities.putIfAbsent(feedback.getId(), feedback) == null) {
+            return feedback;
+        }
+        throw new ConflictRepositoryException(String.format("Feedback with ID %s already exist", feedback.getId()));
     }
 
     @Override

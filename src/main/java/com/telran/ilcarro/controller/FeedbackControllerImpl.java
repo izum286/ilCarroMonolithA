@@ -30,6 +30,7 @@ public class FeedbackControllerImpl implements FeedbackController{
     @ApiOperation(value = "Get feedback by id", response = FeedbackDTO.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 404, message = "Feedback {id} not found"),
     }
     )
 
@@ -42,9 +43,10 @@ public class FeedbackControllerImpl implements FeedbackController{
     @ApiOperation(value = "Get feedback's by owner", response = FeedbackDTO[].class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 404, message = "Feedbacks of {owner} not found"),
     }
     )
-    @GetMapping("{owner}")
+    @GetMapping("/owner/{owner}")
     @Override
     public List<FeedbackDTO> getFeedbacksByOwner(@PathVariable("owner") String owner) {
         return feedbackService.getFeedbacksByOwner(owner);
@@ -53,6 +55,7 @@ public class FeedbackControllerImpl implements FeedbackController{
     @ApiOperation(value = "Get popular N {num} feedback's", response = FeedbackDTO[].class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 400, message = "Server error messages"),
     }
     )
     @GetMapping("popular/{num}")
@@ -64,6 +67,7 @@ public class FeedbackControllerImpl implements FeedbackController{
     @ApiOperation(value = "Get last N {num} feedback's", response = FeedbackDTO[].class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 400, message = "Server error messages"),
     }
     )
     @GetMapping("last/{num}")
@@ -75,6 +79,7 @@ public class FeedbackControllerImpl implements FeedbackController{
     @ApiOperation(value = "Create feedback", response = FeedbackDTO.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 409, message = "Feedback with ID %s already exist"),
     }
     )
     @PostMapping
@@ -86,6 +91,7 @@ public class FeedbackControllerImpl implements FeedbackController{
     @ApiOperation(value = "Update feedback", response = FeedbackDTO.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 404, message = "Feedback {id} not found"),
     }
     )
     @PutMapping
@@ -97,6 +103,7 @@ public class FeedbackControllerImpl implements FeedbackController{
     @ApiOperation(value = "Delete feedback by id")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 404, message = "Feedback {id} not found"),
     }
     )
     @DeleteMapping("{id}")

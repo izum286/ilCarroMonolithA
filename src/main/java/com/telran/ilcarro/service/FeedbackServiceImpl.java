@@ -5,9 +5,13 @@ import com.telran.ilcarro.model.web.feedback.FeedbackDTO;
 import com.telran.ilcarro.model.web.feedback.UpdFeedbackDTO;
 import com.telran.ilcarro.repository.FeedbackRepo;
 import com.telran.ilcarro.repository.entity.FeedbackEntity;
+import com.telran.ilcarro.repository.exception.ConflictRepositoryException;
+import com.telran.ilcarro.repository.exception.NotFoundRepositoryException;
 import com.telran.ilcarro.repository.exception.RepositoryException;
 import com.telran.ilcarro.service.converters.FeedbackDtoEntityConverter;
+import com.telran.ilcarro.service.exceptions.ConflictServiceException;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
+import com.telran.ilcarro.service.exceptions.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,8 +59,10 @@ public class FeedbackServiceImpl implements FeedbackService {
             return feedbackList.stream()
                     .map(FeedbackDtoEntityConverter::map)
                     .collect(Collectors.toList());
-        } catch (RepositoryException ex) {
+        } catch (NotFoundRepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
+        } catch (RepositoryException ex) {
+            throw new ServiceException(ex.getMessage(), ex.getCause());
         }
     }
 
@@ -68,15 +74,22 @@ public class FeedbackServiceImpl implements FeedbackService {
             return feedbackList.stream()
                     .map(FeedbackDtoEntityConverter::map)
                     .collect(Collectors.toList());
-        } catch (RepositoryException ex) {
+        } catch (NotFoundRepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
+        } catch (RepositoryException ex) {
+            throw new ServiceException(ex.getMessage(), ex.getCause());
         }
     }
 
     @Override
     public Optional<FeedbackDTO> createFeedback(AddFeedbackDto feedback) {
-        FeedbackEntity feedbackEntity = feedbackRepo.createFeedback(map(feedback));
-        return Optional.of(map(feedbackEntity));
+        try {
+            FeedbackEntity feedbackEntity = feedbackRepo.createFeedback(map(feedback));
+            return Optional.of(map(feedbackEntity));
+        } catch (ConflictRepositoryException ex) {
+            throw new ConflictServiceException(ex.getMessage(), ex.getCause());
+        }
+
     }
 
     @Override
