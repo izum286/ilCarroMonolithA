@@ -1,5 +1,6 @@
 package com.telran.ilcarro.model.web;
 
+import com.telran.ilcarro.model.web.feedback.FeedbackDTO;
 import lombok.*;
 
 import java.util.List;
