@@ -2,26 +2,46 @@ package com.telran.ilcarro.service;
 
 import com.telran.ilcarro.model.web.FeedbackDTO;
 import com.telran.ilcarro.repository.FeedbackRepo;
+import com.telran.ilcarro.repository.entity.FeedbackEntity;
+import com.telran.ilcarro.repository.exception.RepositoryException;
+import com.telran.ilcarro.service.converters.FeedbackDtoEntityConverter;
+import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static com.telran.ilcarro.service.converters.FeedbackDtoEntityConverter.map;
 
 @Service
-public class FeedbackServiceImpl implements FeedbackService{
+public class FeedbackServiceImpl implements FeedbackService {
 
     @Autowired
     FeedbackRepo feedbackRepo;
 
     @Override
     public Optional<FeedbackDTO> getFeedbackById(String id) {
-        return Optional.empty();
+        try {
+            FeedbackEntity feedbackEntity = feedbackRepo.getFeedbackById(id);
+            return Optional.of(map(feedbackEntity));
+        } catch (RepositoryException ex) {
+            throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
+        }
     }
 
     @Override
     public List<FeedbackDTO> getFeedbacksByOwner(String owner) {
-        return null;
+        try {
+            List<FeedbackEntity> feedbackList = feedbackRepo.getFeedbacksByOwner(owner);
+            
+            return feedbackList.stream()
+                    .map(FeedbackDtoEntityConverter::map)
+                    .collect(Collectors.toList());
+        } catch (RepositoryException ex) {
+            throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
+        }
     }
 
     @Override
@@ -36,16 +56,30 @@ public class FeedbackServiceImpl implements FeedbackService{
 
     @Override
     public Optional<FeedbackDTO> createFeedback(FeedbackDTO feedback) {
-        return Optional.empty();
+        FeedbackEntity feedbackEntity = feedbackRepo.createFeedback(map(feedback));
+        return Optional.of(map(feedbackEntity));
     }
 
     @Override
     public Optional<FeedbackDTO> updateFeedback(FeedbackDTO feedback) {
-        return Optional.empty();
+        try {
+            FeedbackEntity feedbackEntity = feedbackRepo.getFeedbackById(feedback.getId());
+            feedbackEntity.setDate(feedback.getDate());
+            feedbackEntity.setMessage(feedback.getMessage());
+            feedbackEntity.setOwner(feedback.getOwner());
+            return Optional.of(map(feedbackEntity));
+        } catch (RepositoryException ex) {
+            throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
+        }
     }
 
     @Override
     public boolean deleteFeedback(String id) {
-        return false;
+        try {
+            feedbackRepo.deleteFeedback(id);
+            return true;
+        } catch (RepositoryException ex) {
+            throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
+        }
     }
 }
