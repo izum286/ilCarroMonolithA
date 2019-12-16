@@ -3,6 +3,7 @@ package com.telran.ilcarro.controller;
 import com.telran.ilcarro.model.web.FeedbackDTO;
 import com.telran.ilcarro.service.FeedbackService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
+@RequestMapping("/feedback")
 public class FeedbackControllerImpl implements FeedbackController{
     /**
      * Feedback controller implementation
@@ -29,7 +32,7 @@ public class FeedbackControllerImpl implements FeedbackController{
     }
     )
 
-    @GetMapping("feedback/{id}")
+    @GetMapping("{id}")
     @Override
     public FeedbackDTO getFeedbackById(@PathVariable("id") String id) {
         return feedbackService.getFeedbackById(id).orElseThrow();
@@ -40,7 +43,7 @@ public class FeedbackControllerImpl implements FeedbackController{
             @ApiResponse(code = 200, message = ""),
     }
     )
-    @GetMapping("feedback/{owner}")
+    @GetMapping("{owner}")
     @Override
     public List<FeedbackDTO> getFeedbacksByOwner(@PathVariable("owner") String owner) {
         return feedbackService.getFeedbacksByOwner(owner);
@@ -51,7 +54,7 @@ public class FeedbackControllerImpl implements FeedbackController{
             @ApiResponse(code = 200, message = ""),
     }
     )
-    @GetMapping("feedback/popular/{num}")
+    @GetMapping("popular/{num}")
     @Override
     public List<FeedbackDTO> getPopularFeedbacks(@PathVariable("num") Integer num) {
         return feedbackService.getPopularFeedbacks(num);
@@ -62,7 +65,7 @@ public class FeedbackControllerImpl implements FeedbackController{
             @ApiResponse(code = 200, message = ""),
     }
     )
-    @GetMapping("feedback/last/{num}")
+    @GetMapping("last/{num}")
     @Override
     public List<FeedbackDTO> getLastFeedbacks(@PathVariable("num") Integer num) {
         return feedbackService.getLastFeedbacks(num);
@@ -73,7 +76,7 @@ public class FeedbackControllerImpl implements FeedbackController{
             @ApiResponse(code = 200, message = ""),
     }
     )
-    @PostMapping("feedback")
+    @PostMapping
     @Override
     public FeedbackDTO createFeedback(@RequestBody FeedbackDTO feedback) {
         return feedbackService.createFeedback(feedback).orElseThrow();
@@ -84,7 +87,7 @@ public class FeedbackControllerImpl implements FeedbackController{
             @ApiResponse(code = 200, message = ""),
     }
     )
-    @PutMapping("feedback")
+    @PutMapping
     @Override
     public FeedbackDTO updateFeedback(@RequestBody FeedbackDTO feedback) {
         return feedbackService.updateFeedback(feedback).orElseThrow();
@@ -95,7 +98,7 @@ public class FeedbackControllerImpl implements FeedbackController{
             @ApiResponse(code = 200, message = ""),
     }
     )
-    @DeleteMapping("feedback/{id}")
+    @DeleteMapping("{id}")
     @Override
     public void deleteFeedback(@PathVariable("id") String id) {
         feedbackService.deleteFeedback(id);

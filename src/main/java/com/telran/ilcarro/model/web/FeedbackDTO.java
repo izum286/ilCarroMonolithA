@@ -23,7 +23,8 @@ public class FeedbackDTO {
     private String message;
     @ApiModelProperty(notes = "Owner of feedback")
     private String owner;
-    @ApiModelProperty(notes = "Date when feedback left")
+
     @JsonFormat(pattern = "dd/MM/yyyy hh:mm")
+    @ApiModelProperty(notes = "Date when feedback was left")
     private LocalDateTime date;
 }
