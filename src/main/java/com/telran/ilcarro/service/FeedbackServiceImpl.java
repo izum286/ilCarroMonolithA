@@ -35,7 +35,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     public List<FeedbackDTO> getFeedbacksByOwner(String owner) {
         try {
             List<FeedbackEntity> feedbackList = feedbackRepo.getFeedbacksByOwner(owner);
-            
+
             return feedbackList.stream()
                     .map(FeedbackDtoEntityConverter::map)
                     .collect(Collectors.toList());
@@ -46,12 +46,28 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public List<FeedbackDTO> getPopularFeedbacks(Integer num) {
-        return null;
+        try {
+            List<FeedbackEntity> feedbackList = feedbackRepo.getPopularFeedbacks(num);
+
+            return feedbackList.stream()
+                    .map(FeedbackDtoEntityConverter::map)
+                    .collect(Collectors.toList());
+        } catch (RepositoryException ex) {
+            throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
+        }
     }
 
     @Override
     public List<FeedbackDTO> getLastFeedbacks(Integer num) {
-        return null;
+        try {
+            List<FeedbackEntity> feedbackList = feedbackRepo.getLastFeedbacks(num);
+
+            return feedbackList.stream()
+                    .map(FeedbackDtoEntityConverter::map)
+                    .collect(Collectors.toList());
+        } catch (RepositoryException ex) {
+            throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
+        }
     }
 
     @Override

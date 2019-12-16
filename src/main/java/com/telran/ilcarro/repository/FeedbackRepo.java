@@ -48,7 +48,7 @@ public class FeedbackRepo implements FeedbackRepository{
                 .sorted(Comparator.comparing(FeedbackEntity::getDate))
                 .collect(Collectors.toList());
         if (feedbackList.isEmpty()) {
-            throw new NotFoundRepositoryException("Feedbacks not found");
+            throw new NotFoundRepositoryException("Feedback's not found");
         }
         if (feedbackList.size() <= num) {
             return feedbackList;
