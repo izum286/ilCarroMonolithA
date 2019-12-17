@@ -1,5 +1,6 @@
 package com.telran.ilcarro.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.telran.ilcarro.model.web.FilterDTO;
 import com.telran.ilcarro.model.web.FullCarDTO;
 import com.telran.ilcarro.service.model.FilterNode;
@@ -11,14 +12,14 @@ public interface FilterService {
      * @param fullCarDTO
      * @author izum286
      */
-    void addFilter (FullCarDTO fullCarDTO);
+    void addFilter (FullCarDTO fullCarDTO) throws IllegalAccessException;
 
     /**
      * Method return json string of all filters
      * @return
      * @author izum286
      */
-    String provideFilter();
+    String provideFilter() throws JsonProcessingException;
 
     /**
      * Method added new node from FullCarDto from data which typed
@@ -27,7 +28,7 @@ public interface FilterService {
      * @param filterDTO
      * @author izum286
      */
-    void addNode(FilterDTO filterDTO);
+    void addNode(FilterDTO filterDTO) throws IllegalAccessException;
 
     /**
      * Recursive Method that takes 2 nodes to merge him in point of different values
