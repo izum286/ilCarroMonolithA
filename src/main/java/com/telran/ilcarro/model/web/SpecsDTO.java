@@ -9,7 +9,10 @@ import lombok.*;
 @ToString
 @Builder
 public class SpecsDTO {
+    private String engine;
     private String fuelCons;
+    private String fuelType;
+    private String transmission;
     private String wd;
     private double hp;
     private double torque;

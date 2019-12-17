@@ -1,45 +1,50 @@
 package com.telran.ilcarro.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.telran.ilcarro.model.web.FilterDTO;
+import com.telran.ilcarro.model.web.FullCarDTO;
+import com.telran.ilcarro.service.model.FilterNode;
 
-import java.util.LinkedList;
-import java.util.List;
+public interface FilterService {
+    /**
+     * Method for automatically add new filter from /upload page
+     * call -> addNode
+     * @param fullCarDTO
+     * @author izum286
+     */
+    void addFilter (FullCarDTO fullCarDTO) throws IllegalAccessException;
 
+    /**
+     * Method return json string of all filters
+     * @return
+     * @author izum286
+     */
+    String provideFilter() throws JsonProcessingException;
 
-public class FilterService {
+    /**
+     * Method added new node from FullCarDto from data which typed
+     * in /upload page
+     * addFilter->(called by)->addNode->(call) ->dtoToNode()+mergeNodes()
+     * @param filterDTO
+     * @author izum286
+     */
+    void addNode(FilterDTO filterDTO) throws IllegalAccessException;
 
-    class FilterNode {
-        ObjectMapper mapper = new ObjectMapper();
-        FilterNode mainNode;
-        FilterNode parent; //cars
-        String type; //manuf
-        String value; // mazda
-        List<FilterNode> childs = new LinkedList<>();
+    /**
+     * Recursive Method that takes 2 nodes to merge him in point of different values
+     * node toMerge are shifted relatively existed node by 1 node down.
+     * @param exist
+     * @param toMerge
+     * @author izum286
+     */
+    void mergeNodes(FilterNode exist, FilterNode toMerge);
 
-        public String provideNode(){
-            return "";
-        }
-
-
-        public void addNode(){
-
-        }
-
-    }
-
-//    Map<String,  //make
-//        Map<String, //model
-//        Map<Integer, //year
-//        Map<String, //engine
-//        Map<String, //fuel
-//        Map<String, //transmission
-//        Map<String, //wd
-//        Map<Integer, //hp
-//        Map<Integer, //torque
-//        Map<Integer, //Doors
-//        Map<Integer, //Seats
-//        Map<Class, //class
-//        Set<String> //FuelConsumption
-//                >>>>>>>>>>>> filter = new ConcurrentHashMap<>();
-
+    /**
+     * Method to find index of correspondent node in list of childs
+     * @param where
+     * @param from
+     * @return
+     * @author izum286
+     */
+    int findNextIndx(FilterNode where, FilterNode from);
 }
