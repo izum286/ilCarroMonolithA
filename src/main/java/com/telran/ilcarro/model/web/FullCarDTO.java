@@ -15,9 +15,9 @@ public class FullCarDTO {
     private String model;
     private String manufacture;
     private int year;
+    private SpecsDTO specifications;
     private double price;
     private List<String> image;
-    private SpecsDTO specifications;
     private LocationDTO location;
     private String about;
     private String features;
