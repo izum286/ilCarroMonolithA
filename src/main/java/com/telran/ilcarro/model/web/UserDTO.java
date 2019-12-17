@@ -22,6 +22,12 @@ public class UserDTO {
     private String email;
     private List<SchedularUsageDTO> usages;
 
+    /**
+     * @author vitalii_adler
+     * commented!
+     * because dont need
+     * divided into two classes UserRoleEntity and UserDetailsEntity
+     */
     //TODO maybe transfer to separate class e.g. AccountDTO
     private String username;
     private String password;
