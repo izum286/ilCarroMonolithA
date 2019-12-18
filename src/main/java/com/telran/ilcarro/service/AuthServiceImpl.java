@@ -3,6 +3,7 @@ package com.telran.ilcarro.service;
 import com.telran.ilcarro.repository.UserDetailsRepository;
 import com.telran.ilcarro.repository.entity.UserDetailsEntity;
 import com.telran.ilcarro.repository.entity.UserRoleEntity;
+import com.telran.ilcarro.service.exceptions.ConflictServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void registration(String email, String password) {
         if (userRepo.existsById(email)) {
-            throw new RuntimeException("User Already Exist");
+            throw new ConflictServiceException(String.format("User %s already exist", email));
         }
         UserDetailsEntity entity = UserDetailsEntity.builder()
                 .email(email)
