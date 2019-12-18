@@ -15,16 +15,14 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class UserEntity {
-    private String uuid;
-    private long driverLicense;
     private String email;
+    private String driverLicense;
     private String firstName;
     private String lastName;
-    private String city;
-    private String street;
+    private LocationEntity location;
     private String phone;
 
     private List<SchedularUsageEntity> usages;
-    private UserDetailsEntity userDetailsEntity;
+    private UserDetailsEntity userDetails;
 }
 

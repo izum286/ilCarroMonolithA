@@ -1,5 +1,6 @@
-package com.telran.ilcarro.model.web;
+package com.telran.ilcarro.model.web.user;
 
+import com.telran.ilcarro.model.web.SchedularUsageDTO;
 import lombok.*;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.telran.ilcarro.model.web;
+package com.telran.ilcarro.model.web.user;
 
 import lombok.*;
 

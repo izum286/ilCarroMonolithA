@@ -1,6 +1,6 @@
 package com.telran.ilcarro.repository;
 
-import com.telran.ilcarro.model.web.UserDTO;
+import com.telran.ilcarro.model.web.user.UserDTO;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;

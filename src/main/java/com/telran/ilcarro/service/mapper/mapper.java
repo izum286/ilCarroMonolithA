@@ -42,6 +42,7 @@ public class mapper {
                 .zip(entity.getZip())
                 .lat(entity.getLat())
                 .lon(entity.getLon())
+                .isVehicle(entity.isVehicle())
                 .build();
     }
 
@@ -85,20 +86,20 @@ public class mapper {
                 .build();
     }
 
-    public UserDTO map(UserEntity entity) {
-        return UserDTO.builder()
-                .id(UUID.fromString(entity.getUuid()))
-                .driverLicense(entity.getDriverLicense())
-                .email(entity.getEmail())
-                .firstName(entity.getFirstName())
-                .lastName(entity.getLastName())
-                .city(entity.getCity())
-                .street(entity.getStreet())
-                .phone(entity.getPhone())
-                .usages(entity.getUsages()
-                        .stream()
-                        .map(this::map)
-                        .collect(toList()))
-                .build();
-    }
+//    public UserDTO map(UserEntity entity) {
+//        return UserDTO.builder()
+//                .id(UUID.fromString(entity.getUuid()))
+//                .driverLicense(entity.getDriverLicense())
+//                .email(entity.getEmail())
+//                .firstName(entity.getFirstName())
+//                .lastName(entity.getLastName())
+//                .city(entity.getCity())
+//                .street(entity.getStreet())
+//                .phone(entity.getPhone())
+//                .usages(entity.getUsages()
+//                        .stream()
+//                        .map(this::map)
+//                        .collect(toList()))
+//                .build();
+//    }
 }

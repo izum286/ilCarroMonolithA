@@ -1,6 +1,6 @@
 package com.telran.ilcarro.service;
 
-import com.telran.ilcarro.model.web.UserDTO;
+import com.telran.ilcarro.model.web.user.UserDTO;
 import com.telran.ilcarro.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

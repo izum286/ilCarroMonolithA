@@ -16,5 +16,5 @@ import java.util.UUID;
 @Builder
 public class UserRoleEntity {
     private String role;
-    private List<UUID> users_details;
+    private List<UserDetailsEntity> users_details;
 }

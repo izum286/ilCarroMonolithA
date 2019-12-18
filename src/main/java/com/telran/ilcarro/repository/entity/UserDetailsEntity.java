@@ -20,5 +20,5 @@ public class UserDetailsEntity {
     private String email;
     private String password;
     private List<UserRoleEntity> roles;
-    private String owner_email;
+    private UserEntity userEntity;
 }

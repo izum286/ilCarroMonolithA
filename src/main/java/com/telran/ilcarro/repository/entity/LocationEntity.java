@@ -18,4 +18,5 @@ public class LocationEntity {
     private int zip;
     private String lat;
     private String lon;
+    private boolean isVehicle;
 }
