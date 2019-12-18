@@ -1,21 +1,21 @@
 package com.telran.ilcarro.repository.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 /**
  * @author vitalii_adler
+ * @author Konkin Anton
  * Use for auth
+ * @since 1.0
  */
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
+@Builder
 public class UserDetailsEntity {
     private String email;
     private String password;

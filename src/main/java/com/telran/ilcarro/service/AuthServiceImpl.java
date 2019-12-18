@@ -1,16 +1,19 @@
 package com.telran.ilcarro.service;
 
-import com.telran.ilcarro.model.web.user.UserDTO;
-import com.telran.ilcarro.repository.UserRepo;
+import com.telran.ilcarro.repository.UserDetailsRepository;
+import com.telran.ilcarro.repository.entity.UserDetailsEntity;
+import com.telran.ilcarro.repository.entity.UserRoleEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AuthServiceImpl implements AuthService {
 
     @Autowired
-    UserRepo userRepo;
+    UserDetailsRepository userRepo;
 
     @Autowired
     PasswordEncoder encoder;
@@ -20,10 +23,13 @@ public class AuthServiceImpl implements AuthService {
         if (userRepo.existsById(email)) {
             throw new RuntimeException("User Already Exist");
         }
-        UserDTO entity = new UserDTO();
-        entity.setEmail(email);
-        entity.setPassword(encoder.encode(password));
-        //TODO set roles for user!!!!!
-        userRepo.addUser(entity);
+        UserDetailsEntity entity = UserDetailsEntity.builder()
+                .email(email)
+                .password(encoder.encode(password))
+                .roles(List.of(UserRoleEntity.builder()
+                        .role("ROLE_USER")
+                        .build()))
+                .build();
+        userRepo.save(entity);
     }
 }
