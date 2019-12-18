@@ -110,6 +110,11 @@ public class MapperServiceImpl implements MapperService {
         return nodes.get(0);
     }
 
+
+    /**
+     * @author vitalii_adler
+     * mappers for converting an Entity into an DataTransferObject. Ready for use.
+     */
     public FilterDTO map(FilterEntity entity) {
         return FilterDTO.builder()
                 .make(entity.getMake())

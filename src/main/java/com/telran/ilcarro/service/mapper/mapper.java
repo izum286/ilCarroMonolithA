@@ -8,10 +8,7 @@ import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
 
-/**
- * @author vitalii_adler
- * mappers for converting an Entity into an DataTransferObject. Ready for use.
- */
+
 
 public class mapper {
 
