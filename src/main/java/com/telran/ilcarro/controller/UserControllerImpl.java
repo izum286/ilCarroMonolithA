@@ -4,6 +4,7 @@ import com.telran.ilcarro.model.web.feedback.FeedbackDTO;
 import com.telran.ilcarro.model.web.user.FullUserDTO;
 import com.telran.ilcarro.model.web.user.RegUserDTO;
 import com.telran.ilcarro.service.AuthService;
+import com.telran.ilcarro.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 /**
  *
- * UserController interface implementatio
+ * UserController interface implementation
  *
  * @author Konkin Anton
  * @date 19.12.2019
@@ -21,6 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserControllerImpl  implements UserController{
     @Autowired
     AuthService authService;
+
+    @Autowired
+    UserService userService;
 
     @ApiOperation(value = "Register new user", response = FeedbackDTO.class)
     @ApiResponses(value = {
@@ -32,9 +36,9 @@ public class UserControllerImpl  implements UserController{
     @PostMapping("registration")
     @Override
     public FullUserDTO registration(RegUserDTO user, String token) {
-        if(authService.registration(token)) {
-
-        };
+        //TODO RegUser -> FullUserDTO
+        String userEmail = authService.registration(token);
+        userService.addUser(userEmail, user);
         return null;
     }
 

@@ -10,7 +10,7 @@ import com.telran.ilcarro.repository.entity.UserEntity;
  */
 public interface UserEntityRepository {
     UserEntity getUserByEmail(String email);
-    boolean addUser(UserEntity entity);
+    UserEntity addUser(UserEntity entity);
     UserEntity updateUser(UserEntity entity);
     boolean deleteUser(String email);
 }

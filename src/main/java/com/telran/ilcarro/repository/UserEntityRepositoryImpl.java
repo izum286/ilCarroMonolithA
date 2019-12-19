@@ -7,7 +7,15 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
+/**
+ *
+ * CRUD UserEntityRepository implementatio
+ * ----------------
+ * ONLY FOR TESTING
+ * ----------------
+ * @author Konkin Anton
+ * @date 19.12.2019
+ */
 @Repository
 public class UserEntityRepositoryImpl implements UserEntityRepository {
     Map<String, UserEntity> repo = new ConcurrentHashMap<>();
@@ -22,12 +30,12 @@ public class UserEntityRepositoryImpl implements UserEntityRepository {
     }
 
     @Override
-    public boolean addUser(UserEntity entity) {
+    public UserEntity addUser(UserEntity entity) {
         UserEntity user = repo.putIfAbsent(entity.getEmail(), entity);
         if (user != null) {
             throw new ConflictRepositoryException(String.format("User %s already exist", entity.getEmail()));
         }
-        return true;
+        return entity;
     }
 
     @Override

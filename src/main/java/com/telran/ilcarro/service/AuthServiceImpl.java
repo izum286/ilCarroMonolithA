@@ -22,7 +22,7 @@ public class AuthServiceImpl implements AuthService {
     PasswordEncoder encoder;
 
     @Override
-    public boolean registration(String token) {
+    public String registration(String token) {
         AccountCredentials account = tokenService.decodeToken(token);
         if (userRepo.existsById(account.email)) {
             throw new ConflictServiceException(String.format("User %s already exist", account.email));
@@ -35,6 +35,6 @@ public class AuthServiceImpl implements AuthService {
                         .build()))
                 .build();
         userRepo.save(entity);
-        return true;
+        return account.email;
     }
 }

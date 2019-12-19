@@ -1,6 +1,9 @@
 package com.telran.ilcarro.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -22,6 +25,8 @@ public class UserEntity {
     private LocationEntity location;
     private String phone;
     private boolean isDeleted;
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDateTime registrationDate;
     private UserDetailsEntity userDetails;
 
     private List<SchedularUsageEntity> usages;
