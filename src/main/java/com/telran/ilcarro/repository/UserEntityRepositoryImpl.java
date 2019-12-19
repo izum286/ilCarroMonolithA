@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 /**
  *
- * CRUD UserEntityRepository implementatio
+ * CRUD UserEntityRepository implementation
  * ----------------
  * ONLY FOR TESTING
  * ----------------

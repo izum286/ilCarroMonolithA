@@ -6,7 +6,13 @@ import com.telran.ilcarro.repository.entity.FeedbackEntity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-
+/**
+ *
+ * DTO <- FeedBack- > Entity
+ * need to check logic after the DTO and Entity Objects will be improved
+ * @author Konkin Anton
+ * @date 18.12.2019
+ */
 public class FeedbackDtoEntityConverter {
 
     public static FeedbackDTO map(FeedbackEntity entity) {

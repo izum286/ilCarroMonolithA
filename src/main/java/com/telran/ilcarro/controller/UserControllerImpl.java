@@ -9,8 +9,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 /**
  *
  * UserController interface implementation
@@ -35,25 +35,29 @@ public class UserControllerImpl  implements UserController{
 
     @PostMapping("registration")
     @Override
-    public FullUserDTO registration(RegUserDTO user, String token) {
-        //TODO RegUser -> FullUserDTO
+    public FullUserDTO registration(@RequestBody RegUserDTO user, @RequestHeader("Authorization") String token) {
         String userEmail = authService.registration(token);
-        userService.addUser(userEmail, user);
-        return null;
+        return userService.addUser(userEmail, user).orElseThrow();
     }
 
+    @PostMapping("user/login")
     @Override
-    public FullUserDTO login(String token) {
-        return null;
+    public FullUserDTO login(@RequestHeader("Authorization") String token) {
+        String userEmail = authService.registration(token);
+        return userService.getUser(userEmail).orElseThrow();
     }
 
+    @PutMapping("user")
     @Override
-    public FullUserDTO updateUser(FullUserDTO updUser, String token) {
-        return null;
+    public FullUserDTO updateUser(@RequestBody FullUserDTO updUser, @RequestHeader("Authorization") String token) {
+        String userEmail = authService.registration(token);
+        return userService.updateUser(userEmail, updUser).orElseThrow();
     }
 
+    @DeleteMapping("user")
     @Override
-    public void deleteUser(String token) {
-
+    public void deleteUser(@RequestHeader("Authorization") String token) {
+        String userEmail = authService.registration(token);
+        userService.deleteUser(userEmail);
     }
 }

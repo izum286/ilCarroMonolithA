@@ -40,7 +40,7 @@ public class UserDTOEntityConverter {
         return FullUserDTO.builder()
                 .firstName(entity.getFirstName())
                 .lastName(entity.getLastName())
-                //TO DO
+                //TODO
                 .comments(null)
                 .bookedCars(null)
                 .ownCars(null)

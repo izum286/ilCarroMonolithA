@@ -11,7 +11,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.NoSuchElementException;
-
+/**
+ *
+ * UserDetailsService custom implemetation for AuthService
+ * @see UserDetailsRepository
+ * @see UserDetailsEntity
+ * @author Konkin Anton
+ * @date 19.12.2019
+ */
 public class CustomUserDetailsService implements UserDetailsService {
     UserDetailsRepository repository;
 

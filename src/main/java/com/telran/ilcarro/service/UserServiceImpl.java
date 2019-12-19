@@ -9,7 +9,6 @@ import com.telran.ilcarro.repository.entity.UserDetailsEntity;
 import com.telran.ilcarro.repository.entity.UserEntity;
 import com.telran.ilcarro.repository.exception.ConflictRepositoryException;
 import com.telran.ilcarro.repository.exception.NotFoundRepositoryException;
-import com.telran.ilcarro.repository.exception.RepositoryException;
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.exceptions.ServiceException;
@@ -19,7 +18,13 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 import static com.telran.ilcarro.service.converters.UserDTOEntityConverter.map;
-
+/**
+ *
+ * UserServiceImpl implementation of UserService
+ * @see UserService
+ * @author Konkin Anton
+ * @date 19.12.2019
+ */
 @Service
 public class UserServiceImpl implements UserService{
     @Autowired
