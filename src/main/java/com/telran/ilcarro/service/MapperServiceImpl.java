@@ -148,7 +148,7 @@ public class MapperServiceImpl implements MapperService {
     public SchedularUsageDTO map(SchedularUsageEntity entity) {
         return SchedularUsageDTO.builder()
                 .id(entity.getId())
-                .userId(UUID.fromString(entity.getUserId()))
+                .userId(entity.getUserId())
                 .carId(UUID.fromString(entity.getCarId()))
                 .startDate(entity.getStartDate())
                 .endDate((entity.getEndDate()))
@@ -185,21 +185,21 @@ public class MapperServiceImpl implements MapperService {
                 .build();
     }
 
-    public UserDTO map(UserEntity entity) {
-        return UserDTO.builder()
-                .id(UUID.fromString(entity.getUuid()))
-                .driverLicense(entity.getDriverLicense())
-                .email(entity.getEmail())
-                .firstName(entity.getFirstName())
-                .lastName(entity.getLastName())
-                .city(entity.getCity())
-                .street(entity.getStreet())
-                .phone(entity.getPhone())
-                .usages(entity.getUsages()
-                        .stream()
-                        .map(this::map)
-                        .collect(toList()))
-                .build();
-    }
+//    public UserDTO map(UserEntity entity) {
+//        return UserDTO.builder()
+//                .id(UUID.fromString(entity.getUuid()))
+//                .driverLicense(entity.getDriverLicense())
+//                .email(entity.getEmail())
+//                .firstName(entity.getFirstName())
+//                .lastName(entity.getLastName())
+//                .city(entity.getCity())
+//                .street(entity.getStreet())
+//                .phone(entity.getPhone())
+//                .usages(entity.getUsages()
+//                        .stream()
+//                        .map(this::map)
+//                        .collect(toList()))
+//                .build();
+//    }
 
 }

@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 /**
  * AuthController implementation
@@ -31,7 +32,7 @@ public class AuthControllerImpl implements AuthController{
 
     @PostMapping("registration")
     @Override
-    public void registration(@RequestBody AuthDTO authDTO) {
-        authService.registration(authDTO.getEmail(), authDTO.getPassword());
+    public void registration(@RequestBody AuthDTO authDTO, @RequestHeader("Authorization") String token) {
+        authService.registration(authDTO.getEmail(), authDTO.getPassword(), token);
     }
 }

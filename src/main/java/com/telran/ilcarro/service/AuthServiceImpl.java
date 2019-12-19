@@ -20,7 +20,7 @@ public class AuthServiceImpl implements AuthService {
     PasswordEncoder encoder;
 
     @Override
-    public void registration(String email, String password) {
+    public void registration(String email, String password, String token) {
         if (userRepo.existsById(email)) {
             throw new ConflictServiceException(String.format("User %s already exist", email));
         }
