@@ -21,8 +21,10 @@ public class UserEntity {
     private String lastName;
     private LocationEntity location;
     private String phone;
+    private boolean isDeleted;
+    private UserDetailsEntity userDetails;
 
     private List<SchedularUsageEntity> usages;
-    private UserDetailsEntity userDetails;
+
 }
 

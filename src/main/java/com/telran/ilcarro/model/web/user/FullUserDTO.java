@@ -3,7 +3,18 @@ package com.telran.ilcarro.model.web.user;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.telran.ilcarro.model.web.feedback.FeedbackDTO;
 import lombok.*;
-
+/**
+ *
+ * FullUserDTO
+ * need to do:
+ * Update fields
+ *     private String ownCars;
+ *     private String bookedCars;
+ *     private String history;
+ * to correct objects
+ * @author Konkin Anton
+ * @date 19.12.2019
+ */
 import java.time.LocalDateTime;
 
 @Getter

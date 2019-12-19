@@ -1,12 +1,10 @@
 package com.telran.ilcarro.repository;
 
-import com.telran.ilcarro.model.web.user.UserDTO;
 import com.telran.ilcarro.repository.entity.UserDetailsEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
