@@ -49,7 +49,7 @@ public class mapper {
     public SchedularUsageDTO map(SchedularUsageEntity entity) {
         return SchedularUsageDTO.builder()
                 .id(entity.getId())
-                .userId(UUID.fromString(entity.getUserId()))
+                .userId(entity.getUserId())
                 .carId(UUID.fromString(entity.getCarId()))
                 .startDate(entity.getStartDate())
                 .endDate((entity.getEndDate()))

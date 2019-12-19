@@ -7,10 +7,8 @@ import com.telran.ilcarro.handler.GlobalHandler;
 import com.telran.ilcarro.model.web.FullCarDTO;
 import com.telran.ilcarro.model.web.SchedularUsageDTO;
 import com.telran.ilcarro.model.web.ShortCarDTO;
-import com.telran.ilcarro.repository.CarRepo;
-import com.telran.ilcarro.repository.SchedularActiveUsagesRepo;
-import com.telran.ilcarro.repository.SchedularUsagesRepo;
-import com.telran.ilcarro.repository.UserRepo;
+import com.telran.ilcarro.repository.*;
+import com.telran.ilcarro.repository.entity.UserDetailsEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +35,7 @@ public class CarService {
     GlobalHandler globalHandler;
 
     @Autowired
+//    UserDetailsRepository userRepo;
     UserRepo userRepo;
 
     ObjectMapper mapper = new ObjectMapper();
@@ -129,7 +128,9 @@ public class CarService {
 
             selected.setUsages(rentRecord);
             selected.setRented(true);
-            userRepo.getSingleUser(tmp.getUserId()).setUsages(rentRecord);
+            //TODO connect to UserEntityRepository
+//            userRepo.getSingleUser(tmp.getUserId()).setUsages(rentRecord);
+            //TODO -------------------------------
             activeUsagesRepo.setEntity(tmp.getCarId(), rentRecord);
             return true;
         }

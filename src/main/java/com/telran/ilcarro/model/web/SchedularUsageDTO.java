@@ -13,7 +13,8 @@ import java.util.UUID;
 @Builder
 public class SchedularUsageDTO {
     private String id;
-    private UUID userId;
+    private String userId;
+//    private UUID userId;
     private UUID carId;
     private LocalDate startDate;
     private LocalDate endDate;
