@@ -33,6 +33,8 @@ public class AuthControllerImpl implements AuthController{
     @PostMapping("registration")
     @Override
     public void registration(@RequestBody AuthDTO authDTO, @RequestHeader("Authorization") String token) {
-        authService.registration(authDTO.getEmail(), authDTO.getPassword(), token);
+        if(authService.registration(token)) {
+
+        };
     }
 }
