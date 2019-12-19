@@ -1,7 +1,10 @@
 package com.telran.ilcarro.service;
 
+import org.springframework.stereotype.Service;
+
 import java.util.Base64;
 
+@Service
 public class TokenServiceImpl implements TokenService {
     @Override
     public AccountCredentials decodeToken(String token) {

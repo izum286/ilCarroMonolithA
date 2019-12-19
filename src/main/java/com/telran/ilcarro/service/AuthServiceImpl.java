@@ -14,19 +14,22 @@ import java.util.List;
 public class AuthServiceImpl implements AuthService {
 
     @Autowired
+    TokenService tokenService;
+    @Autowired
     UserDetailsRepository userRepo;
 
     @Autowired
     PasswordEncoder encoder;
 
     @Override
-    public void registration(String email, String password, String token) {
-        if (userRepo.existsById(email)) {
-            throw new ConflictServiceException(String.format("User %s already exist", email));
+    public void registration(String token) {
+        AccountCredentials account = tokenService.decodeToken(token);
+        if (userRepo.existsById(account.email)) {
+            throw new ConflictServiceException(String.format("User %s already exist", account.email));
         }
         UserDetailsEntity entity = UserDetailsEntity.builder()
-                .email(email)
-                .password(encoder.encode(password))
+                .email(account.email)
+                .password(encoder.encode(account.password))
                 .roles(List.of(UserRoleEntity.builder()
                         .role("ROLE_USER")
                         .build()))
