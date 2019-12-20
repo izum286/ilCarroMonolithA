@@ -35,12 +35,15 @@ public class SecurityConfig {
 
             http
                     .csrf().disable()
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .and()
                     .authorizeRequests()
+                    .antMatchers().permitAll()
 //                    .antMatchers("/api/**").authenticated()
                     .anyRequest().permitAll()
                     .and()
-                    .httpBasic().and()
-                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                    .httpBasic().disable();
+
         }
 
     }
