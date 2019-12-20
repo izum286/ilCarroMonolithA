@@ -85,6 +85,10 @@ public class FilterServiceImpl implements FilterService {
      */
     @Override
     public void mergeNodes(FilterNode exist, FilterNode toMerge) {
+        // avoiding adding duplicates in last node
+        if (toMerge.getType().equals("exit")){
+            return;
+        }
         if(exist.getChilds().stream().
                 anyMatch(n->n.getValue().equals(toMerge.getValue()))){
             int indx = findNextIndx(exist, toMerge);
@@ -96,7 +100,7 @@ public class FilterServiceImpl implements FilterService {
              *     .anyMatch(node -> node.getValue().equals(toCompare.getValue())) ? i.get()-1 : -1;
              * @author: Inozemtsev
              */
-            mergeNodes(exist.getChilds().get(indx), toMerge.getChilds().stream().findFirst().orElse(new FilterNode()));
+            mergeNodes(exist.getChilds().get(indx), toMerge.getChilds().stream().findFirst().orElse(new FilterNode("exit")));
         }else {
             exist.getChilds().add(toMerge);
         }
