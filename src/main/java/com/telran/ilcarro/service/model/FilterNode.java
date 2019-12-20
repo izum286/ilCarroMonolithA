@@ -29,4 +29,8 @@ public class FilterNode {
     String type;
     String value;
     List<FilterNode> childs = Collections.synchronizedList(new LinkedList<>());
+
+    public FilterNode(String exit) {
+        this.type = exit;
+    }
 }
