@@ -41,7 +41,7 @@ public class CommentControllerImpl implements CommentController{
     )
     @PostMapping("comment?serial_number=sn")
     @Override
-    public void postComment(@RequestParam(name = "sn") String serialNumber, AddCommentDTO comment) {
+    public void postComment(@RequestParam(name = "sn") String serialNumber, @RequestHeader("Authorization") String token, AddCommentDTO comment) {
 
     }
 }

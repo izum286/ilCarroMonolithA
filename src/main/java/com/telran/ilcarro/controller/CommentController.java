@@ -5,5 +5,5 @@ import com.telran.ilcarro.model.web.comment.FullCommentDTO;
 
 public interface CommentController {
     FullCommentDTO getLatestComments(Integer num);
-    void postComment(String serialNumber, AddCommentDTO comment);
+    void postComment(String serialNumber, String token, AddCommentDTO comment);
 }
