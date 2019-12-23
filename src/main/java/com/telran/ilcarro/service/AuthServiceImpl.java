@@ -27,6 +27,12 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     PasswordEncoder encoder;
 
+    /**
+     * Register User to AuthService and save to UserDetailsRepository
+     * @param token
+     * @return user email
+     * @throws ConflictServiceException
+     */
     @Override
     public String registration(String token) {
         AccountCredentials account = tokenService.decodeToken(token);
@@ -43,15 +49,20 @@ public class AuthServiceImpl implements AuthService {
         userRepo.save(entity);
         return account.email;
     }
-
+    /**
+     * Update User password in AuthService and save to UserDetailsRepository
+     * @param token
+     * @return user email
+     * @throws NotFoundServiceException
+     */
     @Override
-    public boolean updatePassword(String token, String newPassword) {
+    public String updatePassword(String token, String newPassword) {
         AccountCredentials account = tokenService.decodeToken(token);
         try {
             UserDetailsEntity current = userRepo.findById(account.email).get();
             current.setPassword(encoder.encode(tokenService.decodePassword(newPassword)));
             userRepo.save(current);
-            return true;
+            return account.email;
         } catch (NotFoundRepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
         }
