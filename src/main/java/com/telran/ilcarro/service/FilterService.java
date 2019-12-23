@@ -19,7 +19,7 @@ public interface FilterService {
      * @return
      * @author izum286
      */
-    String provideFilter() throws JsonProcessingException;
+    String provideFilter();
 
     /**
      * Method added new node from FullCarDto from data which typed

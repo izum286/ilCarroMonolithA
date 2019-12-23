@@ -42,7 +42,7 @@ public class FilterServiceImpl implements FilterService {
      * @author izum286
      */
     @Override
-    public String provideFilter() throws JsonProcessingException {
+    public String provideFilter() {
         ObjectMapper mapper = new ObjectMapper();
         SimpleModule module = new SimpleModule("custom",
                 Version.unknownVersion());
@@ -56,7 +56,12 @@ public class FilterServiceImpl implements FilterService {
         for (FilterNode n: filterRepository.values()){
             root.getChilds().add(n);
         }
-        String s = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(root);
+        String s = null;
+        try {
+            s = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(root);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         return s;
     }
 
