@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.telran.ilcarro.service.model.FilterNode;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
@@ -53,6 +54,7 @@ import java.io.IOException;
  *               "seats" : [ {
  *                 "key: " : "4"
  */
+@Component
 public class FilterNodeSerializer extends JsonSerializer<FilterNode> {
     @Override
     public void serialize(FilterNode filterNode, JsonGenerator jgen, SerializerProvider provider) throws IOException {

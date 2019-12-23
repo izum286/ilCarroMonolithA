@@ -3,12 +3,11 @@ package com.telran.ilcarro.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.telran.ilcarro.handler.GlobalHandler;
+import com.telran.ilcarro.service.exceptions.GlobalHandler;
 import com.telran.ilcarro.model.web.FullCarDTO;
 import com.telran.ilcarro.model.web.SchedularUsageDTO;
 import com.telran.ilcarro.model.web.ShortCarDTO;
 import com.telran.ilcarro.repository.*;
-import com.telran.ilcarro.repository.entity.UserDetailsEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
