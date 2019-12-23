@@ -1,10 +1,10 @@
-package com.telran.ilcarro.handler;
+package com.telran.ilcarro.service.exceptions;
 
-import com.telran.ilcarro.exception.EmptyDataException;
 import org.springframework.stereotype.Component;
 
 @Component
 public class GlobalHandler extends RuntimeException {
+    //TODO - need to check if this class is needed at all.
 
     public void handleEmptyData(String data) {
         if (data == null) {
