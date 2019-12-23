@@ -3,6 +3,7 @@ package com.telran.ilcarro.controller;
 import com.telran.ilcarro.model.web.feedback.FeedbackDTO;
 import com.telran.ilcarro.model.web.user.FullUserDTO;
 import com.telran.ilcarro.model.web.user.RegUserDTO;
+import com.telran.ilcarro.model.web.user.UpdUserDTO;
 import com.telran.ilcarro.service.AuthService;
 import com.telran.ilcarro.service.TokenService;
 import com.telran.ilcarro.service.UserService;
@@ -53,15 +54,18 @@ public class UserControllerImpl  implements UserController{
 
     @PutMapping("user")
     @Override
-    public FullUserDTO updateUser(@RequestBody FullUserDTO updUser, @RequestHeader("Authorization") String token) {
-        String userEmail = authService.registration(token);
+    public FullUserDTO updateUser(@RequestBody UpdUserDTO updUser,
+                                  @RequestHeader("Authorization") String token,
+                                  @RequestHeader("X-New-Password") String newPassword
+    ) {
+        String userEmail = authService.updatePassword(token, newPassword);
         return userService.updateUser(userEmail, updUser).orElseThrow();
     }
 
     @DeleteMapping("user")
     @Override
     public void deleteUser(@RequestHeader("Authorization") String token) {
-        String userEmail = authService.registration(token);
+        String userEmail = tokenService.decodeToken(token).email;
         userService.deleteUser(userEmail);
     }
 }

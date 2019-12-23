@@ -1,6 +1,7 @@
 package com.telran.ilcarro.repository;
 
 import com.telran.ilcarro.repository.entity.UserDetailsEntity;
+import com.telran.ilcarro.repository.exception.NotFoundRepositoryException;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;
@@ -14,7 +15,10 @@ public class UserRepo implements UserDetailsRepository{
     @Override
     public Optional<UserDetailsEntity> findById(String email) {
         UserDetailsEntity entity = repository.get(email);
-        return entity != null ? Optional.of(entity) : Optional.empty();
+        if (entity == null) {
+            throw new NotFoundRepositoryException(String.format("User %s not found", email));
+        }
+        return Optional.of(entity);
     }
 
     @Override

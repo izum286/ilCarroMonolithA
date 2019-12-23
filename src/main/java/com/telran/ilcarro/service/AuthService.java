@@ -10,4 +10,5 @@ import com.telran.ilcarro.repository.entity.UserDetailsEntity;
  */
 public interface AuthService {
     String registration(String token);
+    String updatePassword(String token, String newPassword);
 }

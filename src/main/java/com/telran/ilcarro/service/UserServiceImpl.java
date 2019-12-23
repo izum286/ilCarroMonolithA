@@ -3,6 +3,7 @@ package com.telran.ilcarro.service;
 
 import com.telran.ilcarro.model.web.user.FullUserDTO;
 import com.telran.ilcarro.model.web.user.RegUserDTO;
+import com.telran.ilcarro.model.web.user.UpdUserDTO;
 import com.telran.ilcarro.repository.UserDetailsRepository;
 import com.telran.ilcarro.repository.UserEntityRepository;
 import com.telran.ilcarro.repository.entity.UserDetailsEntity;
@@ -58,10 +59,13 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Optional<FullUserDTO>  updateUser(String email, FullUserDTO updUser) {
+    public Optional<FullUserDTO>  updateUser(String email, UpdUserDTO updUser) {
         try {
-            UserDetailsEntity userDetailsEntity = userDetailsRepository.findById(email).orElseThrow();
-            UserEntity entity = userRepository.updateUser(map(userDetailsEntity, updUser));
+            if (!userDetailsRepository.existsById(email)) {
+                throw new NotFoundServiceException(String.format("User %s not found", email));
+            }
+            UserEntity userToUpd = userRepository.getUserByEmail(email);
+            UserEntity entity = userRepository.updateUser(map(userToUpd, updUser));
             return Optional.of(map(entity));
         } catch (ConflictRepositoryException ex) {
             throw new ConflictServiceException(ex.getMessage(), ex.getCause());

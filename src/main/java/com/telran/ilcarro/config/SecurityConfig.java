@@ -12,7 +12,14 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
+/**
+ *
+ * SecurityConfig implementation
+ * BasicAuth - off. Need to test and switch on
+ *
+ * @author Konkin Anton
+ * @date 23.12.2019
+ */
 @EnableWebSecurity
 public class SecurityConfig {
     @Autowired
