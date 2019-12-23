@@ -61,7 +61,9 @@ public class UserServiceImpl implements UserService{
     @Override
     public Optional<FullUserDTO>  updateUser(String email, UpdUserDTO updUser) {
         try {
-            UserDetailsEntity userDetailsEntity = userDetailsRepository.findById(email).orElseThrow();
+            if (!userDetailsRepository.existsById(email)) {
+                throw new NotFoundServiceException(String.format("User %s not found", email));
+            }
             UserEntity userToUpd = userRepository.getUserByEmail(email);
             UserEntity entity = userRepository.updateUser(map(userToUpd, updUser));
             return Optional.of(map(entity));

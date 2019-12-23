@@ -1,5 +1,7 @@
 package com.telran.ilcarro.model.web.user;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 @AllArgsConstructor
@@ -8,7 +10,12 @@ import lombok.*;
 @Setter
 @ToString
 @Builder
-
-public class UpdUserDTO extends RegUserDTO {
+@ApiModel(value = "AuthDTO",description = "Authorization data transfer object")
+public class UpdUserDTO {
+    @ApiModelProperty(notes = "User email")
+    private String firstName;
+    @ApiModelProperty(notes = "User password")
+    private String lastName;
+    @ApiModelProperty(notes = "Photo url")
     private String photo;
 }

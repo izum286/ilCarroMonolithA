@@ -65,7 +65,7 @@ public class UserControllerImpl  implements UserController{
     @DeleteMapping("user")
     @Override
     public void deleteUser(@RequestHeader("Authorization") String token) {
-        String userEmail = authService.registration(token);
+        String userEmail = tokenService.decodeToken(token).email;
         userService.deleteUser(userEmail);
     }
 }
