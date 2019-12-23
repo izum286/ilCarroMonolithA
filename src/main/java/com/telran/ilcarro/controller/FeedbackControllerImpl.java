@@ -14,7 +14,7 @@ import java.util.List;
 
 
 //@RestController
-@RequestMapping("/feedback")
+//@RequestMapping("/feedback")
 public class FeedbackControllerImpl implements FeedbackController{
     /**
      * Feedback controller implementation

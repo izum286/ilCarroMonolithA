@@ -10,7 +10,7 @@ import lombok.*;
 @Setter
 @ToString
 @Builder
-@ApiModel(value = "AuthDTO",description = "Authorization data transfer object")
+@ApiModel(value = "UpdUserDTO",description = "Update User data transfer object")
 public class UpdUserDTO {
     @ApiModelProperty(notes = "User email")
     private String firstName;

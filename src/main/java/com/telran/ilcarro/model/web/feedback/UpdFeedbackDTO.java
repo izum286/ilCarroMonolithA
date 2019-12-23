@@ -11,7 +11,7 @@ import lombok.*;
 @ToString
 @Builder
 
-@ApiModel(value = "UpdFeedbackDTO",description = "Feedback data transfer object")
+//@ApiModel(value = "UpdFeedbackDTO",description = "Feedback data transfer object")
 
 public class UpdFeedbackDTO {
     @ApiModelProperty(notes = "Id of feedback")

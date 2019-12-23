@@ -1,6 +1,5 @@
 package com.telran.ilcarro.controller;
 
-import com.telran.ilcarro.model.web.feedback.FeedbackDTO;
 import com.telran.ilcarro.model.web.user.FullUserDTO;
 import com.telran.ilcarro.model.web.user.RegUserDTO;
 import com.telran.ilcarro.model.web.user.UpdUserDTO;
@@ -31,7 +30,7 @@ public class UserControllerImpl  implements UserController{
     @Autowired
     TokenService tokenService;
 
-    @ApiOperation(value = "Register new user", response = FeedbackDTO.class)
+    @ApiOperation(value = "Register new user", response = FullUserDTO.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = ""),
             @ApiResponse(code = 409, message = "User {email} already exist"),
@@ -45,6 +44,12 @@ public class UserControllerImpl  implements UserController{
         return userService.addUser(userEmail, user).orElseThrow();
     }
 
+    @ApiOperation(value = "Login", response = FullUserDTO.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+    }
+    )
     @PostMapping("user/login")
     @Override
     public FullUserDTO login(@RequestHeader("Authorization") String token) {
@@ -52,6 +57,12 @@ public class UserControllerImpl  implements UserController{
         return userService.getUser(userEmail).orElseThrow();
     }
 
+    @ApiOperation(value = "Update user and password", response = FullUserDTO.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+    }
+    )
     @PutMapping("user")
     @Override
     public FullUserDTO updateUser(@RequestBody UpdUserDTO updUser,
@@ -62,6 +73,12 @@ public class UserControllerImpl  implements UserController{
         return userService.updateUser(userEmail, updUser).orElseThrow();
     }
 
+    @ApiOperation(value = "Delete user")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+    }
+    )
     @DeleteMapping("user")
     @Override
     public void deleteUser(@RequestHeader("Authorization") String token) {

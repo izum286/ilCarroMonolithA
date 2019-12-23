@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @ToString
 @Builder
 
-@ApiModel(value = "FeedbackDTO",description = "Feedback data transfer object")
+//@ApiModel(value = "FeedbackDTO",description = "Feedback data transfer object")
 
 public class FeedbackDTO {
     @ApiModelProperty(notes = "Id of feedback")

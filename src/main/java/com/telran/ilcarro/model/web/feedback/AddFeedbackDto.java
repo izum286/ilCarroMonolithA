@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @ToString
 @Builder
 
-@ApiModel(value = "AddFeedbackDTO",description = "Feedback data transfer object")
+//@ApiModel(value = "AddFeedbackDTO",description = "Feedback data transfer object")
 
 public class AddFeedbackDto {
 
