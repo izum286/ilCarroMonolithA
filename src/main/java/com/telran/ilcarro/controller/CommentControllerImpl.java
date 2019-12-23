@@ -49,9 +49,9 @@ public class CommentControllerImpl implements CommentController {
             @ApiResponse(code = 404, message = "Not Found")
     }
     )
-    @PostMapping("comment?serial_number=sn")
+    @PostMapping("comment")
     @Override
-    public void postComment(@RequestParam(name = "sn") String serialNumber,
+    public void postComment(@RequestParam(name = "serial_number") String serialNumber,
                             @RequestHeader("Authorization") String token,
                             @RequestBody AddCommentDTO comment) {
         String ownerEmail = tokenService.decodeToken(token).email;
