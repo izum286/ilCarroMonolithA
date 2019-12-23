@@ -42,7 +42,7 @@ public class CarControllerImpl implements CarController {
     @Override
     @PostMapping("/car")
     public ShortCarDTO addCar(@RequestBody FullCarDTO carDTO) {
-        return carService.addCar(carDTO);
+        return carService.addCar(carDTO).orElseThrow();
     }
 
 
@@ -61,7 +61,7 @@ public class CarControllerImpl implements CarController {
     @Override
     @PutMapping("/car")
     public ShortCarDTO updateCar(@RequestBody FullCarDTO carDTO) {
-        return carService.updateCar(carDTO);
+        return carService.updateCar(carDTO).orElseThrow();
     }
 
 
@@ -98,7 +98,7 @@ public class CarControllerImpl implements CarController {
     @Override
     @GetMapping("/car?serial_number")
     public FullCarDTO getCarByIdForUsers(@RequestParam(name = "serial_number") String id) {
-        return carService.getCarByIdForUsers(id);
+        return carService.getCarByIdForUsers(id).orElseThrow();
     }
 
 
@@ -136,7 +136,7 @@ public class CarControllerImpl implements CarController {
     @Override
     @GetMapping("/user/cars/car?serial_number")
     public FullCarDTO ownerGetCarById(@RequestParam(name = "serial_number") String id) {
-        return carService.ownerGetCarById(id);
+        return carService.ownerGetCarById(id).orElseThrow();
     }
 
 
