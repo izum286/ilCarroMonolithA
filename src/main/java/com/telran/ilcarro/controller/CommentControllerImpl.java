@@ -7,6 +7,9 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 /**
  *
  * SecurityConfig implementation
@@ -28,7 +31,7 @@ public class CommentControllerImpl implements CommentController{
     )
     @GetMapping("comments/{num}")
     @Override
-    public FullCommentDTO getLatestComments(@PathVariable("num") Integer num) {
+    public List<FullCommentDTO> getLatestComments(@PathVariable("num") Integer num) {
         return null;
     }
 
