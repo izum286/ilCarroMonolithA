@@ -21,4 +21,9 @@ public class TokenServiceImpl implements TokenService {
         String[] auth = token.split(":");
         return new AccountCredentials(auth[0], auth[1]);
     }
+
+    @Override
+    public String decodePassword(String password) {
+        return new String(Base64.getDecoder().decode(password));
+    }
 }
