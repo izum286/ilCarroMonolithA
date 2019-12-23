@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.telran.ilcarro.model.web.FilterDTO;
 import com.telran.ilcarro.model.web.FullCarDTO;
+import com.telran.ilcarro.repository.FilterRepository;
+import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.model.FilterNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,9 @@ import java.util.List;
 public class FilterServiceImpl implements FilterService {
     @Autowired
     MapperService mapperService;
-    Hashtable<String, FilterNode> hashArray = new Hashtable<>();
+
+    @Autowired
+    FilterRepository filterRepository;
 
     /**
      * Method for automatically add new filter from /upload page
@@ -46,7 +50,10 @@ public class FilterServiceImpl implements FilterService {
         mapper.registerModule(module);
         FilterNode root = new FilterNode();
         root.setValue("allCars");
-        for (FilterNode n: hashArray.values()){
+        if(filterRepository.size() == 0){
+            throw new NotFoundServiceException("There is no filters yet");
+        }
+        for (FilterNode n: filterRepository.values()){
             root.getChilds().add(n);
         }
         String s = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(root);
@@ -64,12 +71,12 @@ public class FilterServiceImpl implements FilterService {
     @Override
     public void addNode(FilterDTO filterDTO) throws IllegalAccessException {
         FilterNode toRawAdd = mapperService.map(filterDTO);
-        if(!hashArray.containsKey(filterDTO.getMake())){
-            hashArray.put(filterDTO.getMake(), toRawAdd);
+        if(!filterRepository.containsKey(filterDTO.getMake())){
+            filterRepository.put(filterDTO.getMake(), toRawAdd);
         }else {
             //начинаем сравнивать ноды со сдвигом на 1 в ноде добавления СВЕРХУ
             //и в случае разницы  - сливаем
-            FilterNode fromList = hashArray.get(filterDTO.getMake());
+            FilterNode fromList = filterRepository.get(filterDTO.getMake());
             FilterNode toCompare = toRawAdd.getChilds().get(0);
             mergeNodes(fromList, toCompare);
         }

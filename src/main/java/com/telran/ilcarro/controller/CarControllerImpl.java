@@ -1,6 +1,7 @@
 package com.telran.ilcarro.controller;
 
 import com.telran.ilcarro.service.CarService;
+import com.telran.ilcarro.service.FilterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,9 @@ public class CarControllerImpl implements CarController {
 
     @Autowired
     CarService carService;
+
+    @Autowired
+    FilterService filterService;
 
     //Так как это наш метод, я не знаю, какое ему описание описать, потому что я пока хз, для чего он =(
     @Override
@@ -208,6 +212,7 @@ public class CarControllerImpl implements CarController {
     public ResponseEntity addCar(@RequestBody String data) {
         try {
             if (carService.addCar(data)) {
+            //TODO after refactor need to add here filterService.addFilter(FullCarDto)
                 return ResponseEntity.status(201).body("Car successfully added");
             } else {
                 return ResponseEntity.status(400).body("Bad request");
