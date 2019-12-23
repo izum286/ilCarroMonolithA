@@ -3,7 +3,9 @@ package com.telran.ilcarro.service;
 import com.telran.ilcarro.repository.UserDetailsRepository;
 import com.telran.ilcarro.repository.entity.UserDetailsEntity;
 import com.telran.ilcarro.repository.entity.UserRoleEntity;
+import com.telran.ilcarro.repository.exception.NotFoundRepositoryException;
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
+import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -40,5 +42,18 @@ public class AuthServiceImpl implements AuthService {
                 .build();
         userRepo.save(entity);
         return account.email;
+    }
+
+    @Override
+    public boolean updatePassword(String token, String newPassword) {
+        AccountCredentials account = tokenService.decodeToken(token);
+        try {
+            UserDetailsEntity current = userRepo.findById(account.email).get();
+            current.setPassword(encoder.encode(tokenService.decodePassword(newPassword)));
+            userRepo.save(current);
+            return true;
+        } catch (NotFoundRepositoryException ex) {
+            throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
+        }
     }
 }
