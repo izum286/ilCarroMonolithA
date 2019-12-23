@@ -1,25 +1,35 @@
 package com.telran.ilcarro.controller;
 
-import org.springframework.http.ResponseEntity;
+import com.telran.ilcarro.model.web.FullCarDTO;
+import com.telran.ilcarro.model.web.SchedularUsageDTO;
+import com.telran.ilcarro.model.web.ShortCarDTO;
+
+import java.util.List;
+
+/**
+ * Car controller interface
+ * Main methods to get, update and delete information about cars.
+ *
+ *
+ * @author Gor Aleks
+ * @since 1.0
+ *
+ */
 
 public interface CarController {
-    ResponseEntity getSingleCar(String carId);
 
-    ResponseEntity getPopularCar();
+    ShortCarDTO addCar(FullCarDTO carDTO);
 
-    ResponseEntity getSingleFullCar(String carId);
+    ShortCarDTO updateCar(FullCarDTO carDTO);
 
-    ResponseEntity findByLocationAndArea(String location, String area);
+    void deleteCar(String id);
 
-    ResponseEntity findByLocationAndDates(String location, String dateFrom, String dateTo);
+    FullCarDTO getCarByIdForUsers(String id);
 
-    ResponseEntity findByLocationDatePrice(String location, String from, String to, String priceFrom, String priceTo);
+    List<FullCarDTO> ownerGetCars();
 
-    ResponseEntity addCar(String data);
+    FullCarDTO ownerGetCarById(String id);
 
-    ResponseEntity rentCar(String data);
+    List<SchedularUsageDTO>  ownerGetBookedPeriodsByCarId(String id);
 
-    ResponseEntity returnCar(String carId);
-
-    ResponseEntity checkIfAvailable(String data);
 }
