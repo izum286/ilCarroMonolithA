@@ -42,8 +42,10 @@ public class UserEntityRepositoryImpl implements UserEntityRepository {
     public UserEntity updateUser(UserEntity entity) {
         if (repo.containsKey(entity.getEmail())) {
             repo.put(entity.getEmail(), entity);
+            return entity;
         }
-        return entity;
+        throw new NotFoundRepositoryException(String.format("User %s not found", entity.getEmail()));
+
     }
 
     @Override

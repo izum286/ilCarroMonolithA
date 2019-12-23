@@ -28,6 +28,7 @@ public class UserEntity {
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDateTime registrationDate;
     private UserDetailsEntity userDetails;
+    private String photo;
 
     private List<SchedularUsageEntity> usages;
 

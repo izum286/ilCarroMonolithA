@@ -2,6 +2,7 @@ package com.telran.ilcarro.service.converters;
 
 import com.telran.ilcarro.model.web.user.FullUserDTO;
 import com.telran.ilcarro.model.web.user.RegUserDTO;
+import com.telran.ilcarro.model.web.user.UpdUserDTO;
 import com.telran.ilcarro.repository.entity.UserDetailsEntity;
 import com.telran.ilcarro.repository.entity.UserEntity;
 
@@ -33,7 +34,15 @@ public class UserDTOEntityConverter {
                 .firstName(userDTO.getFirstName())
                 .lastName(userDTO.getLastName())
                 .userDetails(entity)
+                .photo(userDTO.getPhoto())
                 .build();
+    }
+
+    public static UserEntity map(UserEntity currUser, UpdUserDTO userDTO) {
+        currUser.setFirstName(userDTO.getFirstName());
+        currUser.setLastName(userDTO.getLastName());
+        currUser.setPhoto(userDTO.getPhoto());
+        return currUser;
     }
 
     public static FullUserDTO map(UserEntity entity) {
@@ -46,6 +55,8 @@ public class UserDTOEntityConverter {
                 .ownCars(null)
                 .history(null)
                 .registrationDate(entity.getRegistrationDate())
+                .photo(entity.getPhoto())
                 .build();
     }
+
 }

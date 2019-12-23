@@ -29,6 +29,7 @@ public class FullUserDTO {
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDateTime registrationDate;
     private FeedbackDTO comments;
+    private String photo;
     //TODO
     private String ownCars;
     //TODO
