@@ -1,6 +1,6 @@
 package com.telran.ilcarro.model.web;
 
-import com.telran.ilcarro.model.web.feedback.FeedbackDTO;
+import com.telran.ilcarro.model.web.comment.FullCommentDTO;
 import lombok.*;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class FullCarDTO {
     private String features;
     private String owner;
     private int trips;
-    private List<FeedbackDTO> feedbacks;
+    private List<FullCommentDTO> feedbacks;
     private List<SchedularUsageDTO> usages;
     private boolean isRented = false;
 
