@@ -24,7 +24,7 @@ public class CommentDtoEntityConverter {
                 .id(UUID.randomUUID().toString())
                 .ownerEmail(email)
                 .postDateTime(LocalDateTime.now())
-                .post(comment.getMessage())
+                .post(comment.getPost())
                 .serialNumber(serialNumber)
                 .build();
     }

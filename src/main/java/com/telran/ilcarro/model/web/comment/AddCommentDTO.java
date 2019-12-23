@@ -14,5 +14,5 @@ import lombok.*;
 @ApiModel(value = "AddCommentDTO",description = "Comment data transfer object")
 public class AddCommentDTO {
     @ApiModelProperty(notes = "Message of comment")
-    private String message;
+    private String post;
 }
