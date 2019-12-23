@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.telran.ilcarro.model.web.FilterDTO;
 import com.telran.ilcarro.model.web.FullCarDTO;
+import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.model.FilterNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,9 @@ public class FilterServiceImpl implements FilterService {
         mapper.registerModule(module);
         FilterNode root = new FilterNode();
         root.setValue("allCars");
+        if(hashArray.size() == 0){
+            throw new NotFoundServiceException("There is no filters yet");
+        }
         for (FilterNode n: hashArray.values()){
             root.getChilds().add(n);
         }
