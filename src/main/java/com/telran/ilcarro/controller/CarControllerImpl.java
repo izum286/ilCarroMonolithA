@@ -4,6 +4,7 @@ import com.telran.ilcarro.model.web.FullCarDTO;
 import com.telran.ilcarro.model.web.SchedularUsageDTO;
 import com.telran.ilcarro.model.web.ShortCarDTO;
 import com.telran.ilcarro.service.CarService;
+import com.telran.ilcarro.service.FilterService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -29,6 +30,9 @@ public class CarControllerImpl implements CarController {
     @Autowired
     CarService carService;
 
+    @Autowired
+    FilterService filterService;
+
     @ApiOperation(value = "Add new car", response = ShortCarDTO.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = ""),
@@ -41,7 +45,8 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @PostMapping("/car")
-    public ShortCarDTO addCar(@RequestBody FullCarDTO carDTO) {
+    public ShortCarDTO addCar(@RequestBody FullCarDTO carDTO) throws IllegalAccessException {
+        filterService.addFilter(carDTO);
         return carService.addCar(carDTO).orElseThrow();
     }
 
