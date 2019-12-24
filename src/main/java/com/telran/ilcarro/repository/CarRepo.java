@@ -2,6 +2,9 @@ package com.telran.ilcarro.repository;
 
 import com.telran.ilcarro.model.web.FullCarDTO;
 import com.telran.ilcarro.model.web.ShortCarDTO;
+import com.telran.ilcarro.repository.entity.FullCarEntity;
+import com.telran.ilcarro.repository.entity.SchedularUsageEntity;
+import com.telran.ilcarro.repository.entity.ShortCarEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,92 +14,53 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Repository
-public class CarRepo {
+public class CarRepo implements CarRepository{
 
+    //TODO что то надо сделать с айдишниками для машин, потому что тут даблы, там стринги, где-то UUID, а в протоколе сериал вообще не в виде UUID
     /**
      * Mock maps instead DB
      * Store ShortCar Entities
      */
-    Map<Double, ShortCarDTO> shortCars = new ConcurrentHashMap<>();
-    public Map<Double, FullCarDTO> fullCars = new ConcurrentHashMap<>();
+    private Map<Double, ShortCarEntity> shortCars = new ConcurrentHashMap<>();
+    private Map<Double, FullCarEntity> fullCars = new ConcurrentHashMap<>();
 
-
-    /**
-     * returning single short car dto
-     * @param carId
-     * @return ShortCarDTO
-     */
-    public ShortCarDTO getSingleCar(UUID carId) {
-        ShortCarDTO carDTO = shortCars.get(carId);
-        return carDTO;
+    //TODO заглушки!
+    @Override
+    public FullCarEntity addCar(FullCarEntity entity){
+        fullCars.put(entity.getId(), entity);
+        return null;
     }
 
-
-    /**
-     * Provide list of all cars - short representation
-     * mock method  - instead searching in DB by filters
-     * @return list of short car DTO
-     */
-    public List<ShortCarDTO> getShortcarList(){
-        return new CopyOnWriteArrayList<>(shortCars.values());
+    @Override
+    public FullCarEntity updateCar(FullCarEntity entity) {
+        fullCars.put(entity.getId(), entity);
+        return null;
     }
 
-    /**
-     * Provide full car information to frontend
-     * @param carId
-     * @return FullCarDTO
-     */
-    public FullCarDTO getFullCar(UUID carId) {
-        return fullCars.get(carId);
+    @Override
+    public boolean deleteCar(UUID id) {
+        return fullCars.remove(id) != null;
     }
 
-    /**
-     * Provide list of all cars
-     * mock method  - instead searching in DB by filters
-     * @return list of full car DTO
-     */
-    public List<FullCarDTO> getAllCars(){
-        return new CopyOnWriteArrayList<>(fullCars.values());
-    }
-//mocks====mocks====mocks====mocks====mocks====mocks====mocks====mocks====
-    /**
-     * mock to do logic
-     * @param location
-     * @param radius
-     * @return
-     */
-    public List<ShortCarDTO> findByLocationAndRadius(String location, double radius){
-        return getShortcarList();
+    @Override
+    public FullCarEntity getCarByIdForUsers(UUID id) {
+        FullCarEntity carEntity = fullCars.get(id);
+        return carEntity;
     }
 
-    /**
-     * mock to do logic
-     * @param location, dateFrom, dateTo
-     * @return
-     */
-    public List<ShortCarDTO> findByLocationAndDates
-    (String location, String dateFrom, String dateTo){
-        return getShortcarList();
+    @Override
+    public List<FullCarEntity> ownerGetCars() {
+        return null;
     }
 
-    /**
-     *
-     * @param location
-     * @param dateFrom
-     * @param dateTo
-     * @param priceFrom
-     * @param priceTo
-     * @return List
-     */
-    public List<ShortCarDTO> findByLocationDatesPrice
-            (String location, String dateFrom, String dateTo,
-            double priceFrom,double priceTo ){
-        return getShortcarList();
+    @Override
+    public FullCarEntity ownerGetCarById(UUID id) {
+        return null;
     }
 
-
-    public void addCar(FullCarDTO car){
-        fullCars.put(car.getId(), car);
+    @Override
+    public List<SchedularUsageEntity> ownerGetBookedPeriodsByCarId(UUID id) {
+        return null;
     }
 
 }

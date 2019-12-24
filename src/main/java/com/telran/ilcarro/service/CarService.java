@@ -6,6 +6,7 @@ import com.telran.ilcarro.model.web.ShortCarDTO;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface CarService {
 

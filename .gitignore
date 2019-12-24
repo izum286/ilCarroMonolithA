@@ -42,3 +42,4 @@ target/
 
 # Google Drive
 **/Icon**
+node_modules/

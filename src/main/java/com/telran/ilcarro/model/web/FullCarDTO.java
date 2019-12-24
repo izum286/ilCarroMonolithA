@@ -1,6 +1,7 @@
 package com.telran.ilcarro.model.web;
 
-import com.telran.ilcarro.model.web.comment.FullCommentDTO;
+import com.telran.ilcarro.repository.entity.FeedbackEntity;
+import com.telran.ilcarro.repository.entity.LocationEntity;
 import lombok.*;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 @ToString
 @Builder
 public class FullCarDTO {
@@ -18,20 +20,12 @@ public class FullCarDTO {
     private SpecsDTO specifications;
     private double price;
     private List<String> image;
-    private LocationDTO location;
-    private String about;
-    private String features;
+    private LocationEntity location;
+    private List<String> features;
     private String owner;
     private int trips;
-    private List<FullCommentDTO> feedbacks;
+    private List<FeedbackEntity> feedBacks;
     private List<SchedularUsageDTO> usages;
     private boolean isRented = false;
-
-    public void setUsages(SchedularUsageDTO record ) {
-        this.usages.add(record);
-    }
-
-    public void setRented(boolean rented) {
-        isRented = rented;
-    }
+    private String about;
 }
