@@ -23,7 +23,7 @@ public interface CarController {
      * @param carDTO of new car
      * @return ShortCarDTO
      */
-    ShortCarDTO addCar(FullCarDTO carDTO);
+    ShortCarDTO addCar(FullCarDTO carDTO) throws IllegalAccessException;
 
     /**
      * Returns the shortCarDTO that was created from FullCarDTO
