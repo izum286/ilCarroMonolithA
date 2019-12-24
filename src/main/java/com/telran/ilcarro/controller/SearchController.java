@@ -23,7 +23,7 @@ public class SearchController {
     SearchService searchService;
 
 
-    @ApiOperation(value = "cars by city, dates, price range,sorted by price", response = SearchResponse.class)
+    @ApiOperation(value = "search cars by city, dates, price range,sorted by price", response = SearchResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = ""),
             @ApiResponse(code = 400, message = "Bad Request"),
