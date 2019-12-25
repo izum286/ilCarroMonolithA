@@ -25,7 +25,7 @@ public class FullCarDTOResponse {
     private float fuel_consumption;
     ArrayList<FeatureDto> featuresDto;
     private String car_class;
-    private float price_per_day;
+    private PricePerDayDto price_per_day;
     private float distance_included;
     private String about;
     PickUpPlaceDto pickUpPlaceDto;

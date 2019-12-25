@@ -13,7 +13,7 @@ public class ShortCarDtoEntityConverter {
                 .location(LocationDtoEntityConverter.map(entity.getLocation()))
                 .manufacture(entity.getManufacture())
                 .model(entity.getModel())
-                .price(entity.getPrice())
+                .price_per_day(PricePerDayDtoEntityCoverter.map(entity.getPrice_per_day()))
                 .specifications(SpecificationDtoEntityConverter.map(entity.getSpecifications()))
                 .year(entity.getYear())
                 .build();
@@ -27,7 +27,7 @@ public class ShortCarDtoEntityConverter {
                 .location(LocationDtoEntityConverter.map(dto.getLocation()))
                 .manufacture(dto.getManufacture())
                 .model(dto.getModel())
-                .price(dto.getPrice())
+                .price_per_day(PricePerDayDtoEntityCoverter.map(dto.getPrice_per_day()))
                 .specifications(SpecificationDtoEntityConverter.map(dto.getSpecifications()))
                 .year(dto.getYear())
                 .build();

@@ -20,7 +20,7 @@ public class FullCarEntity {
     private List<UserEntity> owner_cars;
     private List<String> features;
     //возможно стоит создать объект Прайс, который будет иметь два поля(валюта и цена)?
-    private double pricePerDay;
+    private PricePerDayEntity price_per_day;
     private List<String> image;
     private SpecsEntity specifications;
     private LocationEntity location;

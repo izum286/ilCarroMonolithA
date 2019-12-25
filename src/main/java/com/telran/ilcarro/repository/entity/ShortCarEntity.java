@@ -18,7 +18,7 @@ public class ShortCarEntity {
     private String model;
     private String manufacture;
     private int year;
-    private double price;
+    private PricePerDayEntity price_per_day;
     private List<String> image;
     private SpecsEntity specifications;
     private LocationEntity location;
