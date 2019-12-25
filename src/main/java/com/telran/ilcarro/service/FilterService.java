@@ -1,18 +1,17 @@
 package com.telran.ilcarro.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.telran.ilcarro.model.web.FilterDTO;
-import com.telran.ilcarro.model.web.FullCarDTO;
+import com.telran.ilcarro.model.web.FullCarDTOResponse;
 import com.telran.ilcarro.service.model.FilterNode;
 
 public interface FilterService {
     /**
      * Method for automatically add new filter from /upload page
      * call -> addNode
-     * @param fullCarDTO
+     * @param fullCarDTOResponse
      * @author izum286
      */
-    void addFilter (FullCarDTO fullCarDTO) throws IllegalAccessException;
+    void addFilter (FullCarDTOResponse fullCarDTOResponse) throws IllegalAccessException;
 
     /**
      * Method return json string of all filters

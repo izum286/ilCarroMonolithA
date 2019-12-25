@@ -16,7 +16,7 @@ public class SearchResponse {
     private int currentPage;
     private int itemsOnPage;
     private int itemsTotal;
-    List<FullCarDTO> cars;
+    List<FullCarDTOResponse> cars;
     CarStatDto statisticDtoForCurrentCar;
     String megaFilter;
 }
