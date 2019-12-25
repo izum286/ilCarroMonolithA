@@ -13,7 +13,7 @@ public class FullCarEntityToShortCarEntityConverter {
                 .location(fullCarEntity.getLocation())
                 .manufacture(fullCarEntity.getManufacture())
                 .model(fullCarEntity.getModel())
-                .price(fullCarEntity.getPricePerDay())
+                .price_per_day(fullCarEntity.getPrice_per_day())
                 .specifications(fullCarEntity.getSpecifications())
                 .year(fullCarEntity.getYear())
                 .build();

@@ -16,7 +16,7 @@ public class ShortCarDTO {
     private String model;
     private String manufacture;
     private int year;
-    private double price;
+    private PricePerDayDto price_per_day;
     private List<String> image;
     private SpecsDTO specifications;
     private LocationDTO location;

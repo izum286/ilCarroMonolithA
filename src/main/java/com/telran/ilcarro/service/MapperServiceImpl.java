@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.telran.ilcarro.model.web.*;
 import com.telran.ilcarro.repository.entity.*;
+import com.telran.ilcarro.service.converters.PricePerDayDtoEntityCoverter;
 import com.telran.ilcarro.service.model.FilterNode;
 import org.springframework.stereotype.Service;
 
@@ -178,7 +179,7 @@ public class MapperServiceImpl implements MapperService {
                 .model(entity.getModel())
                 .manufacture(entity.getManufacture())
                 .year(entity.getYear())
-                .price(entity.getPrice())
+                .price_per_day(PricePerDayDtoEntityCoverter.map(entity.getPrice_per_day()))
                 .image(new ArrayList<>(entity.getImage()))
                 .specifications(map(entity.getSpecifications()))
                 .location(map(entity.getLocation()))
