@@ -1,6 +1,6 @@
 package com.telran.ilcarro.service;
 
-import com.telran.ilcarro.model.web.FullCarDTO;
+import com.telran.ilcarro.model.web.FullCarDTOResponse;
 import com.telran.ilcarro.model.web.SchedularUsageDTO;
 import com.telran.ilcarro.model.web.ShortCarDTO;
 import com.telran.ilcarro.repository.CarRepo;
@@ -31,7 +31,7 @@ public class CarServiceImpl implements CarService {
     CarRepo carRepository;
 
     @Override
-    public Optional<ShortCarDTO> addCar(FullCarDTO carDTO) {
+    public Optional<ShortCarDTO> addCar(FullCarDTOResponse carDTO) {
         try {
             FullCarEntity entity = carRepository.addCar(FullCarDtoEntityConverter.map(carDTO));
             return Optional.of(ShortCarDtoEntityConverter.map(FullCarEntityToShortCarEntityConverter.map(entity)));
@@ -42,7 +42,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Optional<ShortCarDTO> updateCar(FullCarDTO carDTO) {
+    public Optional<ShortCarDTO> updateCar(FullCarDTOResponse carDTO) {
         try {
             FullCarEntity entity = carRepository.updateCar(FullCarDtoEntityConverter.map(carDTO));
             return Optional.of(ShortCarDtoEntityConverter.map(FullCarEntityToShortCarEntityConverter.map(entity)));
@@ -62,7 +62,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Optional<FullCarDTO> getCarByIdForUsers(String id) {
+    public Optional<FullCarDTOResponse> getCarByIdForUsers(String id) {
         try {
             FullCarEntity entity = carRepository.getCarByIdForUsers(UUID.fromString(id));
             return Optional.of(FullCarDtoEntityConverter.map(entity));
@@ -72,7 +72,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<FullCarDTO> ownerGetCars() {
+    public List<FullCarDTOResponse> ownerGetCars() {
         try {
             List<FullCarEntity> fullCarEntityList = carRepository.ownerGetCars();
             return fullCarEntityList.stream()
@@ -86,7 +86,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Optional<FullCarDTO> ownerGetCarById(String id) {
+    public Optional<FullCarDTOResponse> ownerGetCarById(String id) {
         try {
             FullCarEntity entity = carRepository.ownerGetCarById(UUID.fromString(id));
             return Optional.of(FullCarDtoEntityConverter.map(entity));

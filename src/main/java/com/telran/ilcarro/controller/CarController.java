@@ -1,6 +1,6 @@
 package com.telran.ilcarro.controller;
 
-import com.telran.ilcarro.model.web.FullCarDTO;
+import com.telran.ilcarro.model.web.FullCarDTOResponse;
 import com.telran.ilcarro.model.web.SchedularUsageDTO;
 import com.telran.ilcarro.model.web.ShortCarDTO;
 
@@ -23,14 +23,14 @@ public interface CarController {
      * @param carDTO of new car
      * @return ShortCarDTO
      */
-    ShortCarDTO addCar(FullCarDTO carDTO) throws IllegalAccessException;
+    ShortCarDTO addCar(FullCarDTOResponse carDTO) throws IllegalAccessException;
 
     /**
      * Returns the shortCarDTO that was created from FullCarDTO
      * @param carDTO of updated car with updated params
      * @return ShortCarDTO
      */
-    ShortCarDTO updateCar(FullCarDTO carDTO);
+    ShortCarDTO updateCar(FullCarDTOResponse carDTO);
 
     /**
      * Method for deleting an existing car
@@ -43,20 +43,20 @@ public interface CarController {
      * @param id of car
      * @return FullCarDTO
      */
-    FullCarDTO getCarByIdForUsers(String id);
+    FullCarDTOResponse getCarByIdForUsers(String id);
 
     /**
      * Returns list of FullCarDTO for owner
      * @return List<FullCarDTO>
      */
-    List<FullCarDTO> ownerGetCars();
+    List<FullCarDTOResponse> ownerGetCars();
 
     /**
      * Returns the FullCarDTO for car owner by id of his car
      * @param id of car
      * @return FullCarDTO
      */
-    FullCarDTO ownerGetCarById(String id);
+    FullCarDTOResponse ownerGetCarById(String id);
 
     /**
      * Returns list ShedularUsageDTO for owner about his car

@@ -5,14 +5,13 @@ import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.telran.ilcarro.model.web.FilterDTO;
-import com.telran.ilcarro.model.web.FullCarDTO;
+import com.telran.ilcarro.model.web.FullCarDTOResponse;
 import com.telran.ilcarro.repository.FilterRepository;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.model.FilterNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Hashtable;
 import java.util.List;
 
 @Service
@@ -27,12 +26,12 @@ public class FilterServiceImpl implements FilterService {
      * Method for automatically add new filter from /upload page
      * call -> addNode
      *
-     * @param fullCarDTO
+     * @param fullCarDTOResponse
      * @author izum286
      */
     @Override
-    public void addFilter(FullCarDTO fullCarDTO) throws IllegalAccessException {
-        addNode(mapperService.map(fullCarDTO));
+    public void addFilter(FullCarDTOResponse fullCarDTOResponse) throws IllegalAccessException {
+        addNode(mapperService.map(fullCarDTOResponse));
     }
 
     /**

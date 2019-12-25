@@ -1,6 +1,6 @@
 package com.telran.ilcarro.controller;
 
-import com.telran.ilcarro.model.web.FullCarDTO;
+import com.telran.ilcarro.model.web.FullCarDTOResponse;
 import com.telran.ilcarro.model.web.SchedularUsageDTO;
 import com.telran.ilcarro.model.web.ShortCarDTO;
 import com.telran.ilcarro.service.CarService;
@@ -45,7 +45,7 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @PostMapping("/car")
-    public ShortCarDTO addCar(@RequestBody FullCarDTO carDTO) throws IllegalAccessException {
+    public ShortCarDTO addCar(@RequestBody FullCarDTOResponse carDTO) throws IllegalAccessException {
         filterService.addFilter(carDTO);
         return carService.addCar(carDTO).orElseThrow();
     }
@@ -65,7 +65,7 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @PutMapping("/car")
-    public ShortCarDTO updateCar(@RequestBody FullCarDTO carDTO) {
+    public ShortCarDTO updateCar(@RequestBody FullCarDTOResponse carDTO) {
         return carService.updateCar(carDTO).orElseThrow();
     }
 
@@ -92,7 +92,7 @@ public class CarControllerImpl implements CarController {
     //**********************************************************************************
 
 
-    @ApiOperation(value = "Get car by if for users", response = FullCarDTO.class)
+    @ApiOperation(value = "Get car by if for users", response = FullCarDTOResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = ""),
             @ApiResponse(code = 401, message = "Unauthorized. Please login"),
@@ -102,7 +102,7 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @GetMapping("/car?serial_number")
-    public FullCarDTO getCarByIdForUsers(@RequestParam(name = "serial_number") String id) {
+    public FullCarDTOResponse getCarByIdForUsers(@RequestParam(name = "serial_number") String id) {
         return carService.getCarByIdForUsers(id).orElseThrow();
     }
 
@@ -121,7 +121,7 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @GetMapping("/user/cars")
-    public List<FullCarDTO> ownerGetCars() {
+    public List<FullCarDTOResponse> ownerGetCars() {
         return carService.ownerGetCars();
     }
 
@@ -129,7 +129,7 @@ public class CarControllerImpl implements CarController {
     //**********************************************************************************
 
 
-    @ApiOperation(value = "Owner get car by id", response = FullCarDTO.class)
+    @ApiOperation(value = "Owner get car by id", response = FullCarDTOResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = ""),
             @ApiResponse(code = 401, message = "Unauthorized. Please login"),
@@ -140,7 +140,7 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @GetMapping("/user/cars/car?serial_number")
-    public FullCarDTO ownerGetCarById(@RequestParam(name = "serial_number") String id) {
+    public FullCarDTOResponse ownerGetCarById(@RequestParam(name = "serial_number") String id) {
         return carService.ownerGetCarById(id).orElseThrow();
     }
 

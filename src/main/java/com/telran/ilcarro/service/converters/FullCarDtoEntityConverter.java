@@ -1,13 +1,13 @@
 package com.telran.ilcarro.service.converters;
 
-import com.telran.ilcarro.model.web.FullCarDTO;
+import com.telran.ilcarro.model.web.FullCarDTOResponse;
 import com.telran.ilcarro.repository.entity.FullCarEntity;
 
 public class FullCarDtoEntityConverter {
 
-    public static FullCarDTO map(FullCarEntity entity) {
-        return FullCarDTO.builder()
-                .id(entity.getId())
+    public static FullCarDTOResponse map(FullCarEntity entity) {
+        return FullCarDTOResponse.builder()
+                .serial_number(entity.getId())
                 .about(entity.getAbout())
                 .features(entity.getFeatures())
                 .feedBacks(entity.getFeedBacks())
@@ -25,7 +25,7 @@ public class FullCarDtoEntityConverter {
                 .build();
     }
 
-    public static FullCarEntity map(FullCarDTO dto) {
+    public static FullCarEntity map(FullCarDTOResponse dto) {
         return FullCarEntity.builder()
                 .id(dto.getId())
                 .about(dto.getAbout())

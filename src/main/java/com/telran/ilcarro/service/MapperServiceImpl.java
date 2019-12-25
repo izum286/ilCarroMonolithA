@@ -3,7 +3,6 @@ package com.telran.ilcarro.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.telran.ilcarro.model.web.*;
-import com.telran.ilcarro.model.web.user.UserDTO;
 import com.telran.ilcarro.repository.entity.*;
 import com.telran.ilcarro.service.model.FilterNode;
 import org.springframework.stereotype.Service;
@@ -64,21 +63,21 @@ public class MapperServiceImpl implements MapperService {
      * @author izum286
      */
     @Override
-    public FilterDTO map(FullCarDTO from) {
+    public FilterDTO map(FullCarDTOResponse from) {
         return FilterDTO.builder()
-                .make(from.getManufacture())
+                .make(from.getMake())
                 .models(from.getModel())
                 .years(String.valueOf(from.getYear()))
-                .engines(from.getSpecifications().getEngine())
-                .fuel(from.getSpecifications().getFuelType())
-                .transmissions(from.getSpecifications().getTransmission())
-                .wd(from.getSpecifications().getWd())
-                .horsepower(String.valueOf(from.getSpecifications().getHp()))
-                .torque(String.valueOf(from.getSpecifications().getTorque()))
-                .doors(String.valueOf(from.getSpecifications().getDoors()))
-                .seats(String.valueOf(from.getSpecifications().getSeats()))
-                .classs(from.getSpecifications().getClasz())
-                .fuelConsumption(from.getSpecifications().getFuelCons())
+                .engines(from.getEngine())
+                .fuel(from.getFuel())
+                .transmissions(from.getGear())
+                .wd(from.getWheels_drive())
+                //.horsepower(String.valueOf(from.get))
+                //.torque(String.valueOf(from.getSpecifications().getTorque()))
+                .doors(String.valueOf(from.getDoors()))
+                .seats(String.valueOf(from.getSeats()))
+                .classs(from.getCar_class())
+                .fuelConsumption(String.valueOf(from.getFuel_consumption()))
                 .build();
     }
 
