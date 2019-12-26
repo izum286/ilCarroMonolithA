@@ -1,5 +1,6 @@
 package com.telran.ilcarro.model.web;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.telran.ilcarro.model.web.user.PersonWhoBookedDto;
 import lombok.*;
 
@@ -16,11 +17,14 @@ import lombok.*;
 @ToString
 @Builder
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BookedPeriodsDto {
     private String order_id;
     private String start_date_time;
     private String end_date_time;
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     private boolean paid;
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     private float amount;
     private String booking_date;
     PersonWhoBookedDto personWhoBookedDto;
