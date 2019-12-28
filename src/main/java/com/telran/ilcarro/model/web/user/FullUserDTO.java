@@ -30,7 +30,7 @@ public class FullUserDTO {
     private String lastName;
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDateTime registrationDate;
-    private FullCommentDTO comments;
+    private FullCommentDTO[] comments;
     private String photo;
     //TODO
     private String ownCars;
