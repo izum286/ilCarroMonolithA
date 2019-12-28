@@ -1,8 +1,6 @@
 package com.telran.ilcarro.service;
 
-import com.telran.ilcarro.model.web.FullCarDTOResponse;
-import com.telran.ilcarro.model.web.SchedularUsageDTO;
-import com.telran.ilcarro.model.web.ShortCarDTO;
+import com.telran.ilcarro.model.web.*;
 import com.telran.ilcarro.repository.CarRepo;
 import com.telran.ilcarro.repository.entity.FullCarEntity;
 import com.telran.ilcarro.repository.entity.SchedularUsageEntity;
@@ -103,6 +101,21 @@ public class CarServiceImpl implements CarService {
             return schedularUsageEntityList.stream()
                     .map(SchedularUsageListDtoEntityConverter::map)
                     .collect(Collectors.toList());
+        } catch (NotFoundRepositoryException ex) {
+            throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
+        } catch (RepositoryException ex) {
+            throw new ServiceException(ex.getMessage(), ex.getCause());
+        }
+    }
+
+    @Override
+    public BookedPeriodsDto makeReservation(String id, Make_A_Reservation_DataParamsDto dto) {
+        try {
+            BookedPeriodsDto bookedPeriodsDto = new BookedPeriodsDto(dto.getStart_date_time(), dto.getEnd_date_time(), dto.getPersonWhoBookedDto());
+            FullCarEntity entity = carRepository.getCarByIdForUsers(UUID.fromString(id));
+            entity.setRented(true);
+            carRepository.updateCar(entity);
+            return bookedPeriodsDto;
         } catch (NotFoundRepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
         } catch (RepositoryException ex) {

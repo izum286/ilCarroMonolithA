@@ -1,8 +1,6 @@
 package com.telran.ilcarro.controller;
 
-import com.telran.ilcarro.model.web.FullCarDTOResponse;
-import com.telran.ilcarro.model.web.SchedularUsageDTO;
-import com.telran.ilcarro.model.web.ShortCarDTO;
+import com.telran.ilcarro.model.web.*;
 import com.telran.ilcarro.service.CarService;
 import com.telran.ilcarro.service.FilterService;
 import io.swagger.annotations.ApiOperation;
@@ -19,12 +17,11 @@ public class CarControllerImpl implements CarController {
 
     /**
      * Car controller implementation
-     * @see CarController
      *
      * @author Gor Aleks
+     * @see CarController
      * @since 1.0
      */
-
 
 
     @Autowired
@@ -161,5 +158,11 @@ public class CarControllerImpl implements CarController {
     @GetMapping("/user/cars/periods?serial_number")
     public List<SchedularUsageDTO> ownerGetBookedPeriodsByCarId(@RequestParam(name = "serial_number") String id) {
         return carService.ownerGetBookedPeriodsByCarId(id);
+    }
+
+    @Override
+    @PostMapping("/car/reserv")
+    public BookedPeriodsDto makeReservation(@RequestParam(name = "serial_number") String id, @RequestBody Make_A_Reservation_DataParamsDto dto) {
+        return carService.makeReservation(id, dto);
     }
 }

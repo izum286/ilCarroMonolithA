@@ -1,8 +1,6 @@
 package com.telran.ilcarro.controller;
 
-import com.telran.ilcarro.model.web.FullCarDTOResponse;
-import com.telran.ilcarro.model.web.SchedularUsageDTO;
-import com.telran.ilcarro.model.web.ShortCarDTO;
+import com.telran.ilcarro.model.web.*;
 
 import java.util.List;
 
@@ -64,5 +62,7 @@ public interface CarController {
      * @return List<ShedularUsageDTO>
      */
     List<SchedularUsageDTO>  ownerGetBookedPeriodsByCarId(String id);
+
+   BookedPeriodsDto makeReservation(String id, Make_A_Reservation_DataParamsDto dto);
 
 }
