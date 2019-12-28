@@ -33,7 +33,7 @@ public class UserDTOEntityConverter {
                 .email(entity.getEmail())
                 .firstName(userDTO.getFirstName())
                 .lastName(userDTO.getLastName())
-                .userDetails(entity)
+//                .userDetails(entity)
                 .photo(userDTO.getPhoto())
                 .build();
     }

@@ -6,11 +6,14 @@ import com.telran.ilcarro.repository.entity.UserRoleEntity;
 import com.telran.ilcarro.repository.exception.NotFoundRepositoryException;
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
+import com.telran.ilcarro.service.exceptions.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 /**
  * AuthService interface implementation
  * @author Konkin Anton
@@ -65,6 +68,23 @@ public class AuthServiceImpl implements AuthService {
             return account.email;
         } catch (NotFoundRepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
+        }
+    }
+
+    @Override
+    public boolean validate(String token) throws NotFoundServiceException {
+        AccountCredentials account = tokenService.decodeToken(token);
+        try {
+            Optional<UserDetailsEntity> current = userRepo.findById(account.email);
+            if (current.isEmpty()) {
+                throw new NotFoundServiceException(String.format("User %s not found!", account.email));
+            }
+            if (!encoder.encode(account.password).equals(current.get().getPassword())) {
+                throw new ConflictServiceException(String.format("Incorrect password for user %s !", account.email));
+            }
+            return true;
+        } catch (Throwable t) {
+            throw new ServiceException(t.getMessage(), t.getCause());
         }
     }
 }
