@@ -1,7 +1,7 @@
 package com.telran.ilcarro.service;
 
-import com.telran.ilcarro.repository.UserDetailsRepository;
-import com.telran.ilcarro.repository.entity.UserDetailsEntity;
+import com.telran.ilcarro.service.exceptions.ConflictServiceException;
+import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 
 /**
  * AuthService interface
@@ -9,6 +9,6 @@ import com.telran.ilcarro.repository.entity.UserDetailsEntity;
  * @date 19.12.2019
  */
 public interface AuthService {
-    String registration(String token);
-    String updatePassword(String token, String newPassword);
+    String registration(String token) throws ConflictServiceException;
+    String updatePassword(String token, String newPassword) throws NotFoundServiceException;
 }
