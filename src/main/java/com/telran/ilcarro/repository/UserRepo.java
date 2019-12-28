@@ -9,10 +9,11 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
-public class UserRepo implements UserDetailsRepository{
+public class UserRepo{
+//public class UserRepo implements UserDetailsRepository{
     Map<String, UserDetailsEntity> repository = new ConcurrentHashMap<>();
 
-    @Override
+//    @Override
     public Optional<UserDetailsEntity> findById(String email) {
         UserDetailsEntity entity = repository.get(email);
         if (entity == null) {
@@ -21,12 +22,12 @@ public class UserRepo implements UserDetailsRepository{
         return Optional.of(entity);
     }
 
-    @Override
+//    @Override
     public boolean existsById(String email) {
         return repository.containsKey(email);
     }
 
-    @Override
+//    @Override
     public boolean save(UserDetailsEntity entity) {
         repository.putIfAbsent(entity.getEmail(), entity);
         return false;

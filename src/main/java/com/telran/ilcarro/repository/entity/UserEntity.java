@@ -27,9 +27,9 @@ public class UserEntity {
     private boolean isDeleted;
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDateTime registrationDate;
-    private UserDetailsEntity userDetails;
+//    private UserDetailsEntity userDetails;
     private String photo;
-
+    private List<CommentEntity> comments;
     private List<SchedularUsageEntity> usages;
 
 }

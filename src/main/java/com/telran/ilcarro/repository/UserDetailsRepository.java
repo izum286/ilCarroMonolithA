@@ -1,6 +1,7 @@
 package com.telran.ilcarro.repository;
 
 import com.telran.ilcarro.repository.entity.UserDetailsEntity;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
 /**
@@ -9,8 +10,8 @@ import java.util.Optional;
  * @author Konkin Anton
  * @date 18.12.2019
  */
-public interface UserDetailsRepository {
-    Optional<UserDetailsEntity> findById(String email);
-    boolean existsById(String email);
-    boolean save(UserDetailsEntity entity);
+public interface UserDetailsRepository extends MongoRepository<UserDetailsEntity, String> {
+//    Optional<UserDetailsEntity> findById(String email);
+//    boolean existsById(String email);
+//    save(UserDetailsEntity entity);
 }
