@@ -53,7 +53,9 @@ public class UserControllerImpl  implements UserController{
     @PostMapping("user/login")
     @Override
     public FullUserDTO login(@RequestHeader("Authorization") String token) {
+        authService.validate(token);
         String userEmail = tokenService.decodeToken(token).email;
+
         return userService.getUser(userEmail).orElseThrow();
     }
 
@@ -69,6 +71,7 @@ public class UserControllerImpl  implements UserController{
                                   @RequestHeader("Authorization") String token,
                                   @RequestHeader("X-New-Password") String newPassword
     ) {
+        authService.validate(token);
         String userEmail = authService.updatePassword(token, newPassword);
         return userService.updateUser(userEmail, updUser).orElseThrow();
     }
@@ -82,6 +85,7 @@ public class UserControllerImpl  implements UserController{
     @DeleteMapping("user")
     @Override
     public void deleteUser(@RequestHeader("Authorization") String token) {
+        authService.validate(token);
         String userEmail = tokenService.decodeToken(token).email;
         userService.deleteUser(userEmail);
     }
