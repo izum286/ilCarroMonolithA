@@ -6,7 +6,6 @@ import com.telran.ilcarro.model.web.user.RegUserDTO;
 import com.telran.ilcarro.model.web.user.UpdUserDTO;
 import com.telran.ilcarro.repository.UserDetailsRepository;
 import com.telran.ilcarro.repository.UserEntityRepository;
-import com.telran.ilcarro.repository.entity.UserDetailsEntity;
 import com.telran.ilcarro.repository.entity.UserEntity;
 import com.telran.ilcarro.repository.exception.ConflictRepositoryException;
 import com.telran.ilcarro.repository.exception.NotFoundRepositoryException;
@@ -37,7 +36,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public Optional<FullUserDTO> addUser(String email, RegUserDTO regUser) {
         try {
-            UserEntity entity = userRepository.addUser(map(email, regUser));
+            UserEntity entity = userRepository.save(map(email, regUser));
             return Optional.of(map(entity));
         } catch (ConflictRepositoryException ex) {
             throw new ConflictServiceException(ex.getMessage(), ex.getCause());
@@ -49,10 +48,9 @@ public class UserServiceImpl implements UserService{
     @Override
     public Optional<FullUserDTO> getUser(String email) {
         try {
-            UserEntity entity = userRepository.getUserByEmail(email);
+            UserEntity entity = userRepository.findById(email)
+                    .orElseThrow(()-> new NotFoundServiceException(String.format("User %s not found", email)));
             return Optional.of(map(entity));
-        } catch (NotFoundRepositoryException ex) {
-            throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
         } catch (Throwable t) {
             throw new ServiceException(t.getMessage(), t.getCause());
         }
@@ -64,11 +62,10 @@ public class UserServiceImpl implements UserService{
             if (!userDetailsRepository.existsById(email)) {
                 throw new NotFoundServiceException(String.format("User %s not found", email));
             }
-            UserEntity userToUpd = userRepository.getUserByEmail(email);
-            UserEntity entity = userRepository.updateUser(map(userToUpd, updUser));
+            UserEntity userToUpd = userRepository.findById(email)
+                    .orElseThrow(() -> new NotFoundServiceException(String.format("User profile %s not found", email)));
+            UserEntity entity = userRepository.save(map(userToUpd, updUser));
             return Optional.of(map(entity));
-        } catch (ConflictRepositoryException ex) {
-            throw new ConflictServiceException(ex.getMessage(), ex.getCause());
         } catch (Throwable t) {
             throw new ServiceException(t.getMessage(), t.getCause());
         }
@@ -77,11 +74,13 @@ public class UserServiceImpl implements UserService{
     @Override
     public boolean deleteUser(String email) {
         try {
-            UserEntity entity = userRepository.getUserByEmail(email);
+            UserEntity entity = userRepository.findById(email)
+                    .orElseThrow(() -> new NotFoundServiceException(String.format("User profile %s not found", email)));
             if (entity.isDeleted()) {
                 throw new NotFoundServiceException(String.format("User %s was deleted, contact admin", email));
             }
             entity.setDeleted(true);
+            userRepository.save(entity);
             return true;
         } catch (NotFoundRepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
