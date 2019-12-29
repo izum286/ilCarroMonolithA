@@ -14,7 +14,7 @@ import lombok.*;
 @Builder
 
 public class OwnerDtoResponse {
-    private String first_name;
-    private String second_name;
-    private String registration_date;
+    private String firstName;
+    private String lastName;
+    private String registrationDate;
 }
