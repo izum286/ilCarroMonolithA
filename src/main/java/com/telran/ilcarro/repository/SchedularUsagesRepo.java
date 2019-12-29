@@ -1,6 +1,6 @@
 package com.telran.ilcarro.repository;
 
-import com.telran.ilcarro.model.web.SchedularUsageDTO;
+import com.telran.ilcarro.model.car.probably_unused.SchedularUsageDTO;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;

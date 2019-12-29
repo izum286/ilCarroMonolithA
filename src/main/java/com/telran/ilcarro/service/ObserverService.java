@@ -1,8 +1,8 @@
 package com.telran.ilcarro.service;
 
 import com.telran.ilcarro.service.exceptions.NotReturnedInTimeException;
-import com.telran.ilcarro.model.web.SchedularUsageDTO;
-import com.telran.ilcarro.repository.CarRepo;
+import com.telran.ilcarro.model.car.probably_unused.SchedularUsageDTO;
+import com.telran.ilcarro.repository.CarRepositoryImpl;
 import com.telran.ilcarro.repository.SchedularActiveUsagesRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class ObserverService {
     SchedularActiveUsagesRepo activeUsagesRepo;
 
     @Autowired
-    CarRepo carRepo;
+    CarRepositoryImpl carRepositoryImpl;
 
     /**
      * TODO
@@ -37,7 +37,7 @@ public class ObserverService {
     Runnable task = () -> {
         List<SchedularUsageDTO> list = activeUsagesRepo.getAll();
         for (SchedularUsageDTO r : list) {
-            if (r.getEndDate().isAfter(LocalDate.now()) && carRepo.getCarByIdForUsers(r.getCarId()).isRented()) {
+            if (r.getEndDate().isAfter(LocalDate.now()) && carRepositoryImpl.getCarByIdForUsers(r.getCarId()).isRented()) {
                 throw new NotReturnedInTimeException("WARNING!!! car " + r.getCarId() + " not returned in time!!");
             }
         }

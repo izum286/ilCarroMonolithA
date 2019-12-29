@@ -1,11 +1,11 @@
 package com.telran.ilcarro.controller;
 
-import com.telran.ilcarro.model.web.user.FullUserDTO;
-import com.telran.ilcarro.model.web.user.RegUserDTO;
-import com.telran.ilcarro.model.web.user.UpdUserDTO;
-import com.telran.ilcarro.service.AuthService;
-import com.telran.ilcarro.service.TokenService;
-import com.telran.ilcarro.service.UserService;
+import com.telran.ilcarro.controller.interfaces.UserController;
+import com.telran.ilcarro.model.user.FullUserDTO;
+import com.telran.ilcarro.model.user.RegUserDTO;
+import com.telran.ilcarro.model.user.UpdUserDTO;
+import com.telran.ilcarro.service.auth.AuthService;
+import com.telran.ilcarro.service.user.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
  * @date 19.12.2019
  */
 @RestController
-public class UserControllerImpl  implements UserController{
+public class UserControllerImpl  implements UserController {
     @Autowired
     AuthService authService;
 

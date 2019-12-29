@@ -1,8 +1,10 @@
 package com.telran.ilcarro.controller;
 
-import com.telran.ilcarro.model.web.*;
-import com.telran.ilcarro.service.CarService;
-import com.telran.ilcarro.service.FilterService;
+import com.telran.ilcarro.controller.interfaces.CarController;
+import com.telran.ilcarro.model.car.*;
+import com.telran.ilcarro.model.car.probably_unused.ShortCarDTO;
+import com.telran.ilcarro.service.car.CarService;
+import com.telran.ilcarro.service.filter.FilterService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -19,6 +21,7 @@ public class CarControllerImpl implements CarController {
      * Car controller implementation
      *
      * @author Gor Aleks
+     * @author izum286
      * @see CarController
      * @since 1.0
      */
@@ -42,7 +45,10 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @PostMapping("/car")
-    public ShortCarDTO addCar(@RequestBody FullCarDTOResponse carDTO) throws IllegalAccessException {
+
+    //TODO With auth
+
+    public FullCarDTOResponse addCar(@RequestBody AddUpdateCarDtoRequest carDTO) throws IllegalAccessException {
         filterService.addFilter(carDTO);
         return carService.addCar(carDTO).orElseThrow();
     }
@@ -62,7 +68,8 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @PutMapping("/car")
-    public ShortCarDTO updateCar(@RequestBody FullCarDTOResponse carDTO) {
+    //TODO With auth
+    public FullCarDTOResponse updateCar(@RequestBody AddUpdateCarDtoRequest carDTO) {
         return carService.updateCar(carDTO).orElseThrow();
     }
 
@@ -81,8 +88,9 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @DeleteMapping("/car?serial_number")
-    public void deleteCar(@RequestParam(name = "serial_number") String id) {
-        carService.deleteCar(id);
+    //TODO With auth
+    public void deleteCar(@RequestParam(name = "serial_number") String carId) {
+        carService.deleteCar(carId);
     }
 
 
@@ -99,8 +107,9 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @GetMapping("/car?serial_number")
-    public FullCarDTOResponse getCarByIdForUsers(@RequestParam(name = "serial_number") String id) {
-        return carService.getCarByIdForUsers(id).orElseThrow();
+    //TODO without auth - do nothing
+    public FullCarDTOResponse getCarByIdForUsers(@RequestParam(name = "serial_number") String carId) {
+        return carService.getCarById(carId).orElseThrow();
     }
 
 
@@ -118,6 +127,7 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @GetMapping("/user/cars")
+    //TODO With auth
     public List<FullCarDTOResponse> ownerGetCars() {
         return carService.ownerGetCars();
     }
@@ -137,8 +147,9 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @GetMapping("/user/cars/car?serial_number")
-    public FullCarDTOResponse ownerGetCarById(@RequestParam(name = "serial_number") String id) {
-        return carService.ownerGetCarById(id).orElseThrow();
+    //TODO With auth
+    public FullCarDTOResponse ownerGetCarById(@RequestParam(name = "serial_number") String carId) {
+        return carService.getCarById(carId).orElseThrow();
     }
 
 
@@ -156,13 +167,15 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @GetMapping("/user/cars/periods?serial_number")
-    public List<SchedularUsageDTO> ownerGetBookedPeriodsByCarId(@RequestParam(name = "serial_number") String id) {
-        return carService.ownerGetBookedPeriodsByCarId(id);
+    //TODO With auth
+    public List<BookedPeriodDto> ownerGetBookedPeriodsByCarId(@RequestParam(name = "serial_number") String carId) {
+        return carService.getBookedPeriodsByCarId(carId);
     }
 
     @Override
     @PostMapping("/car/reserv")
-    public BookedPeriodsDto makeReservation(@RequestParam(name = "serial_number") String id, @RequestBody Make_A_Reservation_DataParamsDto dto) {
-        return carService.makeReservation(id, dto);
+    //TODO With auth
+    public BookedPeriodDto makeReservation(@RequestParam(name = "serial_number") String carId, @RequestBody BookRequestDTO dto) {
+        return carService.makeReservation(carId, dto);
     }
 }

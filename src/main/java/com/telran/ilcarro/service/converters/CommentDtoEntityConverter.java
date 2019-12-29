@@ -1,7 +1,7 @@
 package com.telran.ilcarro.service.converters;
 
-import com.telran.ilcarro.model.web.comment.AddCommentDTO;
-import com.telran.ilcarro.model.web.comment.FullCommentDTO;
+import com.telran.ilcarro.model.comment.AddCommentDTO;
+import com.telran.ilcarro.model.comment.FullCommentDTO;
 import com.telran.ilcarro.repository.entity.CommentEntity;
 import com.telran.ilcarro.repository.entity.UserEntity;
 
