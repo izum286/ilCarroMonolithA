@@ -30,6 +30,8 @@ public class UserControllerImpl  implements UserController{
     @Autowired
     TokenService tokenService;
 
+    //=============================================================================
+
     @ApiOperation(value = "Register new user", response = FullUserDTO.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = ""),
@@ -43,6 +45,8 @@ public class UserControllerImpl  implements UserController{
         String userEmail = authService.registration(token);
         return userService.addUser(userEmail, user).orElseThrow();
     }
+
+    //=============================================================================
 
     @ApiOperation(value = "Login", response = FullUserDTO.class)
     @ApiResponses(value = {
@@ -58,6 +62,8 @@ public class UserControllerImpl  implements UserController{
 
         return userService.getUser(userEmail).orElseThrow();
     }
+
+    //=============================================================================
 
     @ApiOperation(value = "Update user and password", response = FullUserDTO.class)
     @ApiResponses(value = {
@@ -75,6 +81,8 @@ public class UserControllerImpl  implements UserController{
         String userEmail = authService.updatePassword(token, newPassword);
         return userService.updateUser(userEmail, updUser).orElseThrow();
     }
+
+    //=============================================================================
 
     @ApiOperation(value = "Delete user")
     @ApiResponses(value = {

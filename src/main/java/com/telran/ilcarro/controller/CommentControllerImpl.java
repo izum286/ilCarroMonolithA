@@ -29,6 +29,7 @@ public class CommentControllerImpl implements CommentController {
     @Autowired
     TokenService tokenService;
 
+    //=============================================================================
     @ApiOperation(value = "Get last 3 comments", response = FullCommentDTO[].class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = ""),
@@ -42,6 +43,7 @@ public class CommentControllerImpl implements CommentController {
         return commentService.getLatestComments(3);
     }
 
+    //=============================================================================
     @ApiOperation(value = "Post comments to selected car with specific serial_number", response = ResponseEntity.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "200"),

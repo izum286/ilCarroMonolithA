@@ -14,6 +14,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+/**
+ Was used before MongoDB was connected.
+ @author Konkin Anton
+ */
 
 public class CommentRepositoryImpl implements CommentRepository{
 

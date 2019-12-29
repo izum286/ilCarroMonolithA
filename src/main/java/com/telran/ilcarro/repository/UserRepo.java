@@ -7,7 +7,9 @@ import org.springframework.stereotype.Repository;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-
+/**
+ Only for testing, not in use since MongoDB connected
+ */
 @Repository
 public class UserRepo{
 //public class UserRepo implements UserDetailsRepository{

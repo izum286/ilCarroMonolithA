@@ -9,7 +9,29 @@ import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
  * @date 19.12.2019
  */
 public interface AuthService {
+    /**
+     * Register new user as UserDetails
+     * @param token base64 email + password
+     * @return email of registered user
+     * @throws ConflictServiceException - if user already registered
+     */
     String registration(String token) throws ConflictServiceException;
-    boolean validate(String token) throws NotFoundServiceException;
+
+    /**
+     * Password validation
+     * @param token - base64 email + password
+     * @return true if password valid
+     * @throws NotFoundServiceException if user not found
+     * @throws ConflictServiceException if password incorrect
+     */
+    boolean validate(String token) throws NotFoundServiceException, ConflictServiceException;
+
+    /**
+     * Method update user password
+     * @param token - base64 email + password
+     * @param newPassword in base64 format
+     * @return user email
+     * @throws NotFoundServiceException if user not found
+     */
     String updatePassword(String token, String newPassword) throws NotFoundServiceException;
 }

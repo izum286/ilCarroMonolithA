@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * @author vitalii_adler
+ * @author Konkin Anton
  *
  */
 
@@ -19,7 +20,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
 @Document(collection = "user_entity")
 public class UserEntity {
     @Id

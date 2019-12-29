@@ -11,6 +11,9 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 
+/**
+ * @author Konkin Anton
+ */
 public class CommentEntity {
     private String id;
     private String post;

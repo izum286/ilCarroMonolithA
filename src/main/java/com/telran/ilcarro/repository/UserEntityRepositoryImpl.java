@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  *
  * CRUD UserEntityRepository implementation
+ *  Only for testing, not in use since MongoDB connected
  * ----------------
  * ONLY FOR TESTING
  * ----------------

@@ -2,26 +2,23 @@ package com.telran.ilcarro.service;
 
 import com.telran.ilcarro.model.web.comment.AddCommentDTO;
 import com.telran.ilcarro.model.web.comment.FullCommentDTO;
-import com.telran.ilcarro.repository.CommentRepository;
-
 import com.telran.ilcarro.repository.UserEntityRepository;
 import com.telran.ilcarro.repository.entity.CommentEntity;
 import com.telran.ilcarro.repository.entity.UserEntity;
 import com.telran.ilcarro.repository.exception.ConflictRepositoryException;
-import com.telran.ilcarro.repository.exception.NotFoundRepositoryException;
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.exceptions.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.telran.ilcarro.service.converters.CommentDtoEntityConverter.*;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.telran.ilcarro.service.converters.CommentDtoEntityConverter.map;
 
 @Service
 public class CommentServiceImpl implements CommentService {

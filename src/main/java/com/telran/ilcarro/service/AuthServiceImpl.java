@@ -3,7 +3,6 @@ package com.telran.ilcarro.service;
 import com.telran.ilcarro.repository.UserDetailsRepository;
 import com.telran.ilcarro.repository.entity.UserDetailsEntity;
 import com.telran.ilcarro.repository.entity.UserRoleEntity;
-import com.telran.ilcarro.repository.exception.NotFoundRepositoryException;
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.exceptions.ServiceException;
@@ -30,12 +29,6 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     PasswordEncoder encoder;
 
-    /**
-     * Register User to AuthService and save to UserDetailsRepository
-     * @param token
-     * @return user email
-     * @throws ConflictServiceException
-     */
     @Override
     public String registration(String token) {
         AccountCredentials account = tokenService.decodeToken(token);
@@ -52,27 +45,23 @@ public class AuthServiceImpl implements AuthService {
         userDetailsRepository.save(entity);
         return account.email;
     }
-    /**
-     * Update User password in AuthService and save to UserDetailsRepository
-     * @param token
-     * @return user email
-     * @throws NotFoundServiceException
-     */
+
     @Override
     public String updatePassword(String token, String newPassword) {
         AccountCredentials account = tokenService.decodeToken(token);
         try {
-            UserDetailsEntity current = userDetailsRepository.findById(account.email).get();
+            UserDetailsEntity current = userDetailsRepository.findById(account.email)
+                    .orElseThrow(()->new NotFoundServiceException(String.format("User %s not found!", account.email)));
             current.setPassword(encoder.encode(tokenService.decodePassword(newPassword)));
             userDetailsRepository.save(current);
             return account.email;
-        } catch (NotFoundRepositoryException ex) {
-            throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
+        } catch (Throwable t) {
+            throw new ServiceException(t.getMessage(), t.getCause());
         }
     }
 
     @Override
-    public boolean validate(String token) throws NotFoundServiceException {
+    public boolean validate(String token) {
         AccountCredentials account = tokenService.decodeToken(token);
         try {
             Optional<UserDetailsEntity> current = userDetailsRepository.findById(account.email);
