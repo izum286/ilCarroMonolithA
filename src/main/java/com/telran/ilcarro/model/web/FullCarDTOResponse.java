@@ -1,9 +1,24 @@
 package com.telran.ilcarro.model.web;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.telran.ilcarro.model.web.user.OwnerDtoResponse;
+import io.swagger.annotations.ApiModel;
 import lombok.*;
 
-import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @izum286
+ * in some requests we need field price per day as an Object
+ * (Owner get car by Id && Owner get cars), in all others - only simple field
+ * annotations
+ *     @JsonInclude(JsonInclude.Include.NON_NULL)
+ *     private PricePerDayDto pricePerDay;
+ *     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+ *     private float simplePricePerDay;
+ * allow us ignore null or default fields during transfer to fronEnd,
+ * and we dont need to write a lot of similar DTO's to provide this functionality.
+ */
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,26 +26,30 @@ import java.util.ArrayList;
 @Setter
 @ToString
 @Builder
+@ApiModel(value = "FullCarDTOResponse",description = "Full Car data transfer object")
 public class FullCarDTOResponse {
-    private String serial_number;
+    private String serialNumber;
     private String make;
     private String model;
     private String year;
     private String engine;
     private String fuel;
     private String gear;
-    private String wheels_drive;
-    private float doors;
-    private float seats;
-    private float fuel_consumption;
-    ArrayList<FeatureDto> featuresDto;
-    private String car_class;
-    private PricePerDayDto price_per_day;
-    private float distance_included;
+    private String wheelsDrive;
+    private int doors;
+    private int seats;
+    private float fuelConsumption;
+    List<FeatureDto> featuresDto;
+    private String carClass;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private PricePerDayDto pricePerDay;
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    private float simplePricePerDay;
+    private int distanceIncluded;
     private String about;
     PickUpPlaceDto pickUpPlaceDto;
-    ArrayList<ImageUrlDto> imageUrlDto;
+    List<ImageUrlDto> imageUrlDto;
     OwnerDtoResponse ownerDtoResponse;
-    ArrayList<BookedPeriodsDto> bookedPeriodsDto;
+    List<BookedPeriodsDto> bookedPeriodsDto;
     StatisticsDto statisticsDto;
 }

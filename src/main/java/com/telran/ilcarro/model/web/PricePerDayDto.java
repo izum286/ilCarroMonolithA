@@ -9,7 +9,6 @@ import lombok.*;
 @Getter
 @Setter
 public class PricePerDayDto {
-
     private String currency;
-    private Double value;
+    private float value;
 }
