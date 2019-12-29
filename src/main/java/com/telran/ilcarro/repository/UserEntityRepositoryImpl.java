@@ -17,10 +17,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 19.12.2019
  */
 @Repository
-public class UserEntityRepositoryImpl implements UserEntityRepository {
+public class UserEntityRepositoryImpl {
     Map<String, UserEntity> repo = new ConcurrentHashMap<>();
 
-    @Override
+//    @Override
     public UserEntity getUserByEmail(String email) {
         UserEntity entity = repo.get(email);
         if (entity == null || entity.isDeleted()) {
@@ -29,7 +29,7 @@ public class UserEntityRepositoryImpl implements UserEntityRepository {
         return entity;
     }
 
-    @Override
+//    @Override
     public UserEntity addUser(UserEntity entity) {
         UserEntity user = repo.putIfAbsent(entity.getEmail(), entity);
         if (user != null) {
@@ -38,7 +38,7 @@ public class UserEntityRepositoryImpl implements UserEntityRepository {
         return entity;
     }
 
-    @Override
+//    @Override
     public UserEntity updateUser(UserEntity entity) {
         if (repo.containsKey(entity.getEmail())) {
             repo.put(entity.getEmail(), entity);
@@ -48,7 +48,7 @@ public class UserEntityRepositoryImpl implements UserEntityRepository {
 
     }
 
-    @Override
+//    @Override
     public boolean deleteUser(String email) {
         if (!repo.containsKey(email)) {
             throw new NotFoundRepositoryException(String.format("User %s not found", email));

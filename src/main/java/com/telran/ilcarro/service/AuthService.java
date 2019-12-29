@@ -10,5 +10,6 @@ import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
  */
 public interface AuthService {
     String registration(String token) throws ConflictServiceException;
+    boolean validate(String token) throws NotFoundServiceException;
     String updatePassword(String token, String newPassword) throws NotFoundServiceException;
 }

@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
  * @date 18.12.2019
  */
 public class UserDTOEntityConverter {
+
     //TODO update code
     public static UserEntity map (String email, RegUserDTO userDTO) {
         return UserEntity.builder()
@@ -33,7 +34,7 @@ public class UserDTOEntityConverter {
                 .email(entity.getEmail())
                 .firstName(userDTO.getFirstName())
                 .lastName(userDTO.getLastName())
-                .userDetails(entity)
+//                .userDetails(entity)
                 .photo(userDTO.getPhoto())
                 .build();
     }
@@ -46,11 +47,13 @@ public class UserDTOEntityConverter {
     }
 
     public static FullUserDTO map(UserEntity entity) {
+
         return FullUserDTO.builder()
                 .firstName(entity.getFirstName())
                 .lastName(entity.getLastName())
-                //TODO
+                //TODO check wtf it is very difficult! Need to check to errors
                 .comments(null)
+                //TODO
                 .bookedCars(null)
                 .ownCars(null)
                 .history(null)

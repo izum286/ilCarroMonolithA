@@ -1,6 +1,7 @@
 package com.telran.ilcarro.repository;
 
 import com.telran.ilcarro.repository.entity.UserEntity;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**
  *
@@ -8,9 +9,9 @@ import com.telran.ilcarro.repository.entity.UserEntity;
  * @author Konkin Anton
  * @date 19.12.2019
  */
-public interface UserEntityRepository {
-    UserEntity getUserByEmail(String email);
-    UserEntity addUser(UserEntity entity);
-    UserEntity updateUser(UserEntity entity);
-    boolean deleteUser(String email);
+public interface UserEntityRepository extends MongoRepository<UserEntity, String> {
+//    UserEntity getUserByEmail(String email);
+//    UserEntity addUser(UserEntity entity);
+//    UserEntity updateUser(UserEntity entity);
+//    boolean deleteUser(String email);
 }
