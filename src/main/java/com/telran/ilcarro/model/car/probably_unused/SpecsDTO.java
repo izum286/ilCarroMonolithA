@@ -1,4 +1,4 @@
-package com.telran.ilcarro.model.car;
+package com.telran.ilcarro.model.car.probably_unused;
 
 import lombok.*;
 

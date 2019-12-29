@@ -1,6 +1,7 @@
-package com.telran.ilcarro.model.car;
+package com.telran.ilcarro.model.car.probably_unused;
 
 
+import com.telran.ilcarro.model.car.PricePerDayDto;
 import lombok.*;
 
 import java.util.List;

@@ -32,21 +32,4 @@ public class BookedPeriodsDto {
     @JsonFormat(pattern = "dd/MM/yyyy hh:mm")
     private String bookingDate;
     PersonWhoBookedDto personWhoBookedDto;
-
-    public BookedPeriodsDto(String startDateTime, String endDateTime) {
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
-    }
-
-    public BookedPeriodsDto(String startDateTime, String endDateTime, PersonWhoBookedDto personWhoBookedDto) {
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
-        this.personWhoBookedDto = personWhoBookedDto;
-    }
-
-    public BookedPeriodsDto(String orderId, float amount, String bookingDate) {
-        this.orderId = orderId;
-        this.amount = amount;
-        this.bookingDate = bookingDate;
-    }
 }

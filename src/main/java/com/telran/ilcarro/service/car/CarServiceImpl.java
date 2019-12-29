@@ -1,6 +1,7 @@
 package com.telran.ilcarro.service.car;
 
 import com.telran.ilcarro.model.car.*;
+import com.telran.ilcarro.model.car.probably_unused.ShortCarDTO;
 import com.telran.ilcarro.repository.CarRepo;
 import com.telran.ilcarro.repository.entity.FullCarEntity;
 import com.telran.ilcarro.repository.entity.SchedularUsageEntity;
