@@ -9,6 +9,7 @@ import lombok.*;
 @ToString
 @Builder
 public class SpecsDTO {
+    //TODO - probably unused class
     private String engine;
     private String fuelCons;
     private String fuelType;

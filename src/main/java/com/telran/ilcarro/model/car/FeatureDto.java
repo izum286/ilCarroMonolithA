@@ -15,7 +15,7 @@ import java.util.ArrayList;
 @Setter
 @ToString
 @Builder
-//TODO not clearly understanding this field
 public class FeatureDto {
+    //TODO - may be more logically to use ENUM?
     String feature;
 }

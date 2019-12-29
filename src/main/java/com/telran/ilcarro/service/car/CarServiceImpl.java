@@ -109,9 +109,9 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public BookedPeriodsDto makeReservation(String id, Make_A_Reservation_DataParamsDto dto) {
+    public BookedPeriodsDto makeReservation(String id, BookRequestDTO dto) {
         try {
-            BookedPeriodsDto bookedPeriodsDto = new BookedPeriodsDto(dto.getStart_date_time(), dto.getEnd_date_time(), dto.getPersonWhoBookedDto());
+            BookedPeriodsDto bookedPeriodsDto = new BookedPeriodsDto(dto.getStartDateTime(), dto.getEndDateTime(), dto.getPersonWhoBookedDto());
             FullCarEntity entity = carRepository.getCarByIdForUsers(UUID.fromString(id));
             entity.setRented(true);
             carRepository.updateCar(entity);

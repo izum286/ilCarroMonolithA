@@ -12,6 +12,7 @@ import java.util.List;
 @ToString
 @Builder
 public class ShortCarDTO {
+    //TODO - probably unused class
     private double id;
     private String model;
     private String manufacture;

@@ -9,6 +9,7 @@ import lombok.*;
 @ToString
 @Builder
 public class LocationDTO {
+    //TODO - probably unused class
     private String country;
     private String street;
     private String city;

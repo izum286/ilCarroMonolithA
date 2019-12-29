@@ -36,6 +36,6 @@ public class AddUpdateCarDtoRequest {
     private float distanceIncluded;
     private String about;
     PickUpPlaceDto pickUpPlaceDto;
-    List<ImageUrlDto> imageUrlDto ;
+    List<String> imageUrl;
 }
 

@@ -9,6 +9,7 @@ import lombok.*;
 @Builder
 /**
  * @author izum286
+ * embedded object for FullCarDtoResponse
  */
 public class CarStatDto {
     private int trips;

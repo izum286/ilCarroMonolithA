@@ -63,6 +63,6 @@ public interface CarController {
      */
     List<SchedularUsageDTO>  ownerGetBookedPeriodsByCarId(String id);
 
-   BookedPeriodsDto makeReservation(String id, Make_A_Reservation_DataParamsDto dto);
+   BookedPeriodsDto makeReservation(String id, BookRequestDTO dto);
 
 }

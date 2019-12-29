@@ -48,8 +48,8 @@ public class FullCarDTOResponse {
     private int distanceIncluded;
     private String about;
     PickUpPlaceDto pickUpPlaceDto;
-    List<ImageUrlDto> imageUrlDto;
+    List<String> imageUrl;
     OwnerDtoResponse ownerDtoResponse;
     List<BookedPeriodsDto> bookedPeriodsDto;
-    StatisticsDto statisticsDto;
+    CarStatDto statisticsDto;
 }
