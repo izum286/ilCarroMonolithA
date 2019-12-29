@@ -33,6 +33,9 @@ public class UserServiceImpl implements UserService{
     @Autowired
     UserDetailsRepository userDetailsRepository;
 
+    @Autowired
+    DtoFabricService dtoFabric;
+
     @Override
     public Optional<FullUserDTO> addUser(String email, RegUserDTO regUser) {
         try {
@@ -50,7 +53,7 @@ public class UserServiceImpl implements UserService{
         try {
             UserEntity entity = userRepository.findById(email)
                     .orElseThrow(()-> new NotFoundServiceException(String.format("User %s not found", email)));
-            return Optional.of(map(entity));
+            return Optional.of(dtoFabric.getFullUserDto(entity));
         } catch (Throwable t) {
             throw new ServiceException(t.getMessage(), t.getCause());
         }
