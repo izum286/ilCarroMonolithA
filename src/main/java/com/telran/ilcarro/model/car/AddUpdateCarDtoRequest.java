@@ -1,10 +1,14 @@
 package com.telran.ilcarro.model.car;
 
+import io.swagger.annotations.ApiModel;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author vitalii_adler
+ * @author izum286
  */
 
 @AllArgsConstructor
@@ -13,25 +17,25 @@ import java.util.ArrayList;
 @Setter
 @ToString
 @Builder
-
+@ApiModel(value = "AddUpdateCarDtoRequest",description = "Request from user to add or update existing car")
 public class AddUpdateCarDtoRequest {
-    private String serial_number;
+    private String serialNumber;
     private String make;
     private String model;
     private String year;
     private String engine;
     private String fuel;
     private String gear;
-    private String wheels_drive;
-    private float doors;
-    private float seats;
+    private String wheelsDrive;
+    private int doors;
+    private int seats;
     private float fuel_consumption;
-    ArrayList<FeatureDto> features;
-    private String car_class;
-    private PricePerDayDto price_per_day;
-    private float distance_included;
+    List<FeatureDto> features;
+    private String carClass;
+    private float pricePerDay;
+    private float distanceIncluded;
     private String about;
     PickUpPlaceDto pickUpPlaceDto;
-    ArrayList<ImageUrlDto> imageUrlDto ;
+    List<ImageUrlDto> imageUrlDto ;
 }
 
