@@ -87,6 +87,34 @@ public class MapperServiceImpl implements MapperService {
                 .build();
     }
 
+    @Override
+    public FullCarDTOResponse map(FullCarEntity from) {
+        return FullCarDTOResponse.builder()
+                .serialNumber(from.getSerialNumber())
+                .make(from.getManufacture())
+                .model(from.getModel())
+                .year(String.valueOf(from.getYear()))
+                .engine(from.getEngine())
+                .fuel(from.getFuel())
+                .gear(from.getGear())
+                .wheelsDrive(from.getWheelsDrive())
+                .doors(from.getDoors())
+                .seats(from.getSeats())
+                .fuelConsumption(from.getFuelConsumption())
+                .features(from.getFeatures())
+                .carClass(from.getCarClass())
+                .simplePricePerDay(from.getPrice_per_day().getValue())
+                .distanceIncluded(from.getDistanceIncluded())
+                .about(from.getAbout())
+                .pickUpPlace(from.getPickUpPlace())
+                .imageUrl(from.getImages())
+                .ownerDtoResponse(from.getOwner())
+                .bookedPeriodDto(from.getBookedPeriods())
+                .statisticsDto(from.getStatistics())
+        .build();
+    }
+
+
     /**
      * mapping method from FilterDto to FilterNode
      * participated in invoke chain internal methods of FilterService

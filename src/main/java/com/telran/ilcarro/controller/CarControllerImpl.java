@@ -2,7 +2,6 @@ package com.telran.ilcarro.controller;
 
 import com.telran.ilcarro.controller.interfaces.CarController;
 import com.telran.ilcarro.model.car.*;
-import com.telran.ilcarro.model.car.probably_unused.SchedularUsageDTO;
 import com.telran.ilcarro.model.car.probably_unused.ShortCarDTO;
 import com.telran.ilcarro.service.car.CarService;
 import com.telran.ilcarro.service.filter.FilterService;
@@ -163,7 +162,7 @@ public class CarControllerImpl implements CarController {
     @Override
     @GetMapping("/user/cars/periods?serial_number")
     public List<BookedPeriodDto> ownerGetBookedPeriodsByCarId(@RequestParam(name = "serial_number") String carId) {
-        return carService.ownerGetBookedPeriodsByCarId(carId);
+        return carService.getBookedPeriodsByCarId(carId);
     }
 
     @Override

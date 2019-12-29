@@ -35,7 +35,7 @@ public class AddUpdateCarDtoRequest {
     List<FeatureDto> features;
     private String carClass;
     private float pricePerDay;
-    private float distanceIncluded;
+    private int distanceIncluded;
     private String about;
     PickUpPlaceDto pickUpPlaceDto;
     List<String> imageUrl;

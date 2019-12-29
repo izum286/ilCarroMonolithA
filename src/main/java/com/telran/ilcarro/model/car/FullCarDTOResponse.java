@@ -41,7 +41,7 @@ public class FullCarDTOResponse {
     private int doors;
     private int seats;
     private float fuelConsumption;
-    List<FeatureDto> featuresDto;
+    List<FeatureDto> features;
     private String carClass;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private PricePerDayDto pricePerDay;
@@ -49,7 +49,7 @@ public class FullCarDTOResponse {
     private float simplePricePerDay;
     private int distanceIncluded;
     private String about;
-    PickUpPlaceDto pickUpPlaceDto;
+    PickUpPlaceDto pickUpPlace;
     List<String> imageUrl;
     OwnerDtoResponse ownerDtoResponse;
     List<BookedPeriodDto> bookedPeriodDto;

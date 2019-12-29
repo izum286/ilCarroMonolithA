@@ -1,5 +1,7 @@
 package com.telran.ilcarro.repository;
 
+import com.telran.ilcarro.model.car.AddUpdateCarDtoRequest;
+import com.telran.ilcarro.model.car.BookedPeriodDto;
 import com.telran.ilcarro.repository.entity.FullCarEntity;
 import com.telran.ilcarro.repository.entity.SchedularUsageEntity;
 import com.telran.ilcarro.repository.entity.ShortCarEntity;
@@ -23,15 +25,15 @@ public class CarRepositoryImpl implements CarRepository{
 
     //TODO заглушки!
     @Override
-    public FullCarEntity addCar(FullCarEntity entity){
-        fullCars.put(entity.getId(), entity);
-        return null;
+    public FullCarEntity addCar(AddUpdateCarDtoRequest carToAdd){
+        //fullCars.put(carToAdd.ge, entity);
+        return new FullCarEntity();
     }
 
     @Override
-    public FullCarEntity updateCar(FullCarEntity entity) {
-        fullCars.put(entity.getId(), entity);
-        return null;
+    public FullCarEntity updateCar(AddUpdateCarDtoRequest carToUpdate) {
+        //fullCars.put(entity.getId(), entity);
+        return new FullCarEntity();
     }
 
     @Override
@@ -56,7 +58,7 @@ public class CarRepositoryImpl implements CarRepository{
     }
 
     @Override
-    public List<SchedularUsageEntity> ownerGetBookedPeriodsByCarId(UUID id) {
+    public List<BookedPeriodDto> ownerGetBookedPeriodsByCarId(String carId) {
         return null;
     }
 
