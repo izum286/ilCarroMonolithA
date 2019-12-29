@@ -61,7 +61,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public boolean validate(String token) {
+    public String validate(String token) {
         AccountCredentials account = tokenService.decodeToken(token);
         try {
             Optional<UserDetailsEntity> current = userDetailsRepository.findById(account.email);
@@ -74,7 +74,7 @@ public class AuthServiceImpl implements AuthService {
             if (!isValid) {
                 throw new ConflictServiceException(String.format("Incorrect password for user %s !", account.email));
             }
-            return true;
+            return account.email;
         } catch (Throwable t) {
             throw new ServiceException(t.getMessage(), t.getCause());
         }

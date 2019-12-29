@@ -27,9 +27,6 @@ public class UserControllerImpl  implements UserController{
     @Autowired
     UserService userService;
 
-    @Autowired
-    TokenService tokenService;
-
     //=============================================================================
 
     @ApiOperation(value = "Register new user", response = FullUserDTO.class)
@@ -57,8 +54,7 @@ public class UserControllerImpl  implements UserController{
     @PostMapping("user/login")
     @Override
     public FullUserDTO login(@RequestHeader("Authorization") String token) {
-        authService.validate(token);
-        String userEmail = tokenService.decodeToken(token).email;
+        String userEmail = authService.validate(token);
 
         return userService.getUser(userEmail).orElseThrow();
     }
@@ -93,8 +89,7 @@ public class UserControllerImpl  implements UserController{
     @DeleteMapping("user")
     @Override
     public void deleteUser(@RequestHeader("Authorization") String token) {
-        authService.validate(token);
-        String userEmail = tokenService.decodeToken(token).email;
+        String userEmail = authService.validate(token);
         userService.deleteUser(userEmail);
     }
 }

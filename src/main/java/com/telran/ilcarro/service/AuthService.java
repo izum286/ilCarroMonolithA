@@ -20,11 +20,12 @@ public interface AuthService {
     /**
      * Password validation
      * @param token - base64 email + password
-     * @return true if password valid
-     * @throws NotFoundServiceException if user not found
-     * @throws ConflictServiceException if password incorrect
+     * @return email of authenticated user
+     * @throws NotFoundServiceException
+     * @throws ConflictServiceException
      */
-    boolean validate(String token) throws NotFoundServiceException, ConflictServiceException;
+
+    String validate(String token) throws NotFoundServiceException, ConflictServiceException;
 
     /**
      * Method update user password

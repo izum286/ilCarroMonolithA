@@ -2,6 +2,7 @@ package com.telran.ilcarro.controller;
 
 import com.telran.ilcarro.model.web.comment.AddCommentDTO;
 import com.telran.ilcarro.model.web.comment.FullCommentDTO;
+import com.telran.ilcarro.service.AuthService;
 import com.telran.ilcarro.service.CommentService;
 import com.telran.ilcarro.service.TokenService;
 import io.swagger.annotations.ApiOperation;
@@ -27,7 +28,7 @@ public class CommentControllerImpl implements CommentController {
     CommentService commentService;
 
     @Autowired
-    TokenService tokenService;
+    AuthService authService;
 
     //=============================================================================
     @ApiOperation(value = "Get last 3 comments", response = FullCommentDTO[].class)
@@ -56,7 +57,7 @@ public class CommentControllerImpl implements CommentController {
     public void postComment(@RequestParam(name = "serial_number") String serialNumber,
                             @RequestHeader("Authorization") String token,
                             @RequestBody AddCommentDTO comment) {
-        String ownerEmail = tokenService.decodeToken(token).email;
+        String ownerEmail = authService.validate(token);
         commentService.postComment(serialNumber, ownerEmail, comment);
     }
 }
