@@ -1,6 +1,6 @@
 package com.telran.ilcarro.service.converters;
 
-import com.telran.ilcarro.model.web.PricePerDayDto;
+import com.telran.ilcarro.model.car.PricePerDayDto;
 import com.telran.ilcarro.repository.entity.PricePerDayEntity;
 
 public class PricePerDayDtoEntityCoverter {

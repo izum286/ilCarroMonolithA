@@ -1,10 +1,10 @@
 package com.telran.ilcarro.controller;
 
-import com.telran.ilcarro.model.web.comment.AddCommentDTO;
-import com.telran.ilcarro.model.web.comment.FullCommentDTO;
-import com.telran.ilcarro.service.AuthService;
-import com.telran.ilcarro.service.CommentService;
-import com.telran.ilcarro.service.TokenService;
+import com.telran.ilcarro.controller.interfaces.CommentController;
+import com.telran.ilcarro.model.comment.AddCommentDTO;
+import com.telran.ilcarro.model.comment.FullCommentDTO;
+import com.telran.ilcarro.service.auth.AuthService;
+import com.telran.ilcarro.service.comment.CommentService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;

@@ -1,8 +1,9 @@
 package com.telran.ilcarro.controller;
 
-import com.telran.ilcarro.model.web.*;
-import com.telran.ilcarro.service.CarService;
-import com.telran.ilcarro.service.FilterService;
+import com.telran.ilcarro.controller.interfaces.CarController;
+import com.telran.ilcarro.model.car.*;
+import com.telran.ilcarro.service.car.CarService;
+import com.telran.ilcarro.service.filter.FilterService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;

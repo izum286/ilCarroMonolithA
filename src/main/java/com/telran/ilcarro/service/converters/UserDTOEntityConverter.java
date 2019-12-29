@@ -1,8 +1,8 @@
 package com.telran.ilcarro.service.converters;
 
-import com.telran.ilcarro.model.web.user.FullUserDTO;
-import com.telran.ilcarro.model.web.user.RegUserDTO;
-import com.telran.ilcarro.model.web.user.UpdUserDTO;
+import com.telran.ilcarro.model.user.FullUserDTO;
+import com.telran.ilcarro.model.user.RegUserDTO;
+import com.telran.ilcarro.model.user.UpdUserDTO;
 import com.telran.ilcarro.repository.entity.UserDetailsEntity;
 import com.telran.ilcarro.repository.entity.UserEntity;
 

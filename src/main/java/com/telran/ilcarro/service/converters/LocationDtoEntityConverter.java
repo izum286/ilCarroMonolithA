@@ -1,6 +1,6 @@
 package com.telran.ilcarro.service.converters;
 
-import com.telran.ilcarro.model.web.LocationDTO;
+import com.telran.ilcarro.model.car.LocationDTO;
 import com.telran.ilcarro.repository.entity.LocationEntity;
 
 public class LocationDtoEntityConverter {

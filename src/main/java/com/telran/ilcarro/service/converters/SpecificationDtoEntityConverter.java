@@ -1,6 +1,6 @@
 package com.telran.ilcarro.service.converters;
 
-import com.telran.ilcarro.model.web.SpecsDTO;
+import com.telran.ilcarro.model.car.SpecsDTO;
 import com.telran.ilcarro.repository.entity.SpecsEntity;
 
 public class SpecificationDtoEntityConverter {

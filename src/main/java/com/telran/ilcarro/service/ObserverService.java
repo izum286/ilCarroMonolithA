@@ -1,7 +1,7 @@
 package com.telran.ilcarro.service;
 
 import com.telran.ilcarro.service.exceptions.NotReturnedInTimeException;
-import com.telran.ilcarro.model.web.SchedularUsageDTO;
+import com.telran.ilcarro.model.car.SchedularUsageDTO;
 import com.telran.ilcarro.repository.CarRepo;
 import com.telran.ilcarro.repository.SchedularActiveUsagesRepo;
 import org.springframework.beans.factory.annotation.Autowired;

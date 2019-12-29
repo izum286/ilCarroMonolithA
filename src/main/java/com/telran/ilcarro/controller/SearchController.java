@@ -1,7 +1,7 @@
 package com.telran.ilcarro.controller;
 
-import com.telran.ilcarro.model.web.SearchResponse;
-import com.telran.ilcarro.service.SearchService;
+import com.telran.ilcarro.model.car.SearchResponse;
+import com.telran.ilcarro.service.search.SearchService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;

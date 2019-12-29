@@ -1,6 +1,6 @@
 package com.telran.ilcarro.service.converters;
 
-import com.telran.ilcarro.model.web.SchedularUsageDTO;
+import com.telran.ilcarro.model.car.SchedularUsageDTO;
 import com.telran.ilcarro.repository.entity.SchedularUsageEntity;
 
 import java.util.ArrayList;

@@ -1,7 +1,8 @@
 package com.telran.ilcarro.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.telran.ilcarro.service.FilterService;
+import com.telran.ilcarro.controller.interfaces.FilterController;
+import com.telran.ilcarro.service.filter.FilterService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;

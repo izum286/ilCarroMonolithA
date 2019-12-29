@@ -1,6 +1,6 @@
 package com.telran.ilcarro.service.converters;
 
-import com.telran.ilcarro.model.web.ShortCarDTO;
+import com.telran.ilcarro.model.car.ShortCarDTO;
 import com.telran.ilcarro.repository.entity.ShortCarEntity;
 
 public class ShortCarDtoEntityConverter {

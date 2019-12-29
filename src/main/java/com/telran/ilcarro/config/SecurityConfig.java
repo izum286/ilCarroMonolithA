@@ -1,7 +1,7 @@
 package com.telran.ilcarro.config;
 
 import com.telran.ilcarro.repository.UserDetailsRepository;
-import com.telran.ilcarro.service.CustomUserDetailsService;
+import com.telran.ilcarro.service.user.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
