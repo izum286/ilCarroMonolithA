@@ -31,7 +31,7 @@ public class AddUpdateCarDtoRequest {
     private float torque;
     private int doors;
     private int seats;
-    private float fuel_consumption;
+    private float fuelConsumption;
     List<FeatureDto> features;
     private String carClass;
     private float pricePerDay;

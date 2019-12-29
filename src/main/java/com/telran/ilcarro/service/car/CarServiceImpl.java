@@ -1,5 +1,6 @@
 package com.telran.ilcarro.service.car;
 
+import com.telran.ilcarro.model.car.AddUpdateCarDtoRequest;
 import com.telran.ilcarro.model.car.BookRequestDTO;
 import com.telran.ilcarro.model.car.BookedPeriodDto;
 import com.telran.ilcarro.model.car.FullCarDTOResponse;
@@ -33,7 +34,7 @@ public class CarServiceImpl implements CarService {
     CarRepository carRepository;
 
     @Override
-    public Optional<ShortCarDTO> addCar(FullCarDTOResponse carDTO) {
+    public Optional<FullCarDTOResponse> addCar(AddUpdateCarDtoRequest carDTO) {
         try {
             FullCarEntity entity = carRepository.addCar(FullCarDtoEntityConverter.map(carDTO));
             return Optional.of(ShortCarDtoEntityConverter.map(FullCarEntityToShortCarEntityConverter.map(entity)));
@@ -44,7 +45,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Optional<ShortCarDTO> updateCar(FullCarDTOResponse carDTO) {
+    public Optional<FullCarDTOResponse> updateCar(AddUpdateCarDtoRequest carDTO) {
         try {
             FullCarEntity entity = carRepository.updateCar(FullCarDtoEntityConverter.map(carDTO));
             return Optional.of(ShortCarDtoEntityConverter.map(FullCarEntityToShortCarEntityConverter.map(entity)));
@@ -54,9 +55,9 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public boolean deleteCar(String id) {
+    public boolean deleteCar(String carId) {
         try {
-            carRepository.deleteCar(UUID.fromString(id));
+            carRepository.deleteCar(UUID.fromString(carId));
             return true;
         } catch (RepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
@@ -92,7 +93,7 @@ public class CarServiceImpl implements CarService {
 
 
     @Override
-    public List<SchedularUsageDTO> ownerGetBookedPeriodsByCarId(String carId) {
+    public List<BookedPeriodDto> ownerGetBookedPeriodsByCarId(String carId) {
         try {
             List<SchedularUsageEntity> schedularUsageEntityList = carRepository.ownerGetBookedPeriodsByCarId(UUID.fromString(carId));
             return schedularUsageEntityList.stream()

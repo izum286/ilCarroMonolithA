@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CarService {
-    Optional<ShortCarDTO> addCar(FullCarDTOResponse carDTO);
-    Optional<ShortCarDTO> updateCar(FullCarDTOResponse carDTO);
-    boolean deleteCar(String id);
+    Optional<FullCarDTOResponse> addCar(AddUpdateCarDtoRequest carDTO);
+    Optional<FullCarDTOResponse> updateCar(AddUpdateCarDtoRequest carDTO);
+    boolean deleteCar(String carId);
     List<FullCarDTOResponse> ownerGetCars();
     Optional<FullCarDTOResponse> getCarById(String carId);
-    List<SchedularUsageDTO> ownerGetBookedPeriodsByCarId(String id);
-    BookedPeriodDto makeReservation(String id, BookRequestDTO dto);
+    List<BookedPeriodDto> ownerGetBookedPeriodsByCarId(String carId);
+    BookedPeriodDto makeReservation(String carId, BookRequestDTO dto);
 }

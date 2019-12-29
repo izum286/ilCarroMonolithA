@@ -22,6 +22,7 @@ public class CarControllerImpl implements CarController {
      * Car controller implementation
      *
      * @author Gor Aleks
+     * @author izum286
      * @see CarController
      * @since 1.0
      */
@@ -45,7 +46,7 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @PostMapping("/car")
-    public ShortCarDTO addCar(@RequestBody FullCarDTOResponse carDTO) throws IllegalAccessException {
+    public FullCarDTOResponse addCar(@RequestBody AddUpdateCarDtoRequest carDTO) throws IllegalAccessException {
         filterService.addFilter(carDTO);
         return carService.addCar(carDTO).orElseThrow();
     }
@@ -65,7 +66,7 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @PutMapping("/car")
-    public ShortCarDTO updateCar(@RequestBody FullCarDTOResponse carDTO) {
+    public FullCarDTOResponse updateCar(@RequestBody AddUpdateCarDtoRequest carDTO) {
         return carService.updateCar(carDTO).orElseThrow();
     }
 
@@ -84,8 +85,8 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @DeleteMapping("/car?serial_number")
-    public void deleteCar(@RequestParam(name = "serial_number") String id) {
-        carService.deleteCar(id);
+    public void deleteCar(@RequestParam(name = "serial_number") String carId) {
+        carService.deleteCar(carId);
     }
 
 
@@ -161,13 +162,13 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @GetMapping("/user/cars/periods?serial_number")
-    public List<SchedularUsageDTO> ownerGetBookedPeriodsByCarId(@RequestParam(name = "serial_number") String id) {
-        return carService.ownerGetBookedPeriodsByCarId(id);
+    public List<BookedPeriodDto> ownerGetBookedPeriodsByCarId(@RequestParam(name = "serial_number") String carId) {
+        return carService.ownerGetBookedPeriodsByCarId(carId);
     }
 
     @Override
     @PostMapping("/car/reserv")
-    public BookedPeriodDto makeReservation(@RequestParam(name = "serial_number") String id, @RequestBody BookRequestDTO dto) {
-        return carService.makeReservation(id, dto);
+    public BookedPeriodDto makeReservation(@RequestParam(name = "serial_number") String carId, @RequestBody BookRequestDTO dto) {
+        return carService.makeReservation(carId, dto);
     }
 }

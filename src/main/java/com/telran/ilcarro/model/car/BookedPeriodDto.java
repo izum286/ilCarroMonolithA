@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.telran.ilcarro.model.user.PersonWhoBookedDto;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 /**
  * @author vitalii_adler
  * @author izum286
@@ -22,9 +24,9 @@ import lombok.*;
 public class BookedPeriodDto {
     private String orderId;
     @JsonFormat(pattern = "dd/MM/yyyy hh:mm")
-    private String startDateTime;
+    private LocalDateTime startDateTime;
     @JsonFormat(pattern = "dd/MM/yyyy hh:mm")
-    private String endDateTime;
+    private LocalDateTime endDateTime;
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     private boolean paid;
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)

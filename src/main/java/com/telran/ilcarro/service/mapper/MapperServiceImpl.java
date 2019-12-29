@@ -69,7 +69,7 @@ public class MapperServiceImpl implements MapperService {
      * @author izum286
      */
     @Override
-    public FilterDTO map(FullCarDTOResponse from) {
+    public FilterDTO map(AddUpdateCarDtoRequest from) {
         return FilterDTO.builder()
                 .make(from.getMake())
                 .models(from.getModel())

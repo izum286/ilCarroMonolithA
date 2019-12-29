@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.telran.ilcarro.model.car.AddUpdateCarDtoRequest;
 import com.telran.ilcarro.model.filter.FilterDTO;
 import com.telran.ilcarro.model.car.FullCarDTOResponse;
 import com.telran.ilcarro.repository.FilterRepository;
@@ -27,12 +28,12 @@ public class FilterServiceImpl implements FilterService {
      * Method for automatically add new filter from /upload page
      * call -> addNode
      *
-     * @param fullCarDTOResponse
+     * @param addUpdateCarDtoRequest
      * @author izum286
      */
     @Override
-    public void addFilter(FullCarDTOResponse fullCarDTOResponse) throws IllegalAccessException {
-        addNode(mapperService.map(fullCarDTOResponse));
+    public void addFilter(AddUpdateCarDtoRequest addUpdateCarDtoRequest) throws IllegalAccessException {
+        addNode(mapperService.map(addUpdateCarDtoRequest));
     }
 
     /**

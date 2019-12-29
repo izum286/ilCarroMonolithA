@@ -1,5 +1,6 @@
 package com.telran.ilcarro.service.filter;
 
+import com.telran.ilcarro.model.car.AddUpdateCarDtoRequest;
 import com.telran.ilcarro.model.filter.FilterDTO;
 import com.telran.ilcarro.model.car.FullCarDTOResponse;
 import com.telran.ilcarro.service.model.FilterNode;
@@ -8,10 +9,10 @@ public interface FilterService {
     /**
      * Method for automatically add new filter from /upload page
      * call -> addNode
-     * @param fullCarDTOResponse
+     * @param addUpdateCarDtoRequest
      * @author izum286
      */
-    void addFilter (FullCarDTOResponse fullCarDTOResponse) throws IllegalAccessException;
+    void addFilter (AddUpdateCarDtoRequest addUpdateCarDtoRequest) throws IllegalAccessException;
 
     /**
      * Method return json string of all filters
