@@ -61,14 +61,15 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Optional<FullCarDTOResponse> getCarByIdForUsers(String id) {
+    public Optional<FullCarDTOResponse> getCarById(String carId) {
         try {
-            FullCarEntity entity = carRepository.getCarByIdForUsers(UUID.fromString(id));
+            FullCarEntity entity = carRepository.getCarByIdForUsers(UUID.fromString(carId));
             return Optional.of(FullCarDtoEntityConverter.map(entity));
         } catch (RepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
         }
     }
+
 
     @Override
     public List<FullCarDTOResponse> ownerGetCars() {
@@ -84,15 +85,7 @@ public class CarServiceImpl implements CarService {
         }
     }
 
-    @Override
-    public Optional<FullCarDTOResponse> ownerGetCarById(String id) {
-        try {
-            FullCarEntity entity = carRepository.ownerGetCarById(UUID.fromString(id));
-            return Optional.of(FullCarDtoEntityConverter.map(entity));
-        } catch (RepositoryException ex) {
-            throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
-        }
-    }
+
 
 
     @Override

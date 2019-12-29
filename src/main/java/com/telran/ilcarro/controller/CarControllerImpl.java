@@ -101,8 +101,9 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @GetMapping("/car?serial_number")
-    public FullCarDTOResponse getCarByIdForUsers(@RequestParam(name = "serial_number") String id) {
-        return carService.getCarByIdForUsers(id).orElseThrow();
+    //TODO without auth
+    public FullCarDTOResponse getCarByIdForUsers(@RequestParam(name = "serial_number") String carId) {
+        return carService.getCarById(carId).orElseThrow();
     }
 
 
@@ -139,8 +140,9 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @GetMapping("/user/cars/car?serial_number")
-    public FullCarDTOResponse ownerGetCarById(@RequestParam(name = "serial_number") String id) {
-        return carService.ownerGetCarById(id).orElseThrow();
+    //TODO With auth
+    public FullCarDTOResponse ownerGetCarById(@RequestParam(name = "serial_number") String carId) {
+        return carService.getCarById(carId).orElseThrow();
     }
 
 
