@@ -27,6 +27,8 @@ public class AddUpdateCarDtoRequest {
     private String fuel;
     private String gear;
     private String wheelsDrive;
+    private float horsePower;
+    private float torque;
     private int doors;
     private int seats;
     private float fuel_consumption;

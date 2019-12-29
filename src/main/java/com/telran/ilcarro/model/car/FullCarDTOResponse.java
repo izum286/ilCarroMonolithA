@@ -36,6 +36,8 @@ public class FullCarDTOResponse {
     private String fuel;
     private String gear;
     private String wheelsDrive;
+    private float horsePower;
+    private float torque;
     private int doors;
     private int seats;
     private float fuelConsumption;
@@ -50,6 +52,6 @@ public class FullCarDTOResponse {
     PickUpPlaceDto pickUpPlaceDto;
     List<String> imageUrl;
     OwnerDtoResponse ownerDtoResponse;
-    List<BookedPeriodsDto> bookedPeriodsDto;
+    List<BookedPeriodDto> bookedPeriodDto;
     CarStatDto statisticsDto;
 }

@@ -1,6 +1,7 @@
 package com.telran.ilcarro.controller.interfaces;
 
 import com.telran.ilcarro.model.car.*;
+import com.telran.ilcarro.model.car.probably_unused.SchedularUsageDTO;
 import com.telran.ilcarro.model.car.probably_unused.ShortCarDTO;
 
 import java.util.List;
@@ -64,6 +65,6 @@ public interface CarController {
      */
     List<SchedularUsageDTO>  ownerGetBookedPeriodsByCarId(String id);
 
-   BookedPeriodsDto makeReservation(String id, BookRequestDTO dto);
+   BookedPeriodDto makeReservation(String id, BookRequestDTO dto);
 
 }

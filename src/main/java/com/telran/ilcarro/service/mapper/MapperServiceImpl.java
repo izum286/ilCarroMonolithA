@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.telran.ilcarro.model.car.*;
 import com.telran.ilcarro.model.car.probably_unused.LocationDTO;
+import com.telran.ilcarro.model.car.probably_unused.SchedularUsageDTO;
 import com.telran.ilcarro.model.car.probably_unused.ShortCarDTO;
 import com.telran.ilcarro.model.car.probably_unused.SpecsDTO;
 import com.telran.ilcarro.model.filter.FilterDTO;
@@ -76,13 +77,13 @@ public class MapperServiceImpl implements MapperService {
                 .engines(from.getEngine())
                 .fuel(from.getFuel())
                 .transmissions(from.getGear())
-                .wd(from.getWheels_drive())
-                //.horsepower(String.valueOf(from.get))
-                //.torque(String.valueOf(from.getSpecifications().getTorque()))
+                .wd(from.getWheelsDrive())
+                .horsepower(String.valueOf(from.getHorsePower()))
+                .torque(String.valueOf(from.getTorque()))
                 .doors(String.valueOf(from.getDoors()))
                 .seats(String.valueOf(from.getSeats()))
-                .classs(from.getCar_class())
-                .fuelConsumption(String.valueOf(from.getFuel_consumption()))
+                .classs(from.getCarClass())
+                .fuelConsumption(String.valueOf(from.getFuelConsumption()))
                 .build();
     }
 

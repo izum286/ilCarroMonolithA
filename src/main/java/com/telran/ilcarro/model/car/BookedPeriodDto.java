@@ -19,7 +19,7 @@ import lombok.*;
 @Builder
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class BookedPeriodsDto {
+public class BookedPeriodDto {
     private String orderId;
     @JsonFormat(pattern = "dd/MM/yyyy hh:mm")
     private String startDateTime;

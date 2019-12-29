@@ -11,7 +11,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
-public class CarRepo implements CarRepository{
+public class CarRepositoryImpl implements CarRepository{
 
     //TODO что то надо сделать с айдишниками для машин, потому что тут даблы, там стринги, где-то UUID, а в протоколе сериал вообще не в виде UUID
     /**

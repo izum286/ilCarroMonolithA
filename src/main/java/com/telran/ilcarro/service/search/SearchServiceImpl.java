@@ -1,7 +1,7 @@
 package com.telran.ilcarro.service.search;
 
 import com.telran.ilcarro.model.car.SearchResponse;
-import com.telran.ilcarro.repository.CarRepo;
+import com.telran.ilcarro.repository.CarRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class SearchServiceImpl implements SearchService {
 
     @Autowired
-    CarRepo carRepo;
+    CarRepositoryImpl carRepositoryImpl;
 
     @Override
     public SearchResponse cityDatesPriceSortByPrice(String city, String dateFrom, String dateTo, String minPrice, String maxPrice, String sort, int itemsOnPage, int currentPage) {

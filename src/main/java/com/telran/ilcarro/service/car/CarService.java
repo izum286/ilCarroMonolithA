@@ -1,6 +1,7 @@
 package com.telran.ilcarro.service.car;
 
 import com.telran.ilcarro.model.car.*;
+import com.telran.ilcarro.model.car.probably_unused.SchedularUsageDTO;
 import com.telran.ilcarro.model.car.probably_unused.ShortCarDTO;
 
 import java.util.List;
@@ -13,5 +14,5 @@ public interface CarService {
     List<FullCarDTOResponse> ownerGetCars();
     Optional<FullCarDTOResponse> getCarById(String carId);
     List<SchedularUsageDTO> ownerGetBookedPeriodsByCarId(String id);
-    BookedPeriodsDto makeReservation(String id, BookRequestDTO dto);
+    BookedPeriodDto makeReservation(String id, BookRequestDTO dto);
 }

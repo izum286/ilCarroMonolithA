@@ -11,5 +11,5 @@ import lombok.*;
 public class PricePerDayEntity {
 
     private String currency;
-    private Double value;
+    private float value;
 }

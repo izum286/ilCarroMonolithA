@@ -1,4 +1,4 @@
-package com.telran.ilcarro.model.car;
+package com.telran.ilcarro.model.car.probably_unused;
 
 import lombok.*;
 
@@ -12,6 +12,7 @@ import java.util.UUID;
 @ToString
 @Builder
 public class SchedularUsageDTO {
+    //TODO probably unused
     private String id;
     private String userId;
 //    private UUID userId;
