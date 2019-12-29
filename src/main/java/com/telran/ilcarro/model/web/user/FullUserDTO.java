@@ -5,6 +5,7 @@ import com.telran.ilcarro.model.web.comment.FullCommentDTO;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * FullUserDTO
@@ -30,7 +31,7 @@ public class FullUserDTO {
     private String lastName;
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDateTime registrationDate;
-    private FullCommentDTO[] comments;
+    private List<FullCommentDTO> comments;
     private String photo;
     //TODO
     private String ownCars;
