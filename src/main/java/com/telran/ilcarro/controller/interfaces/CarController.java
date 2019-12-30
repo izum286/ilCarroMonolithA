@@ -23,48 +23,48 @@ public interface CarController {
      * @param carDTO of new car
      * @return ShortCarDTO
      */
-    FullCarDTOResponse addCar(AddUpdateCarDtoRequest carDTO) throws IllegalAccessException;
+    FullCarDTOResponse addCar(AddUpdateCarDtoRequest carDTO, String token) throws IllegalAccessException;
 
     /**
      * Returns the shortCarDTO that was created from FullCarDTO
      * @param carDTO of updated car with updated params
      * @return ShortCarDTO
      */
-    FullCarDTOResponse updateCar(AddUpdateCarDtoRequest carDTO);
+    FullCarDTOResponse updateCar(AddUpdateCarDtoRequest carDTO, String token);
 
     /**
      * Method for deleting an existing car
      * @param carId of car to be deleted
      */
-    void deleteCar(String carId);
+    void deleteCar(String carId, String token);
 
     /**
      * Returns the FullCarDTO for regular users
      * @param carId of car
      * @return FullCarDTO
      */
-    FullCarDTOResponse getCarByIdForUsers(String carId);
+    FullCarDTOResponse getCarByIdForUsers(String carId, String token);
 
     /**
      * Returns list of FullCarDTO for owner
      * @return List<FullCarDTO>
      */
-    List<FullCarDTOResponse> ownerGetCars();
+    List<FullCarDTOResponse> ownerGetCars(String token);
 
     /**
      * Returns the FullCarDTO for car owner by id of his car
      * @param carId of car
      * @return FullCarDTO
      */
-    FullCarDTOResponse ownerGetCarById(String carId);
+    FullCarDTOResponse ownerGetCarById(String carId, String token);
 
     /**
      * Returns list ShedularUsageDTO for owner about his car
      * @param carId of car
      * @return List<ShedularUsageDTO>
      */
-    List<BookedPeriodDto>  ownerGetBookedPeriodsByCarId(String carId);
+    List<BookedPeriodDto>  ownerGetBookedPeriodsByCarId(String carId, String token);
 
-   BookedPeriodDto makeReservation(String carId, BookRequestDTO dto);
+   BookedPeriodDto makeReservation(String carId, BookRequestDTO dto, String token);
 
 }
