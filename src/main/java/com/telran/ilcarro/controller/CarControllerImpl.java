@@ -34,9 +34,6 @@ public class CarControllerImpl implements CarController {
     @Autowired
     FilterService filterService;
 
-    @Autowired
-    AuthService authService;
-
     @ApiOperation(value = "Add new car", response = ShortCarDTO.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = ""),
@@ -50,9 +47,7 @@ public class CarControllerImpl implements CarController {
     @Override
     @PostMapping("/car")
 
-    public FullCarDTOResponse addCar(@RequestBody AddUpdateCarDtoRequest carDTO,
-                                     @RequestHeader("Authorization") String token) throws IllegalAccessException {
-        authService.validate(token);
+    public FullCarDTOResponse addCar(@RequestBody AddUpdateCarDtoRequest carDTO) throws IllegalAccessException {
         filterService.addFilter(carDTO);
         return carService.addCar(carDTO).orElseThrow();
     }
@@ -73,9 +68,7 @@ public class CarControllerImpl implements CarController {
     @Override
     @PutMapping("/car")
     //TODO With auth
-    public FullCarDTOResponse updateCar(@RequestBody AddUpdateCarDtoRequest carDTO,
-                                        @RequestHeader("Authorization") String token) {
-        authService.validate(token);
+    public FullCarDTOResponse updateCar(@RequestBody AddUpdateCarDtoRequest carDTO) {
         return carService.updateCar(carDTO).orElseThrow();
     }
 
@@ -95,9 +88,7 @@ public class CarControllerImpl implements CarController {
     @Override
     @DeleteMapping("/car?serial_number")
     //TODO With auth
-    public void deleteCar(@RequestParam(name = "serial_number") String carId,
-                          @RequestHeader("Authorization") String token) {
-        authService.validate(token);
+    public void deleteCar(@RequestParam(name = "serial_number") String carId) {
         carService.deleteCar(carId);
     }
 
@@ -115,9 +106,7 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @GetMapping("/car?serial_number")
-    public FullCarDTOResponse getCarByIdForUsers(@RequestParam(name = "serial_number") String carId,
-                                                 @RequestHeader("Authorization") String token) {
-        authService.validate(token);
+    public FullCarDTOResponse getCarByIdForUsers(@RequestParam(name = "serial_number") String carId) {
         return carService.getCarById(carId).orElseThrow();
     }
 
@@ -136,8 +125,7 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @GetMapping("/user/cars")
-    public List<FullCarDTOResponse> ownerGetCars(@RequestHeader("Authorization") String token) {
-        authService.validate(token);
+    public List<FullCarDTOResponse> ownerGetCars() {
         return carService.ownerGetCars();
     }
 
@@ -156,9 +144,7 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @GetMapping("/user/cars/car?serial_number")
-    public FullCarDTOResponse ownerGetCarById(@RequestParam(name = "serial_number") String carId,
-                                              @RequestHeader("Authorization") String token) {
-        authService.validate(token);
+    public FullCarDTOResponse ownerGetCarById(@RequestParam(name = "serial_number") String carId) {
         return carService.getCarById(carId).orElseThrow();
     }
 
@@ -177,18 +163,14 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @GetMapping("/user/cars/periods?serial_number")
-    public List<BookedPeriodDto> ownerGetBookedPeriodsByCarId(@RequestParam(name = "serial_number") String carId,
-                                                              @RequestHeader("Authorization") String token) {
-        authService.validate(token);
+    public List<BookedPeriodDto> ownerGetBookedPeriodsByCarId(@RequestParam(name = "serial_number") String carId) {
         return carService.getBookedPeriodsByCarId(carId);
     }
 
     @Override
     @PostMapping("/car/reservation")
     public BookedPeriodDto makeReservation(@RequestParam(name = "serial_number") String carId,
-                                           @RequestBody BookRequestDTO dto,
-                                           @RequestHeader("Authorization") String token) {
-        authService.validate(token);
+                                           @RequestBody BookRequestDTO dto) {
         return carService.makeReservation(carId, dto);
     }
 }

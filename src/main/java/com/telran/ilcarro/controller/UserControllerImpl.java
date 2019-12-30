@@ -12,6 +12,8 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 /**
  *
  * UserController interface implementation
@@ -53,8 +55,8 @@ public class UserControllerImpl  implements UserController {
     )
     @PostMapping("user/login")
     @Override
-    public FullUserDTO login(@RequestHeader("Authorization") String token) {
-        String userEmail = authService.validate(token);
+    public FullUserDTO login(Principal principal) {
+        String userEmail = principal.getName();
 
         return userService.getUser(userEmail).orElseThrow();
     }
@@ -70,11 +72,10 @@ public class UserControllerImpl  implements UserController {
     @PutMapping("user")
     @Override
     public FullUserDTO updateUser(@RequestBody UpdUserDTO updUser,
-                                  @RequestHeader("Authorization") String token,
-                                  @RequestHeader("X-New-Password") String newPassword
+                                  @RequestHeader("X-New-Password") String newPassword,
+                                  Principal principal
     ) {
-        authService.validate(token);
-        String userEmail = authService.updatePassword(token, newPassword);
+        String userEmail = authService.updatePassword(principal.getName(), newPassword);
         return userService.updateUser(userEmail, updUser).orElseThrow();
     }
 
@@ -88,8 +89,8 @@ public class UserControllerImpl  implements UserController {
     )
     @DeleteMapping("user")
     @Override
-    public void deleteUser(@RequestHeader("Authorization") String token) {
-        String userEmail = authService.validate(token);
+    public void deleteUser(Principal principal) {
+        String userEmail = principal.getName();
         userService.deleteUser(userEmail);
     }
 }

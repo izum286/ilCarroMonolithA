@@ -48,34 +48,13 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String updatePassword(String token, String newPassword) {
-        AccountCredentials account = tokenService.decodeToken(token);
+    public String updatePassword(String userEmail, String newPassword) {
         try {
-            UserDetailsEntity current = userDetailsRepository.findById(account.email)
-                    .orElseThrow(()->new NotFoundServiceException(String.format("User %s not found!", account.email)));
+            UserDetailsEntity current = userDetailsRepository.findById(userEmail)
+                    .orElseThrow(()->new NotFoundServiceException(String.format("User %s not found!", userEmail)));
             current.setPassword(encoder.encode(tokenService.decodePassword(newPassword)));
             userDetailsRepository.save(current);
-            return account.email;
-        } catch (Throwable t) {
-            throw new ServiceException(t.getMessage(), t.getCause());
-        }
-    }
-
-    @Override
-    public String validate(String token) {
-        AccountCredentials account = tokenService.decodeToken(token);
-        try {
-            Optional<UserDetailsEntity> current = userDetailsRepository.findById(account.email);
-            if (current.isEmpty()) {
-                throw new NotFoundServiceException(String.format("User %s not found!", account.email));
-            }
-            String oldPAss = current.get().getPassword();
-            boolean isValid = encoder.matches(account.password, oldPAss);
-
-            if (!isValid) {
-                throw new ConflictServiceException(String.format("Incorrect password for user %s !", account.email));
-            }
-            return account.email;
+            return userEmail;
         } catch (Throwable t) {
             throw new ServiceException(t.getMessage(), t.getCause());
         }

@@ -5,6 +5,7 @@ import com.telran.ilcarro.service.user.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -45,11 +46,15 @@ public class SecurityConfig {
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                     .authorizeRequests()
-                    .antMatchers().permitAll()
-//                    .antMatchers("/api/**").authenticated()
-                    .anyRequest().permitAll()
+                    .antMatchers(HttpMethod.POST, "/registration").permitAll()
+                    .antMatchers(HttpMethod.GET, "/comments").permitAll()
+                    .antMatchers(HttpMethod.GET, "/filters").permitAll()
+                    .antMatchers("/user/**").authenticated()
+                    .antMatchers("/comment/**").authenticated()
+                    .antMatchers("/car/**").authenticated()
+                    .anyRequest().permitAll() // switch to dennyAll in release. permitAll only for swagger
                     .and()
-                    .httpBasic().disable();
+                    .httpBasic();
 
         }
 

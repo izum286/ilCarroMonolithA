@@ -7,14 +7,14 @@ public class FullCarEntityToShortCarEntityConverter {
 
     public static ShortCarEntity map(FullCarEntity fullCarEntity){
         return ShortCarEntity.builder()
-                .id(fullCarEntity.getId())
+//                .id(fullCarEntity.getId())
                 .image(fullCarEntity.getImage())
                 .isRented(fullCarEntity.isRented())
-                .location(fullCarEntity.getLocation())
+//                .location(fullCarEntity.getLocation())
                 .manufacture(fullCarEntity.getManufacture())
                 .model(fullCarEntity.getModel())
                 .price_per_day(fullCarEntity.getPrice_per_day())
-                .specifications(fullCarEntity.getSpecifications())
+//                .specifications(fullCarEntity.getSpecifications())
                 .year(fullCarEntity.getYear())
                 .build();
     }

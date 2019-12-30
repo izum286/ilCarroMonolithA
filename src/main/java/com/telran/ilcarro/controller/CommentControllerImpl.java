@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -55,9 +56,9 @@ public class CommentControllerImpl implements CommentController {
     @PostMapping("comment")
     @Override
     public void postComment(@RequestParam(name = "serial_number") String serialNumber,
-                            @RequestHeader("Authorization") String token,
-                            @RequestBody AddCommentDTO comment) {
-        String ownerEmail = authService.validate(token);
+                            @RequestBody AddCommentDTO comment,
+                            Principal principal) {
+        String ownerEmail = principal.getName();
         commentService.postComment(serialNumber, ownerEmail, comment);
     }
 }

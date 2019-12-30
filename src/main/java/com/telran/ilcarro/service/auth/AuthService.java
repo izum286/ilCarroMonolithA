@@ -18,21 +18,11 @@ public interface AuthService {
     String registration(String token) throws ConflictServiceException;
 
     /**
-     * Password validation
-     * @param token - base64 email + password
-     * @return email of authenticated user
-     * @throws NotFoundServiceException
-     * @throws ConflictServiceException
-     */
-
-    String validate(String token) throws NotFoundServiceException, ConflictServiceException;
-
-    /**
      * Method update user password
-     * @param token - base64 email + password
+     * @param userEmail - email
      * @param newPassword in base64 format
      * @return user email
      * @throws NotFoundServiceException if user not found
      */
-    String updatePassword(String token, String newPassword) throws NotFoundServiceException;
+    String updatePassword(String userEmail, String newPassword) throws NotFoundServiceException;
 }
