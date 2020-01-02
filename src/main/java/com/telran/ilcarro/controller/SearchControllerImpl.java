@@ -1,5 +1,6 @@
 package com.telran.ilcarro.controller;
 
+import com.telran.ilcarro.controller.interfaces.SearchController;
 import com.telran.ilcarro.model.car.SearchResponse;
 import com.telran.ilcarro.service.search.SearchService;
 import io.swagger.annotations.ApiOperation;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 //TODO - interface
 @RestController
-public class SearchController {
+public class SearchControllerImpl implements SearchController {
 
     @Autowired
     SearchService searchService;
