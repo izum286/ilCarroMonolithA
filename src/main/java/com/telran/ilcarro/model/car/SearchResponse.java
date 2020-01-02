@@ -4,6 +4,7 @@ import com.telran.ilcarro.model.car.CarStatDto;
 import com.telran.ilcarro.model.car.FullCarDTOResponse;
 import io.swagger.annotations.ApiModel;
 import lombok.*;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ import java.util.List;
 public class SearchResponse {
     private int currentPage;
     private int itemsOnPage;
-    private int itemsTotal;
+    private long itemsTotal;
     List<FullCarDTOResponse> cars;
     CarStatDto statisticDtoForCurrentCar;
     String megaFilter;

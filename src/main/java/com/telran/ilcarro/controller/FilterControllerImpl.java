@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * @author izum286
+ */
 @RestController
 public class FilterControllerImpl implements FilterController {
 
@@ -24,7 +27,7 @@ public class FilterControllerImpl implements FilterController {
     )
     @GetMapping("filters")
     @Override
-    public String getFilters() throws JsonProcessingException {
+    public String getFilters() {
         return filterService.provideFilter();
     }
 }

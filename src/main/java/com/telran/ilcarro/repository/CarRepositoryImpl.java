@@ -13,7 +13,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
-public class CarRepositoryImpl implements CarRepository{
+public class CarRepositoryImpl  {
 
     //TODO что то надо сделать с айдишниками для машин, потому что тут даблы, там стринги, где-то UUID, а в протоколе сериал вообще не в виде UUID
     /**
@@ -24,40 +24,40 @@ public class CarRepositoryImpl implements CarRepository{
     private Map<Double, FullCarEntity> fullCars = new ConcurrentHashMap<>();
 
     //TODO заглушки!
-    @Override
+    //@Override
     public FullCarEntity addCar(AddUpdateCarDtoRequest carToAdd){
         //fullCars.put(carToAdd.ge, entity);
         return new FullCarEntity();
     }
 
-    @Override
+    //@Override
     public FullCarEntity updateCar(AddUpdateCarDtoRequest carToUpdate) {
         //fullCars.put(entity.getId(), entity);
         return new FullCarEntity();
     }
 
-    @Override
+    //@Override
     public boolean deleteCar(UUID id) {
         return fullCars.remove(id) != null;
     }
 
-    @Override
+    //@Override
     public FullCarEntity getCarByIdForUsers(UUID id) {
         FullCarEntity carEntity = fullCars.get(id);
         return carEntity;
     }
 
-    @Override
+    //@Override
     public List<FullCarEntity> ownerGetCars() {
         return null;
     }
 
-    @Override
+    //@Override
     public FullCarEntity ownerGetCarById(UUID id) {
         return null;
     }
 
-    @Override
+    //@Override
     public List<BookedPeriodDto> ownerGetBookedPeriodsByCarId(String carId) {
         return null;
     }
