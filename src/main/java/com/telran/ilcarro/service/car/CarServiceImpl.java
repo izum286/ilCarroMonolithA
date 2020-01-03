@@ -5,9 +5,7 @@ import com.telran.ilcarro.model.car.probably_unused.SchedularUsageDTO;
 import com.telran.ilcarro.model.car.probably_unused.ShortCarDTO;
 import com.telran.ilcarro.model.user.OwnerDtoResponse;
 import com.telran.ilcarro.repository.CarRepository;
-import com.telran.ilcarro.repository.entity.FullCarEntity;
-import com.telran.ilcarro.repository.entity.SchedularUsageEntity;
-import com.telran.ilcarro.repository.entity.UserEntity;
+import com.telran.ilcarro.repository.entity.*;
 import com.telran.ilcarro.repository.exception.ConflictRepositoryException;
 import com.telran.ilcarro.repository.exception.NotFoundRepositoryException;
 import com.telran.ilcarro.repository.exception.RepositoryException;
@@ -141,7 +139,7 @@ public class CarServiceImpl implements CarService {
 //        try{
 //            List<CarStatEntity> carStatEntity = carRepository.getCarStatById(carId);
 //            return carStatEntity.stream()
-//                    .map(MapperService::map)
+//                    .map((e)->mapperService.map(e))
 //                    .collect(Collectors.toList());
 //        } catch (ServiceException ex) {
 //            throw new ServiceException(ex.getMessage(), ex.getCause());
