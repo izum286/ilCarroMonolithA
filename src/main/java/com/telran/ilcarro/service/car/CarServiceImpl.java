@@ -3,10 +3,9 @@ package com.telran.ilcarro.service.car;
 import com.telran.ilcarro.model.car.*;
 import com.telran.ilcarro.model.car.probably_unused.SchedularUsageDTO;
 import com.telran.ilcarro.model.car.probably_unused.ShortCarDTO;
+import com.telran.ilcarro.model.user.OwnerDtoResponse;
 import com.telran.ilcarro.repository.CarRepository;
-import com.telran.ilcarro.repository.entity.FullCarEntity;
-import com.telran.ilcarro.repository.entity.SchedularUsageEntity;
-import com.telran.ilcarro.repository.entity.UserEntity;
+import com.telran.ilcarro.repository.entity.*;
 import com.telran.ilcarro.repository.exception.ConflictRepositoryException;
 import com.telran.ilcarro.repository.exception.NotFoundRepositoryException;
 import com.telran.ilcarro.repository.exception.RepositoryException;
@@ -29,6 +28,7 @@ import java.util.stream.Collectors;
 /**
  * @author Aleks Gor
  * @author izum286
+ * @author Vitalii Adler
  */
 @Service
 public class CarServiceImpl implements CarService {
@@ -111,16 +111,41 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public BookedPeriodDto makeReservation(String carId, BookRequestDTO dto) {
+//        try{
+//            return carRepository.makeReservation(carId,mapperService.map(dto));
+//        }catch (ServiceException ex){
+//            throw new ServiceException(ex.getMessage(),ex.getCause());
+//        }catch (NotFoundRepositoryException ex){
+//            throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
+//        }
         return null;
     }
 
     @Override
-    public Optional<UserEntity> getUserByCarId(String carId) {
+    public Optional<OwnerDtoResponse> getOwnerByCarId(String carId) {
+//        try {
+//            OwnerEntity entity = carRepository.getOwnerByCarId(carId);
+//            return Optional.of(mapperService.map(entity));
+//        } catch (ServiceException ex) {
+//            throw new ServiceException(ex.getMessage(), ex.getCause());
+//        } catch (RepositoryException ex){
+//            throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
+//        }
         return Optional.empty();
     }
 
     @Override
     public List<CarStatDto> getCarStatById(String carId) {
+//        try{
+//            List<CarStatEntity> carStatEntity = carRepository.getCarStatById(carId);
+//            return carStatEntity.stream()
+//                    .map((e)->mapperService.map(e))
+//                    .collect(Collectors.toList());
+//        } catch (ServiceException ex) {
+//            throw new ServiceException(ex.getMessage(), ex.getCause());
+//        }catch (NotFoundRepositoryException ex){
+//            throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
+//        }
         return null;
     }
 

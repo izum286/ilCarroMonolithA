@@ -3,6 +3,16 @@ package com.telran.ilcarro.service.converters;
 import com.telran.ilcarro.model.car.probably_unused.LocationDTO;
 import com.telran.ilcarro.repository.entity.LocationEntity;
 
+/**
+ *
+ * !!!UNUSED!!!
+ *
+ * LocationEntity <---> LocationDto
+ * Implementation of convertation logic for Converters with FullCarEntity and ShortCarEntity
+ * @author Gor Aleks
+ * @date 24.12.2019
+ */
+
 public class LocationDtoEntityConverter {
 
     public static LocationDTO map(LocationEntity entity){

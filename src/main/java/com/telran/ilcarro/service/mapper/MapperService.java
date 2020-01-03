@@ -2,9 +2,13 @@ package com.telran.ilcarro.service.mapper;
 
 
 import com.telran.ilcarro.model.car.AddUpdateCarDtoRequest;
+import com.telran.ilcarro.model.car.CarStatDto;
 import com.telran.ilcarro.model.filter.FilterDTO;
 import com.telran.ilcarro.model.car.FullCarDTOResponse;
+import com.telran.ilcarro.model.user.OwnerDtoResponse;
+import com.telran.ilcarro.repository.entity.CarStatEntity;
 import com.telran.ilcarro.repository.entity.FullCarEntity;
+import com.telran.ilcarro.repository.entity.OwnerEntity;
 import com.telran.ilcarro.service.model.FilterNode;
 
 public interface MapperService {
@@ -13,6 +17,11 @@ public interface MapperService {
     FilterDTO map (AddUpdateCarDtoRequest from);
     FullCarDTOResponse map (FullCarEntity from);
     FilterNode map (FilterDTO toAdd) throws IllegalAccessException;
+    OwnerEntity map(OwnerDtoResponse dto);
+    OwnerDtoResponse map(OwnerEntity entity);
+    CarStatEntity map(CarStatDto dto);
+    CarStatDto map(CarStatEntity entity);
+
 
     //TODO mapper entities to dto
 
