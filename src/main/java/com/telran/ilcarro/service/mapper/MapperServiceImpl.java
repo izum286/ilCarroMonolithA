@@ -8,6 +8,7 @@ import com.telran.ilcarro.model.car.probably_unused.SchedularUsageDTO;
 import com.telran.ilcarro.model.car.probably_unused.ShortCarDTO;
 import com.telran.ilcarro.model.car.probably_unused.SpecsDTO;
 import com.telran.ilcarro.model.filter.FilterDTO;
+import com.telran.ilcarro.model.user.OwnerDtoResponse;
 import com.telran.ilcarro.repository.entity.*;
 import com.telran.ilcarro.service.converters.PricePerDayDtoEntityCoverter;
 import com.telran.ilcarro.service.model.FilterNode;
@@ -217,6 +218,56 @@ public class MapperServiceImpl implements MapperService {
                 .specifications(map(entity.getSpecifications()))
                 .location(map(entity.getLocation()))
                 .isRented(entity.isRented())
+                .build();
+    }
+
+    /**
+     * CarStatEntity ---> CarStatDto
+     * @author Gor Aleks
+     * @date 03.01.2020
+     */
+    public CarStatDto map(CarStatEntity entity){
+        return CarStatDto.builder()
+                .rating(entity.getRating())
+                .trips(entity.getTrips())
+                .build();
+    }
+
+    /**
+     * CarStatDto ---> CarStatEntity
+     * @author Gor Aleks
+     * @date 03.01.2020
+     */
+    public CarStatEntity map(CarStatDto dto){
+        return CarStatEntity.builder()
+                .rating(dto.getRating())
+                .trips(dto.getTrips())
+                .build();
+    }
+
+    /**
+     * OwnerEntity ---> OwnerDtoResponse
+     * @author Gor Aleks
+     * @date 03.01.2020
+     */
+    public OwnerDtoResponse map(OwnerEntity entity){
+        return OwnerDtoResponse.builder()
+                .firstName(entity.getFirstName())
+                .lastName(entity.getLastName())
+                .registrationDate(entity.getRegistrationDate())
+                .build();
+    }
+
+    /**
+     * OwnerDtoResponse ---> OwnerEntity
+     * @author Gor Aleks
+     * @date 03.01.2020
+     */
+    public OwnerEntity map(OwnerDtoResponse dto){
+        return OwnerEntity.builder()
+                .firstName(dto.getFirstName())
+                .lastName(dto.getLastName())
+                .registrationDate(dto.getRegistrationDate())
                 .build();
     }
 }
