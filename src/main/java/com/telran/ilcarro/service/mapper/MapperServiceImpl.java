@@ -103,7 +103,7 @@ public class MapperServiceImpl implements MapperService {
                 .fuelConsumption(from.getFuelConsumption())
                 .features(from.getFeatures())
                 .carClass(from.getCarClass())
-                .simplePricePerDay(from.getPrice_per_day().getValue())
+                .simplePricePerDay(Float.valueOf(from.getPricePerDaySimple()))
                 .distanceIncluded(from.getDistanceIncluded())
                 .about(from.getAbout())
                 .pickUpPlace(from.getPickUpPlace())

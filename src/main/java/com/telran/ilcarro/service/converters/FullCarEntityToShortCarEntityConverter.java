@@ -9,11 +9,11 @@ public class FullCarEntityToShortCarEntityConverter {
         return ShortCarEntity.builder()
 //                .id(fullCarEntity.getId())
                 .image(fullCarEntity.getImage())
-                .isRented(fullCarEntity.isRented())
+                //.isRented(fullCarEntity.isRented())
 //                .location(fullCarEntity.getLocation())
                 .manufacture(fullCarEntity.getManufacture())
                 .model(fullCarEntity.getModel())
-                .price_per_day(fullCarEntity.getPrice_per_day())
+                .price_per_day(fullCarEntity.getPricePerDay())
 //                .specifications(fullCarEntity.getSpecifications())
                 .year(fullCarEntity.getYear())
                 .build();

@@ -9,9 +9,11 @@ import com.telran.ilcarro.service.mapper.MapperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.geo.Circle;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,7 +21,7 @@ import java.util.stream.Collectors;
  * @author izum286
  */
 
-//TODO - mock service. need to implement CarRepo extends MongoRepo first
+
 @Service
 public class SearchServiceImpl implements  SearchService{
 
@@ -33,8 +35,21 @@ public class SearchServiceImpl implements  SearchService{
     MapperService mapperService;
 
     @Override
-    public SearchResponse cityDatesPriceSortByPrice(String city, String dateFrom, String dateTo, String minPrice, String maxPrice, String sort, int itemsOnPage, int currentPage) {
-        return SearchResponse.builder().megaFilter("mock").build();
+    public SearchResponse cityDatesPriceSortByPrice(String city, LocalDateTime dateFrom, LocalDateTime dateTo,
+                                                    double minPrice, double maxPrice, String sort,
+                                                    int itemsOnPage, int currentPage) {
+        SearchResponse res = new SearchResponse();
+        Page<FullCarEntity> cars = carRepository
+                .cityDatesPriceSortByPrice(city, dateFrom, dateTo, minPrice, maxPrice,
+                        PageRequest.of(currentPage, itemsOnPage, Sort.Direction.fromString(sort)));
+        List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> mapperService.map(e)).collect(Collectors.toList());
+        res.setCars(carDTOResponses);
+        res.setCurrentPage(currentPage);
+        res.setItemsOnPage(itemsOnPage);
+        res.setItemsTotal(cars.getTotalElements());
+        res.setMegaFilter(filterService.provideFilter());
+        //TODO carStatistics object
+        return res;
     }
 
     @Override

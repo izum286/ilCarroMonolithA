@@ -7,10 +7,13 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDateTime;
 
 /**
  * @author izum286
@@ -24,6 +27,11 @@ public class SearchControllerImpl implements SearchController {
     SearchService searchService;
 
 
+    /**
+     *
+     * @author izum286
+     * @status READY
+     */
     @ApiOperation(value = "search cars by city, dates, price range,sorted by price", response = SearchResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = ""),
@@ -32,11 +40,16 @@ public class SearchControllerImpl implements SearchController {
     }
     )
     @GetMapping("/search")
+    @Override
     public SearchResponse cityDatesPriceSortByPrice(@RequestParam(name = "city") String city,
-                                                    @RequestParam (name = "start_date") String dateFrom,
-                                                    @RequestParam (name = "end_date") String dateTo,
-                                                    @RequestParam (name = "min_amount") String minPrice,
-                                                    @RequestParam (name = "max_amount") String maxPrice,
+                                                    @RequestParam (name = "start_date")
+                                                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                                LocalDateTime dateFrom,
+                                                    @RequestParam (name = "end_date")
+                                                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                                LocalDateTime dateTo,
+                                                    @RequestParam (name = "min_amount") double minPrice,
+                                                    @RequestParam (name = "max_amount") double maxPrice,
                                                     @RequestParam (name = "ascending") String sort,
                                                     @RequestParam (name = "items_on_page") int itemsOnPage,
                                                     @RequestParam (name = "current_page")int currentPage){
@@ -46,6 +59,11 @@ public class SearchControllerImpl implements SearchController {
 
     }
 
+    /**
+     *
+     * @author izum286
+     * @status READY
+     */
     @ApiOperation(value = "cars by location and radius", response = SearchResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = ""),
@@ -54,6 +72,7 @@ public class SearchControllerImpl implements SearchController {
     }
     )
     @GetMapping("/search/geo")
+    @Override
     public SearchResponse geoAndRadius(@RequestParam (name = "latitude") String latt,
                                        @RequestParam (name = "longitude") String longt,
                                        @RequestParam (name = "radius") String radius,
@@ -63,6 +82,7 @@ public class SearchControllerImpl implements SearchController {
                 geoAndRadius
                         (latt, longt, radius, itemsOnPage, currentPage);
     }
+
 
     @ApiOperation(value = "search cars by filter", response = SearchResponse.class)
     @ApiResponses(value = {

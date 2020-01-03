@@ -2,6 +2,8 @@ package com.telran.ilcarro.controller.interfaces;
 
 import com.telran.ilcarro.model.car.SearchResponse;
 
+import java.time.LocalDateTime;
+
 /**
  * @author izum286
  */
@@ -9,8 +11,8 @@ import com.telran.ilcarro.model.car.SearchResponse;
 public interface SearchController {
 
 
-     SearchResponse cityDatesPriceSortByPrice(String city, String dateFrom, String dateTo, String minPrice, String maxPrice,
-                                                    String sort, int itemsOnPage, int currentPage);
+     SearchResponse cityDatesPriceSortByPrice(String city, LocalDateTime dateFrom, LocalDateTime dateTo, double minPrice, double maxPrice,
+                                              String sort, int itemsOnPage, int currentPage);
 
 
      SearchResponse geoAndRadius(String latt, String longt, String radius,

@@ -2,27 +2,29 @@ package com.telran.ilcarro.service.search;
 
 import com.telran.ilcarro.model.car.SearchResponse;
 
+import java.time.LocalDateTime;
+
 public interface SearchService {
-    public SearchResponse cityDatesPriceSortByPrice(String city,
-                                                    String dateFrom,
-                                                    String dateTo,
-                                                    String minPrice,
-                                                    String maxPrice,
+     SearchResponse cityDatesPriceSortByPrice(String city,
+                                                    LocalDateTime dateFrom,
+                                                    LocalDateTime dateTo,
+                                                    double minPrice,
+                                                    double maxPrice,
                                                     String sort,
                                                     int itemsOnPage,
                                                     int currentPage);
 
-    public SearchResponse geoAndRadius (String latt,
+     SearchResponse geoAndRadius (String latt,
                                         String longt,
                                         String radius,
                                         int itemsOnPage,
                                         int currentPage);
 
-    public SearchResponse byFilter (Object filter,
+     SearchResponse byFilter (Object filter,
                                     int itemsOnPage,
                                     int currentPage);
 
-    public SearchResponse searchAllSortByPrice (int itemsOnPage, int currentPage,Object filter, String latt, String longt,  String radius,
+     SearchResponse searchAllSortByPrice (int itemsOnPage, int currentPage,Object filter, String latt, String longt,  String radius,
                                                 String city, String dateFrom,
                                                 String dateTo, String minPrice, String maxPrice, String sort
     );

@@ -21,7 +21,7 @@ public class FullCarEntity {
     private String model;
     private String manufacture;
     private int year;
-
+    private String city;
     private String engine;
     private String fuel;
     private String gear;
@@ -33,7 +33,8 @@ public class FullCarEntity {
     private float fuelConsumption;
     private List<FeatureDto> features;
     private String carClass;
-    private PricePerDayEntity price_per_day;
+    private PricePerDayEntity pricePerDay;
+    private String pricePerDaySimple;
     private int distanceIncluded;
     private String about;
     private PickUpPlaceDto pickUpPlace;
@@ -49,7 +50,7 @@ public class FullCarEntity {
 
     private List<String> image;
 
-    private boolean isRented;
+
 
     private List<FeedbackEntity> feedBacks;
 

@@ -11,24 +11,34 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 import java.util.UUID;
 //todo mock repo
-public interface CarRepository extends MongoRepository<FullCarEntity, String> {
+/**
+ * @author izum286
+ */
+public interface CarRepository extends MongoRepository<FullCarEntity, String>, CarRepositoryCustom {
 
+ //todo
    FullCarEntity addCar(AddUpdateCarDtoRequest carToAdd);
 
 
+ /**
+  * @author izum286
+  * @param circle
+  * @param pageable
+  * @return Page<FullCarEntity>
+  * @status READY
+  */
+ Page<FullCarEntity> findAllByPickUpPlaceWithin(Circle circle, Pageable pageable);
 
-    Page<FullCarEntity> findAllByPickUpPlaceWithin(Circle circle, Pageable pageable);
-
-
+ //todo
     FullCarEntity updateCar(AddUpdateCarDtoRequest carToUpdate);
-
+//todo
     boolean deleteCar(UUID id);
-
+//todo
     FullCarEntity getCarByIdForUsers(UUID id);
-
+//todo
     List<FullCarEntity> ownerGetCars();
-
+//todo
     FullCarEntity ownerGetCarById(UUID id);
-
+//todo
     List<BookedPeriodDto>  ownerGetBookedPeriodsByCarId(String carId);
 }

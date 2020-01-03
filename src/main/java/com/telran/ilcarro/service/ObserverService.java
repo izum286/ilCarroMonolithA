@@ -36,11 +36,12 @@ public class ObserverService {
 
     Runnable task = () -> {
         List<SchedularUsageDTO> list = activeUsagesRepo.getAll();
-        for (SchedularUsageDTO r : list) {
-            if (r.getEndDate().isAfter(LocalDate.now()) && carRepositoryImpl.getCarByIdForUsers(r.getCarId()).isRented()) {
-                throw new NotReturnedInTimeException("WARNING!!! car " + r.getCarId() + " not returned in time!!");
-            }
-        }
+        //todo for izum286 - mocked
+//        for (SchedularUsageDTO r : list) {
+//            if (r.getEndDate().isAfter(LocalDate.now()) && carRepositoryImpl.getCarByIdForUsers(r.getCarId()).isRented()) {
+//                throw new NotReturnedInTimeException("WARNING!!! car " + r.getCarId() + " not returned in time!!");
+//            }
+//        }
     };
 
     /**
