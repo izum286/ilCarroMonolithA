@@ -3,6 +3,16 @@ package com.telran.ilcarro.service.converters;
 import com.telran.ilcarro.model.car.PricePerDayDto;
 import com.telran.ilcarro.repository.entity.PricePerDayEntity;
 
+/**
+ *
+ * !!!UNUSED!!!
+ *
+ * PricePerDayEntity <---> PricePerDayDto
+ * Implementation of convertation logic for Converters with PricePerDayEntity and PricePerDayDto
+ * @author Gor Aleks
+ * @date 25.12.2019
+ */
+
 public class PricePerDayDtoEntityCoverter {
 
     public static PricePerDayDto map(PricePerDayEntity entity){

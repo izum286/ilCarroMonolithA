@@ -3,6 +3,16 @@ package com.telran.ilcarro.service.converters;
 import com.telran.ilcarro.model.car.probably_unused.ShortCarDTO;
 import com.telran.ilcarro.repository.entity.ShortCarEntity;
 
+/**
+ *
+ * !!!UNUSED!!!
+ *
+ * ShortCarDtoEntity <---> ShortCarDto
+ * Implementation of convertation logic for CarService with ShortCarDtoEntity and ShortCarDto
+ * @author Gor Aleks
+ * @date 24.12.2019
+ */
+
 public class ShortCarDtoEntityConverter {
 
     public static ShortCarDTO map(ShortCarEntity entity){

@@ -20,7 +20,7 @@ public class FullCarEntity {
     private String serialNumber;
     private String model;
     private String manufacture;
-    private int year;
+    private String year;
     private String city;
     private String engine;
     private String fuel;

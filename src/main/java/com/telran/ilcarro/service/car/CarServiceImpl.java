@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 /**
  * @author Aleks Gor
  * @author izum286
+ * @author Vitalii Adler
  */
 @Service
 public class CarServiceImpl implements CarService {

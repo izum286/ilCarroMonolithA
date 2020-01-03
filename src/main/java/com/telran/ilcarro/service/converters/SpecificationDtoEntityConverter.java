@@ -3,6 +3,14 @@ package com.telran.ilcarro.service.converters;
 import com.telran.ilcarro.model.car.probably_unused.SpecsDTO;
 import com.telran.ilcarro.repository.entity.SpecsEntity;
 
+/**
+ *
+ * SpecsEntity <---> SpecsDTO
+ * Implementation of convertation logic for Converters with SpecsEntity and SpecsDTO
+ * @author Gor Aleks
+ * @date 24.12.2019
+ */
+
 public class SpecificationDtoEntityConverter {
 
     public static SpecsDTO map(SpecsEntity entity){
