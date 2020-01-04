@@ -37,19 +37,19 @@ public class SearchServiceImpl implements  SearchService{
 
     @Override
     public SearchResponse cityDatesPriceSortByPrice(String city, LocalDateTime dateFrom, LocalDateTime dateTo,
-                                                    double minPrice, double maxPrice, String sort,
+                                                    double minPrice, double maxPrice, boolean sort,
                                                     int itemsOnPage, int currentPage) {
         SearchResponse res = new SearchResponse();
         Page<FullCarEntity> cars = carRepository
                 .cityDatesPriceSortByPrice(city, dateFrom, dateTo, minPrice, maxPrice,
-                        PageRequest.of(currentPage, itemsOnPage, Sort.Direction.fromString(sort)));
+                        PageRequest.of(currentPage, itemsOnPage), sort);
         List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> mapperService.map(e)).collect(Collectors.toList());
         res.setCars(carDTOResponses);
         res.setCurrentPage(currentPage);
         res.setItemsOnPage(itemsOnPage);
         res.setItemsTotal(cars.getTotalElements());
         res.setMegaFilter(filterService.provideFilter());
-        //TODO carStatistics object
+        //TODO carStatistics object for every car
         return res;
     }
 
@@ -66,7 +66,7 @@ public class SearchServiceImpl implements  SearchService{
         res.setItemsOnPage(itemsOnPage);
         res.setItemsTotal(cars.getTotalElements());
         res.setMegaFilter(filterService.provideFilter());
-        //TODO carStatistics object
+        //TODO carStatistics object for every car
         return res;
     }
 
@@ -81,7 +81,7 @@ public class SearchServiceImpl implements  SearchService{
         res.setItemsOnPage(itemsOnPage);
         res.setItemsTotal(cars.getTotalElements());
         res.setMegaFilter(filterService.provideFilter());
-        //TODO carStatistics object
+        //TODO carStatistics object for every car
         return res;
     }
 
@@ -89,18 +89,18 @@ public class SearchServiceImpl implements  SearchService{
     public SearchResponse searchAllSortByPrice(int itemsOnPage, int currentPage, FilterDTO filter,
                                                String latt, String longt, String radius, String city,
                                                LocalDateTime dateFrom, LocalDateTime dateTo,
-                                               double minPrice, double maxPrice, String sort) {
+                                               double minPrice, double maxPrice, boolean sort) {
         SearchResponse res = new SearchResponse();
         Page<FullCarEntity> cars = carRepository
                 .searchAllSortByPrice(itemsOnPage, currentPage, filter, latt, longt, radius, city, dateFrom, dateTo, minPrice, maxPrice,
-                        PageRequest.of(currentPage, itemsOnPage, Sort.Direction.fromString(sort)));
+                        PageRequest.of(currentPage, itemsOnPage), sort);
         List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> mapperService.map(e)).collect(Collectors.toList());
         res.setCars(carDTOResponses);
         res.setCurrentPage(currentPage);
         res.setItemsOnPage(itemsOnPage);
         res.setItemsTotal(cars.getTotalElements());
         res.setMegaFilter(filterService.provideFilter());
-        //TODO carStatistics object
+        //TODO carStatistics object for every car
         return res;
     }
 }

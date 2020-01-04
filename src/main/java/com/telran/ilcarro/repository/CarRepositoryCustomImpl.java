@@ -5,6 +5,7 @@ import com.telran.ilcarro.repository.entity.FullCarEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.geo.Circle;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Metrics;
@@ -33,9 +34,12 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
 
     @Override
     public Page<FullCarEntity> cityDatesPriceSortByPrice(String city, LocalDateTime start, LocalDateTime end,
-                                                         double priceFrom, double priceTo, Pageable pageable){
+                                                         double priceFrom, double priceTo, Pageable pageable, boolean sort){
         Query query = new Query().with(pageable);
         List<Criteria> criteria = new ArrayList<>();
+        if(sort){
+            query.with(Sort.by(Sort.Direction.ASC, "pricePerDaySimple"));
+        }
         criteria.add(Criteria.where("city").is(city));
         criteria.add(Criteria.where("pricePerDaySimple").gte(priceFrom));
         criteria.add(Criteria.where("pricePerDaySimple").lte(priceTo));
@@ -98,10 +102,14 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
     public Page<FullCarEntity> searchAllSortByPrice(int itemsOnPage, int currentPage, FilterDTO filter,
                                                     String latt, String longt, String radius, String city,
                                                     LocalDateTime dateFrom, LocalDateTime dateTo,
-                                                    double minPrice, double maxPrice, Pageable pageable) {
+                                                    double minPrice, double maxPrice, Pageable pageable, boolean sort) {
 
         Query query = new Query().with(pageable);
         List<Criteria> criteria = new ArrayList<>();
+        if(sort){
+            query.with(Sort.by(Sort.Direction.ASC, "pricePerDaySimple"));
+        }
+
 
         if(latt!=null && longt!=null && radius!=null){
             Point point = new Point(Double.parseDouble(latt), Double.parseDouble(longt));

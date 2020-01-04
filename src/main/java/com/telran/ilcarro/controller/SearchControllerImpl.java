@@ -51,7 +51,7 @@ public class SearchControllerImpl implements SearchController {
                                                                 LocalDateTime dateTo,
                                                     @RequestParam (name = "min_amount") double minPrice,
                                                     @RequestParam (name = "max_amount") double maxPrice,
-                                                    @RequestParam (name = "ascending") String sort,
+                                                    @RequestParam (name = "ascending") boolean sort,
                                                     @RequestParam (name = "items_on_page") int itemsOnPage,
                                                     @RequestParam (name = "current_page")int currentPage){
         return searchService
@@ -117,6 +117,7 @@ public class SearchControllerImpl implements SearchController {
     }
     )
     @GetMapping("/search/all")
+    @Override
     public SearchResponse searchAllSortByPrice(@RequestParam (name = "items_on_page")int itemsOnPage,
                                                @RequestParam (name = "current_page")int currentPage,
                                                @RequestBody FilterDTO filter,
@@ -132,7 +133,7 @@ public class SearchControllerImpl implements SearchController {
                                                            LocalDateTime dateTo,
                                                @RequestParam (name = "min_amount")double minPrice,
                                                @RequestParam (name = "max_amount")double maxPrice,
-                                               @RequestParam (name = "ascending") String sort
+                                               @RequestParam (name = "ascending") boolean sort
 
     ){
         return searchService.searchAllSortByPrice(itemsOnPage, currentPage, filter, latt,

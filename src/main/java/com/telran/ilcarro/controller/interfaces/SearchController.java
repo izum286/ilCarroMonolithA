@@ -13,7 +13,7 @@ public interface SearchController {
 
 
      SearchResponse cityDatesPriceSortByPrice(String city, LocalDateTime dateFrom, LocalDateTime dateTo, double minPrice, double maxPrice,
-                                              String sort, int itemsOnPage, int currentPage);
+                                              boolean sort, int itemsOnPage, int currentPage);
 
 
      SearchResponse geoAndRadius(String latt, String longt, String radius,
@@ -26,5 +26,5 @@ public interface SearchController {
      SearchResponse searchAllSortByPrice(int itemsOnPage, int currentPage, FilterDTO filter, String latt,
                                                String longt, String radius, String city, LocalDateTime dateFrom,
                                                LocalDateTime dateTo, double minPrice, double maxPrice,
-                                               String sort);
+                                               boolean sort);
 }

@@ -11,7 +11,7 @@ public interface SearchService {
                                                     LocalDateTime dateTo,
                                                     double minPrice,
                                                     double maxPrice,
-                                                    String sort,
+                                                    boolean sort,
                                                     int itemsOnPage,
                                                     int currentPage);
 
@@ -27,6 +27,6 @@ public interface SearchService {
 
      SearchResponse searchAllSortByPrice (int itemsOnPage, int currentPage, FilterDTO filter, String latt, String longt,  String radius,
                                                 String city, LocalDateTime dateFrom,
-                                          LocalDateTime dateTo, double minPrice, double maxPrice, String sort
+                                          LocalDateTime dateTo, double minPrice, double maxPrice, boolean sort
     );
 }
