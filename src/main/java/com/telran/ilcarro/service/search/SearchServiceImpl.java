@@ -2,6 +2,7 @@ package com.telran.ilcarro.service.search;
 
 import com.telran.ilcarro.model.car.FullCarDTOResponse;
 import com.telran.ilcarro.model.car.SearchResponse;
+import com.telran.ilcarro.model.filter.FilterDTO;
 import com.telran.ilcarro.repository.CarRepository;
 import com.telran.ilcarro.repository.entity.FullCarEntity;
 import com.telran.ilcarro.service.filter.FilterService;
@@ -36,19 +37,19 @@ public class SearchServiceImpl implements  SearchService{
 
     @Override
     public SearchResponse cityDatesPriceSortByPrice(String city, LocalDateTime dateFrom, LocalDateTime dateTo,
-                                                    double minPrice, double maxPrice, String sort,
+                                                    double minPrice, double maxPrice, boolean sort,
                                                     int itemsOnPage, int currentPage) {
         SearchResponse res = new SearchResponse();
         Page<FullCarEntity> cars = carRepository
                 .cityDatesPriceSortByPrice(city, dateFrom, dateTo, minPrice, maxPrice,
-                        PageRequest.of(currentPage, itemsOnPage, Sort.Direction.fromString(sort)));
+                        PageRequest.of(currentPage, itemsOnPage), sort);
         List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> mapperService.map(e)).collect(Collectors.toList());
         res.setCars(carDTOResponses);
         res.setCurrentPage(currentPage);
         res.setItemsOnPage(itemsOnPage);
         res.setItemsTotal(cars.getTotalElements());
         res.setMegaFilter(filterService.provideFilter());
-        //TODO carStatistics object
+        //TODO carStatistics object for every car
         return res;
     }
 
@@ -65,17 +66,41 @@ public class SearchServiceImpl implements  SearchService{
         res.setItemsOnPage(itemsOnPage);
         res.setItemsTotal(cars.getTotalElements());
         res.setMegaFilter(filterService.provideFilter());
-        //TODO carStatistics object
+        //TODO carStatistics object for every car
         return res;
     }
 
     @Override
-    public SearchResponse byFilter(Object filter, int itemsOnPage, int currentPage) {
-        return SearchResponse.builder().megaFilter("mock").build();
+    public SearchResponse byFilter(FilterDTO filter, int itemsOnPage, int currentPage) {
+        SearchResponse res = new SearchResponse();
+        Page<FullCarEntity> cars = carRepository
+                .byFilter(filter, PageRequest.of(currentPage,itemsOnPage));
+        List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> mapperService.map(e)).collect(Collectors.toList());
+        res.setCars(carDTOResponses);
+        res.setCurrentPage(currentPage);
+        res.setItemsOnPage(itemsOnPage);
+        res.setItemsTotal(cars.getTotalElements());
+        res.setMegaFilter(filterService.provideFilter());
+        //TODO carStatistics object for every car
+        return res;
     }
 
     @Override
-    public SearchResponse searchAllSortByPrice(int itemsOnPage, int currentPage, Object filter, String latt, String longt, String radius, String city, String dateFrom, String dateTo, String minPrice, String maxPrice, String sort) {
-        return SearchResponse.builder().megaFilter("mock").build();
+    public SearchResponse searchAllSortByPrice(int itemsOnPage, int currentPage, FilterDTO filter,
+                                               String latt, String longt, String radius, String city,
+                                               LocalDateTime dateFrom, LocalDateTime dateTo,
+                                               double minPrice, double maxPrice, boolean sort) {
+        SearchResponse res = new SearchResponse();
+        Page<FullCarEntity> cars = carRepository
+                .searchAllSortByPrice(itemsOnPage, currentPage, filter, latt, longt, radius, city, dateFrom, dateTo, minPrice, maxPrice,
+                        PageRequest.of(currentPage, itemsOnPage), sort);
+        List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> mapperService.map(e)).collect(Collectors.toList());
+        res.setCars(carDTOResponses);
+        res.setCurrentPage(currentPage);
+        res.setItemsOnPage(itemsOnPage);
+        res.setItemsTotal(cars.getTotalElements());
+        res.setMegaFilter(filterService.provideFilter());
+        //TODO carStatistics object for every car
+        return res;
     }
 }

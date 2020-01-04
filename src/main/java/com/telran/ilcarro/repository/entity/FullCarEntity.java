@@ -19,7 +19,7 @@ import java.util.List;
 public class FullCarEntity {
     private String serialNumber;
     private String model;
-    private String manufacture;
+    private String make;
     private String year;
     private String city;
     private String engine;
