@@ -2,6 +2,7 @@ package com.telran.ilcarro.controller;
 
 import com.telran.ilcarro.controller.interfaces.SearchController;
 import com.telran.ilcarro.model.car.SearchResponse;
+import com.telran.ilcarro.model.filter.FilterDTO;
 import com.telran.ilcarro.service.search.SearchService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -84,6 +85,11 @@ public class SearchControllerImpl implements SearchController {
     }
 
 
+    /**
+     *
+     * @author izum286
+     * @status IN_Progress
+     */
     @ApiOperation(value = "search cars by filter", response = SearchResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = ""),
@@ -91,7 +97,7 @@ public class SearchControllerImpl implements SearchController {
     }
     )
     @GetMapping("/search/filters")
-    public SearchResponse byFilter(@RequestBody Object filter,
+    public SearchResponse byFilter(@RequestBody FilterDTO filter,
                                    @RequestParam (name = "items_on_page") int itemsOnPage,
                                    @RequestParam (name = "current_page") int currentPage){
         return searchService

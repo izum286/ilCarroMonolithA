@@ -25,7 +25,7 @@ public class FullCarDtoEntityConverter {
                 .fuelConsumption(entity.getFuelConsumption())
                 .gear(entity.getGear())
                 .imageUrl(entity.getImage())
-                .make(entity.getManufacture())
+                .make(entity.getMake())
                 .model(entity.getModel())
                 .pickUpPlace(entity.getPickUpPlace())
                 .seats(entity.getSeats())
@@ -64,7 +64,7 @@ public class FullCarDtoEntityConverter {
                 .horsePower(dto.getHorsePower())
                 .image(dto.getImageUrl())
 
-                .manufacture(dto.getMake())
+                .make(dto.getMake())
                 .model(dto.getModel())
                 .owner(dto.getOwnerDtoResponse())
 

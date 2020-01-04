@@ -92,7 +92,7 @@ public class MapperServiceImpl implements MapperService {
     public FullCarDTOResponse map(FullCarEntity from) {
         return FullCarDTOResponse.builder()
                 .serialNumber(from.getSerialNumber())
-                .make(from.getManufacture())
+                .make(from.getMake())
                 .model(from.getModel())
                 .year(String.valueOf(from.getYear()))
                 .engine(from.getEngine())

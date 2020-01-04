@@ -21,7 +21,7 @@ public class FullCarEntityToShortCarEntityConverter {
                 .image(fullCarEntity.getImage())
                 //.isRented(fullCarEntity.isRented())
 //                .location(fullCarEntity.getLocation())
-                .manufacture(fullCarEntity.getManufacture())
+                .manufacture(fullCarEntity.getMake())
                 .model(fullCarEntity.getModel())
                 .price_per_day(fullCarEntity.getPricePerDay())
 //                .specifications(fullCarEntity.getSpecifications())
