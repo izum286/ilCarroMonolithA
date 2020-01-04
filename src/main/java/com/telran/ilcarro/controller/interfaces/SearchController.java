@@ -23,8 +23,8 @@ public interface SearchController {
      SearchResponse byFilter(FilterDTO filter, int itemsOnPage, int currentPage);
 
 
-     SearchResponse searchAllSortByPrice(int itemsOnPage, int currentPage, Object filter, String latt,
-                                               String longt, String radius, String city, String dateFrom,
-                                               String dateTo, String minPrice, String maxPrice,
+     SearchResponse searchAllSortByPrice(int itemsOnPage, int currentPage, FilterDTO filter, String latt,
+                                               String longt, String radius, String city, LocalDateTime dateFrom,
+                                               LocalDateTime dateTo, double minPrice, double maxPrice,
                                                String sort);
 }

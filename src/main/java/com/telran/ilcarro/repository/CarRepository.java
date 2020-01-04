@@ -19,7 +19,6 @@ public interface CarRepository extends MongoRepository<FullCarEntity, String>, C
  //todo
    FullCarEntity addCar(AddUpdateCarDtoRequest carToAdd);
 
-
  /**
   * @author izum286
   * @param circle

@@ -14,4 +14,9 @@ public interface CarRepositoryCustom {
                                                    double priceFrom, double priceTo, Pageable pageable);
 
     Page<FullCarEntity> byFilter(FilterDTO filter, Pageable pageable);
+    Page<FullCarEntity> searchAllSortByPrice(int itemsOnPage, int currentPage, FilterDTO filter,
+                                             String latt, String longt, String radius, String city,
+                                             LocalDateTime dateFrom, LocalDateTime dateTo,
+                                             double minPrice, double maxPrice,  Pageable pageable);
+
 }
