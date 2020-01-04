@@ -15,18 +15,18 @@ import java.util.UUID;
  * @author izum286
  */
 public interface CarRepository extends MongoRepository<FullCarEntity, String>, CarRepositoryCustom {
+    /**
+     * @author izum286
+     * @param circle
+     * @param pageable
+     * @return Page<FullCarEntity>
+     * @status READY
+     */
+    Page<FullCarEntity> findAllByPickUpPlaceWithin(Circle circle, Pageable pageable);
 
- //todo
+
+    //todo
    FullCarEntity addCar(AddUpdateCarDtoRequest carToAdd);
-
- /**
-  * @author izum286
-  * @param circle
-  * @param pageable
-  * @return Page<FullCarEntity>
-  * @status READY
-  */
- Page<FullCarEntity> findAllByPickUpPlaceWithin(Circle circle, Pageable pageable);
 
  //todo
     FullCarEntity updateCar(AddUpdateCarDtoRequest carToUpdate);
