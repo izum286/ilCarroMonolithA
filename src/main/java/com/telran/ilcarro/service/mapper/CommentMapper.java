@@ -12,8 +12,9 @@ import org.mapstruct.factory.Mappers;
 public interface CommentMapper {
     CommentMapper INSTANCE = Mappers.getMapper(CommentMapper.class);
 
-    @Mapping(target = "postDate", source = "comment.postDateTime")
-    @Mapping(target = "secondName", source = "user.lastName")
+    @Mapping(target = "post_date", source = "comment.postDateTime")
+    @Mapping(target = "first_name", source = "user.lastName")
+    @Mapping(target = "second_name", source = "user.firstName")
     FullCommentDTO map(CommentEntity comment, UserEntity user);
 
     @Mapping(target = "postDateTime", expression = "java(java.time.LocalDateTime.now())")

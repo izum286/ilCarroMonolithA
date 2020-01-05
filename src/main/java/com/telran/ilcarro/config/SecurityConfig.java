@@ -13,14 +13,15 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 /**
- *
  * SecurityConfig implementation
  * BasicAuth - off. Need to test and switch on
  *
  * @author Konkin Anton
  * @date 23.12.2019
  */
+@Configuration
 @EnableWebSecurity
 public class SecurityConfig {
     @Autowired
@@ -43,18 +44,18 @@ public class SecurityConfig {
 
             http
                     .csrf().disable()
-                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                    .and()
+//                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .authorizeRequests()
-                    .antMatchers(HttpMethod.POST, "/registration").permitAll()
-                    .antMatchers(HttpMethod.GET, "/comments").permitAll()
-                    .antMatchers(HttpMethod.GET, "/filters").permitAll()
-                    .antMatchers("/user/**").authenticated()
-                    .antMatchers("/comment/**").authenticated()
-                    .antMatchers("/car/**").authenticated()
-                    .anyRequest().permitAll() // switch to dennyAll in release. permitAll only for swagger
+//                    .antMatchers(HttpMethod.POST, "/registration").permitAll()
+//                    .antMatchers(HttpMethod.GET, "/comments").permitAll()
+//                    .antMatchers(HttpMethod.GET, "/filters").permitAll()
+//                    .antMatchers("/user/**").authenticated()
+//                    .antMatchers("/comment/**").authenticated()
+//                    .antMatchers("/car/**").authenticated()
+                    .anyRequest().permitAll()
                     .and()
-                    .httpBasic();
+                    .httpBasic()
+            ;
 
         }
 

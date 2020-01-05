@@ -25,6 +25,17 @@ public interface UserMapper {
      * @param userDTO - DTO with updates
      * @return new UserEntity
      */
+    @Mapping(source = "userDTO.firstName", target = "firstName")
+    @Mapping(source = "userDTO.lastName", target = "lastName")
+    @Mapping(source = "userDTO.photo", target = "photo")
+    @Mapping(source = "currUser.email", target = "email")
+    @Mapping(source = "currUser.driverLicense", target = "driverLicense")
+    @Mapping(source = "currUser.location", target = "location")
+    @Mapping(source = "currUser.phone", target = "phone")
+//    @Mapping(source = "currUser.isDeleted", target = "isDeleted")
+    @Mapping(source = "currUser.registrationDate", target = "registrationDate")
+    @Mapping(source = "currUser.comments", target = "comments")
+    @Mapping(source = "currUser.usages", target = "usages")
 
     UserEntity updUserInfo(UserEntity currUser, UpdUserDTO userDTO);
 }
