@@ -9,6 +9,7 @@ import com.telran.ilcarro.repository.exception.ConflictRepositoryException;
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.exceptions.ServiceException;
+import com.telran.ilcarro.service.mapper.CommentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +18,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static com.telran.ilcarro.service.converters.CommentDtoEntityConverter.map;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -44,7 +43,7 @@ public class CommentServiceImpl implements CommentService {
             return comments.stream().map(comment -> {
                 UserEntity user = userEntityRepository.findById(comment.getOwnerEmail())
                         .orElseThrow(() -> new NotFoundServiceException(String.format("User profile %s not found", comment.getOwnerEmail())));
-                return map(comment, user);
+                return CommentMapper.INSTANCE.map(comment, user);
             })
                     .collect(Collectors.toList());
 
@@ -63,7 +62,7 @@ public class CommentServiceImpl implements CommentService {
             if (userEntity.getComments() == null) {
                 userEntity.setComments(new ArrayList<>());
             }
-            userEntity.getComments().add(map(comment, serialNumber, ownerEmail));
+            userEntity.getComments().add(CommentMapper.INSTANCE.map(comment, serialNumber, ownerEmail));
             userEntityRepository.save(userEntity);
             return true;
         } catch (ConflictRepositoryException ex) {
