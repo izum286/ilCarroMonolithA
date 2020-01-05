@@ -21,4 +21,7 @@ public class CommentEntity {
     private LocalDateTime postDateTime;
     private String ownerEmail;
     private String serialNumber;
+    private String firstName;
+    private String lastName;
+    private String photo;
 }

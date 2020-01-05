@@ -36,17 +36,12 @@ public class CommentServiceImpl implements CommentService {
                         }
                         return Stream.empty();
                     })
-                    .sorted(Comparator.comparing(CommentEntity::getPostDateTime))
+                    .sorted(Comparator.comparing(CommentEntity::getPostDateTime).reversed())
                     .limit(num)
                     .collect(Collectors.toList());
 
-            return comments.stream().map(comment -> {
-                UserEntity user = userEntityRepository.findById(comment.getOwnerEmail())
-                        .orElseThrow(() -> new NotFoundServiceException(String.format("User profile %s not found", comment.getOwnerEmail())));
-                return CommentMapper.INSTANCE.map(comment, user);
-            })
+            return comments.stream().map(comment -> CommentMapper.INSTANCE.map(comment))
                     .collect(Collectors.toList());
-
         } catch (Throwable t) {
             throw new ServiceException(t.getMessage(), t.getCause());
         }
@@ -62,7 +57,9 @@ public class CommentServiceImpl implements CommentService {
             if (userEntity.getComments() == null) {
                 userEntity.setComments(new ArrayList<>());
             }
-            userEntity.getComments().add(CommentMapper.INSTANCE.map(comment, serialNumber, ownerEmail));
+            UserEntity postOwner = userEntityRepository.findById(ownerEmail)
+                    .orElseThrow(() -> new NotFoundServiceException(String.format("Owner %s not found", ownerEmail)));
+            userEntity.getComments().add(CommentMapper.INSTANCE.map(comment, serialNumber, postOwner));
             userEntityRepository.save(userEntity);
             return true;
         } catch (ConflictRepositoryException ex) {

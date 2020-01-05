@@ -13,14 +13,14 @@ public interface CommentMapper {
     CommentMapper INSTANCE = Mappers.getMapper(CommentMapper.class);
 
     @Mapping(target = "post_date", source = "comment.postDateTime")
-    @Mapping(target = "first_name", source = "user.lastName")
-    @Mapping(target = "second_name", source = "user.firstName")
-    FullCommentDTO map(CommentEntity comment, UserEntity user);
+    @Mapping(target = "first_name", source = "comment.lastName")
+    @Mapping(target = "second_name", source = "comment.firstName")
+    FullCommentDTO map(CommentEntity comment);
 
     @Mapping(target = "postDateTime", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "id", expression = "java(java.util.UUID.randomUUID().toString())")
-    @Mapping(target = "ownerEmail", source = "email")
-    CommentEntity map(AddCommentDTO comment, String serialNumber, String email);
+    @Mapping(target = "ownerEmail", source = "postOwner.email")
+    CommentEntity map(AddCommentDTO comment, String serialNumber, UserEntity postOwner);
 
 
 }
