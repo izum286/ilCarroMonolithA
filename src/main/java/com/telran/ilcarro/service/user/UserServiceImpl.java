@@ -13,12 +13,12 @@ import com.telran.ilcarro.service.DtoFabricService;
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.exceptions.ServiceException;
+import com.telran.ilcarro.service.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import static com.telran.ilcarro.service.converters.UserDTOEntityConverter.map;
 /**
  *
  * UserServiceImpl implementation of UserService
@@ -40,8 +40,8 @@ public class UserServiceImpl implements UserService{
     @Override
     public Optional<FullUserDTO> addUser(String email, RegUserDTO regUser) {
         try {
-            UserEntity entity = userRepository.save(map(email, regUser));
-            return Optional.of(map(entity));
+            UserEntity entity = userRepository.save(UserMapper.INSTANCE.map(email, regUser));
+            return Optional.of(dtoFabric.getFullUserDto(entity));
         } catch (ConflictRepositoryException ex) {
             throw new ConflictServiceException(ex.getMessage(), ex.getCause());
         } catch (Throwable t) {
@@ -68,8 +68,8 @@ public class UserServiceImpl implements UserService{
             }
             UserEntity userToUpd = userRepository.findById(email)
                     .orElseThrow(() -> new NotFoundServiceException(String.format("User profile %s not found", email)));
-            UserEntity entity = userRepository.save(map(userToUpd, updUser));
-            return Optional.of(map(entity));
+            UserEntity entity = userRepository.save(UserMapper.INSTANCE.updUserInfo(userToUpd, updUser));
+            return Optional.of(dtoFabric.getFullUserDto(entity));
         } catch (Throwable t) {
             throw new ServiceException(t.getMessage(), t.getCause());
         }

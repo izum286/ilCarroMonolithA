@@ -2,6 +2,7 @@ package com.telran.ilcarro.service;
 
 import com.telran.ilcarro.model.comment.FullCommentDTO;
 import com.telran.ilcarro.model.user.FullUserDTO;
+import com.telran.ilcarro.model.user.UpdUserDTO;
 import com.telran.ilcarro.repository.UserEntityRepository;
 import com.telran.ilcarro.repository.entity.UserEntity;
 import com.telran.ilcarro.service.converters.CommentDtoEntityConverter;
