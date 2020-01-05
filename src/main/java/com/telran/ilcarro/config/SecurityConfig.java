@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,7 +22,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @author Konkin Anton
  * @date 23.12.2019
  */
-//@Configuration
 @EnableWebSecurity
 public class SecurityConfig {
     @Autowired
@@ -43,20 +41,14 @@ public class SecurityConfig {
     static class SecurityAdapter extends WebSecurityConfigurerAdapter {
 
         @Override
-        public void configure(WebSecurity web) throws Exception {
-            web.ignoring().antMatchers(HttpMethod.POST,"/registration");
-        }
-
-        @Override
         protected void configure(HttpSecurity http) throws Exception {
 
             http
                     .csrf().disable()
-                    .cors().disable()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                     .authorizeRequests()
-//                    .antMatchers(HttpMethod.POST, "/registration").permitAll()
+                    .antMatchers(HttpMethod.POST, "/registration").permitAll()
                     .antMatchers(HttpMethod.GET, "/comments").permitAll()
                     .antMatchers(HttpMethod.GET, "/filters").permitAll()
                     .antMatchers("/user/**").authenticated()

@@ -21,6 +21,7 @@ import java.security.Principal;
  * @author Konkin Anton
  * @date 19.12.2019
  */
+@CrossOrigin
 @RestController
 public class UserControllerImpl  implements UserController {
     @Autowired
