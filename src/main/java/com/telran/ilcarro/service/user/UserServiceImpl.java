@@ -1,6 +1,7 @@
 package com.telran.ilcarro.service.user;
 
 
+import com.telran.ilcarro.model.car.AddUpdateCarDtoRequest;
 import com.telran.ilcarro.model.user.FullUserDTO;
 import com.telran.ilcarro.model.user.RegUserDTO;
 import com.telran.ilcarro.model.user.UpdUserDTO;
@@ -17,6 +18,8 @@ import com.telran.ilcarro.service.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -89,6 +92,38 @@ public class UserServiceImpl implements UserService{
             return true;
         } catch (NotFoundRepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
+        } catch (Throwable t) {
+            throw new ServiceException(t.getMessage(), t.getCause());
+        }
+    }
+
+    @Override
+    public boolean addUserCar(String userID, String carId) {
+        try {
+            if (ifUserCarExist(userID, carId)) {
+                throw new ConflictServiceException(String.format("Car with id %s already added", carId));
+            }
+            UserEntity entity = userRepository.findById(userID).get();
+            List<String> carsIdList = entity.getOwnCars();
+            if (carsIdList == null || carsIdList.isEmpty()) {
+                carsIdList = new ArrayList<>();
+            }
+            return carsIdList.add(carId);
+        } catch (Throwable t) {
+            throw new ServiceException(t.getMessage(), t.getCause());
+        }
+    }
+
+    @Override
+    public boolean ifUserCarExist(String userID, String carID) {
+        try {
+            UserEntity entity = userRepository.findById(userID)
+                    .orElseThrow(() -> new NotFoundServiceException(String.format("User profile %s not found", userID)));
+            List<String> carsIdList = entity.getOwnCars();
+            if (carsIdList == null || carsIdList.isEmpty()) {
+                return false;
+            }
+            return entity.getOwnCars().contains(carID);
         } catch (Throwable t) {
             throw new ServiceException(t.getMessage(), t.getCause());
         }

@@ -1,6 +1,7 @@
 package com.telran.ilcarro.model.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.telran.ilcarro.model.car.FullCarDTOResponse;
 import com.telran.ilcarro.model.comment.FullCommentDTO;
 import lombok.*;
 
@@ -33,8 +34,7 @@ public class FullUserDTO {
     private LocalDateTime registrationDate;
     private List<FullCommentDTO> comments;
     private String photo;
-    //TODO
-    private String ownCars;
+    private List<FullCarDTOResponse> ownCars;
     //TODO
     private String bookedCars;
     //TODO

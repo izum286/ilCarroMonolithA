@@ -35,6 +35,7 @@ public class UserEntity {
 //    private UserDetailsEntity userDetails;
     private String photo;
     private List<CommentEntity> comments;
+    private List<String> ownCars;
     private List<SchedularUsageEntity> usages;
 
 }

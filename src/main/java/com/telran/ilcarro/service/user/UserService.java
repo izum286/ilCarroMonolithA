@@ -18,4 +18,7 @@ public interface UserService {
     Optional<FullUserDTO> getUser(String email) throws NotFoundServiceException;
     Optional<FullUserDTO> updateUser(String email, UpdUserDTO updUser) throws NotFoundServiceException, ConflictServiceException;
     boolean deleteUser(String email) throws NotFoundServiceException;
+
+    boolean addUserCar(String userID, String carID) throws NotFoundServiceException, ConflictServiceException;
+    boolean ifUserCarExist(String userID, String carID) throws NotFoundServiceException;
 }
