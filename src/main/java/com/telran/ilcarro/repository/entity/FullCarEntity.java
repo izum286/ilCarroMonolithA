@@ -21,7 +21,6 @@ public class FullCarEntity {
     private String model;
     private String make;
     private String year;
-    private String city;
     private String engine;
     private String fuel;
     private String gear;
@@ -34,26 +33,23 @@ public class FullCarEntity {
     private List<FeatureDto> features;
     private String carClass;
     private PricePerDayEntity pricePerDay;
-    private String pricePerDaySimple;
     private int distanceIncluded;
     private String about;
     private PickUpPlaceDto pickUpPlace;
-    private List<String> images;
-    //todo need to think about this
-    private OwnerDtoResponse owner;
-    private List<BookedPeriodDto> bookedPeriods;
-    private CarStatDto statistics;
-    //протоколе написано own_cars - эт список чего?
-    private List<UserEntity> owner_cars;
-
-    //возможно стоит создать объект Прайс, который будет иметь два поля(валюта и цена)?
-
     private List<String> image;
 
+    private String pricePerDaySimple;
 
 
-    private List<FeedbackEntity> feedBacks;
+    private OwnerDtoResponse owner;
+    private List<UserEntity> owner_cars;
 
-    private int trips;
+    private List<BookedPeriodDto> bookedPeriods;
     private List<SchedularUsageEntity> usages;
+    private List<CommentEntity> feedBacks;
+    private CarStatDto statistics;
+    private int trips;
+
+
+
 }

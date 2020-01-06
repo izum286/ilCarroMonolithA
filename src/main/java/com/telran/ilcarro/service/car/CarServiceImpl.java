@@ -16,6 +16,7 @@ import com.telran.ilcarro.service.converters.ShortCarDtoEntityConverter;
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.exceptions.ServiceException;
+import com.telran.ilcarro.service.mapper.CarMapper;
 import com.telran.ilcarro.service.mapper.MapperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,6 +44,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public Optional<FullCarDTOResponse> addCar(AddUpdateCarDtoRequest carToAdd) {
         try {
+            FullCarEntity entity2 = CarMapper.INSTANCE.map(carToAdd);
             FullCarEntity entity = carRepository.addCar(carToAdd);
             return Optional.of(mapperService.map(entity));
         } catch (ConflictRepositoryException ex) {
