@@ -16,7 +16,7 @@ import java.util.List;
  *     private PricePerDayDto pricePerDay;
  *     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
  *     private float simplePricePerDay;
- * allow us ignore null or default fields during transfer to fronEnd,
+ * allow us ignore null or default fields during transfer to frontEnd,
  * and we dont need to write a lot of similar DTO's to provide this functionality.
  */
 
@@ -29,8 +29,8 @@ import java.util.List;
 @ApiModel(value = "FullCarDTOResponse",description = "Full Car data transfer object")
 public class FullCarDTOResponse {
     private String serialNumber;
-    private String make;
     private String model;
+    private String make;
     private String year;
     private String engine;
     private String fuel;
@@ -41,17 +41,21 @@ public class FullCarDTOResponse {
     private int doors;
     private int seats;
     private float fuelConsumption;
-    List<FeatureDto> features;
+    private List<FeatureDto> features;
     private String carClass;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private PricePerDayDto pricePerDay;
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-    private float simplePricePerDay;
+    private float pricePerDaySimple;
+    List<String> imageUrl;
     private int distanceIncluded;
     private String about;
     PickUpPlaceDto pickUpPlace;
-    List<String> imageUrl;
-    OwnerDtoResponse ownerDtoResponse;
+
+    OwnerDtoResponse owner;
+
     List<BookedPeriodDto> bookedPeriodDto;
     CarStatDto statisticsDto;
+
+
 }

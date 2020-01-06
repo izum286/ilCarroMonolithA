@@ -102,16 +102,16 @@ public class MapperServiceImpl implements MapperService {
                 .doors(from.getDoors())
                 .seats(from.getSeats())
                 .fuelConsumption(from.getFuelConsumption())
-                .features(from.getFeatures())
+ //               .features(from.getFeatures())
                 .carClass(from.getCarClass())
-                .simplePricePerDay(Float.valueOf(from.getPricePerDaySimple()))
+  //              .simplePricePerDay(Float.valueOf(from.getPricePerDaySimple()))
                 .distanceIncluded(from.getDistanceIncluded())
                 .about(from.getAbout())
-                .pickUpPlace(from.getPickUpPlace())
-                .imageUrl(from.getImages())
-                .ownerDtoResponse(from.getOwner())
-                .bookedPeriodDto(from.getBookedPeriods())
-                .statisticsDto(from.getStatistics())
+ //               .pickUpPlace(from.getPickUpPlace())
+                .imageUrl(from.getImage())
+//                .owner(from.getOwner())
+//                .bookedPeriodDto(from.getBookedPeriods())
+//                .statisticsDto(from.getStatistics())
         .build();
     }
 
@@ -224,7 +224,7 @@ public class MapperServiceImpl implements MapperService {
     /**
      * CarStatEntity ---> CarStatDto
      * @author Gor Aleks
-     * @date 03.01.2020
+     * 03.01.2020
      */
     public CarStatDto map(CarStatEntity entity){
         return CarStatDto.builder()
@@ -236,7 +236,7 @@ public class MapperServiceImpl implements MapperService {
     /**
      * CarStatDto ---> CarStatEntity
      * @author Gor Aleks
-     * @date 03.01.2020
+     * 03.01.2020
      */
     public CarStatEntity map(CarStatDto dto){
         return CarStatEntity.builder()
@@ -248,7 +248,7 @@ public class MapperServiceImpl implements MapperService {
     /**
      * OwnerEntity ---> OwnerDtoResponse
      * @author Gor Aleks
-     * @date 03.01.2020
+     * 03.01.2020
      */
     public OwnerDtoResponse map(OwnerEntity entity){
         return OwnerDtoResponse.builder()
@@ -261,7 +261,7 @@ public class MapperServiceImpl implements MapperService {
     /**
      * OwnerDtoResponse ---> OwnerEntity
      * @author Gor Aleks
-     * @date 03.01.2020
+     * 03.01.2020
      */
     public OwnerEntity map(OwnerDtoResponse dto){
         return OwnerEntity.builder()

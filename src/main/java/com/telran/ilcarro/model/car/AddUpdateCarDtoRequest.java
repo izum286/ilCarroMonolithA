@@ -32,12 +32,12 @@ public class AddUpdateCarDtoRequest {
     private int doors;
     private int seats;
     private float fuelConsumption;
-    List<FeatureDto> features;
+    private List<FeatureDto> features;
     private String carClass;
-    private float pricePerDay;
+    private PricePerDayDto pricePerDay;
     private int distanceIncluded;
     private String about;
-    PickUpPlaceDto pickUpPlaceDto;
-    List<String> imageUrl;
+    private PickUpPlaceDto pickUpPlaceDto;
+    private List<String> imageUrl;
 }
 

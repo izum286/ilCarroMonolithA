@@ -1,8 +1,6 @@
 package com.telran.ilcarro.service.car;
 
 import com.telran.ilcarro.model.car.*;
-import com.telran.ilcarro.model.car.probably_unused.SchedularUsageDTO;
-import com.telran.ilcarro.model.car.probably_unused.ShortCarDTO;
 import com.telran.ilcarro.model.user.OwnerDtoResponse;
 import com.telran.ilcarro.repository.CarRepository;
 import com.telran.ilcarro.repository.entity.*;
@@ -10,18 +8,14 @@ import com.telran.ilcarro.repository.exception.ConflictRepositoryException;
 import com.telran.ilcarro.repository.exception.NotFoundRepositoryException;
 import com.telran.ilcarro.repository.exception.RepositoryException;
 import com.telran.ilcarro.service.converters.FullCarDtoEntityConverter;
-import com.telran.ilcarro.service.converters.FullCarEntityToShortCarEntityConverter;
-import com.telran.ilcarro.service.converters.SchedularUsageListDtoEntityConverter;
-import com.telran.ilcarro.service.converters.ShortCarDtoEntityConverter;
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.exceptions.ServiceException;
+import com.telran.ilcarro.service.mapper.CarMapper;
 import com.telran.ilcarro.service.mapper.MapperService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -110,24 +104,24 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public BookResponseDTO makeReservation(String carId, BookRequestDTO dto) {
+    public Optional<BookResponseDTO> makeReservation(String carId, BookRequestDTO dto) {
         try {
             FullCarEntity entity = carRepository.getCarByIdForUsers(UUID.fromString(carId));
-            List<BookedPeriodDto> listBookedPeriodDto = entity.getBookedPeriods() == null ? new ArrayList<>() : entity.getBookedPeriods();
-            BookedPeriodDto bookedPeriodDto = new BookedPeriodDto();
-            bookedPeriodDto.setBookingDate(dto.getStartDateTime().format(DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm")));
-            bookedPeriodDto.setEndDateTime(dto.getEndDateTime());
-            bookedPeriodDto.setPersonWhoBookedDto(dto.getPersonWhoBookedDto());
-            listBookedPeriodDto.add(bookedPeriodDto);
-            entity.setBookedPeriods(listBookedPeriodDto);
+            List<BookedPeriodEntity> listBookedPeriodEntity = entity.getBookedPeriods() == null ? new ArrayList<>() : entity.getBookedPeriods();
+            BookedPeriodEntity bookedPeriodEntity = new BookedPeriodEntity();
+            bookedPeriodEntity.setBookingDate(dto.getStartDateTime().format(DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm")));
+            bookedPeriodEntity.setEndDateTime(dto.getEndDateTime());
+            bookedPeriodEntity.setPersonWhoBookedDto(dto.getPersonWhoBookedDto());
+            listBookedPeriodEntity.add(bookedPeriodEntity);
+            entity.setBookedPeriods(listBookedPeriodEntity);
 
             carRepository.save(entity);
 
             BookResponseDTO bookResponseDTO = new BookResponseDTO();
             bookResponseDTO.setBookingDate(dto.getStartDateTime().format(DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm")));
-            bookedPeriodDto.setPersonWhoBookedDto(dto.getPersonWhoBookedDto());
+            bookedPeriodEntity.setPersonWhoBookedDto(dto.getPersonWhoBookedDto());
 
-            return bookResponseDTO;
+            return Optional.of(bookResponseDTO);
         } catch (ServiceException ex) {
             throw new ServiceException(ex.getMessage(), ex.getCause());
         } catch (NotFoundRepositoryException ex) {
