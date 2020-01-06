@@ -49,10 +49,12 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String updatePassword(String userEmail, String newPassword) {
         try {
-            UserDetailsEntity current = userDetailsRepository.findById(userEmail)
-                    .orElseThrow(()->new NotFoundServiceException(String.format("User %s not found!", userEmail)));
-            current.setPassword(encoder.encode(tokenService.decodePassword(newPassword)));
-            userDetailsRepository.save(current);
+            if (newPassword != null && !newPassword.isEmpty()) {
+                UserDetailsEntity current = userDetailsRepository.findById(userEmail)
+                        .orElseThrow(() -> new NotFoundServiceException(String.format("User %s not found!", userEmail)));
+                current.setPassword(encoder.encode(tokenService.decodePassword(newPassword)));
+                userDetailsRepository.save(current);
+            }
             return userEmail;
         } catch (Throwable t) {
             throw new ServiceException(t.getMessage(), t.getCause());
