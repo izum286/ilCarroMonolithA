@@ -16,7 +16,7 @@ import java.util.List;
  *     private PricePerDayDto pricePerDay;
  *     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
  *     private float simplePricePerDay;
- * allow us ignore null or default fields during transfer to fronEnd,
+ * allow us ignore null or default fields during transfer to frontEnd,
  * and we dont need to write a lot of similar DTO's to provide this functionality.
  */
 
