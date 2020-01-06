@@ -41,13 +41,13 @@ public class FullCarEntity {
     private String pricePerDaySimple;
 
 
-    private OwnerDtoResponse owner;
+    private OwnerEntity owner;
     private List<UserEntity> owner_cars;
 
-    private List<BookedPeriodDto> bookedPeriods;
+    private List<BookedPeriodEntity> bookedPeriods;
     private List<SchedularUsageEntity> usages;
     private List<CommentEntity> feedBacks;
-    private CarStatDto statistics;
+    private CarStatEntity statistics;
     private int trips;
 
 
