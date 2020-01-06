@@ -26,7 +26,7 @@ public class CarDtoRequestToResponse {
                 .fuelConsumption(from.getFuelConsumption())
                 .features(from.getFeatures())
                 .carClass(from.getCarClass())
-                .simplePricePerDay(from.getPricePerDay())
+         //       .simplePricePerDay(from.getPricePerDay())
                 .distanceIncluded(from.getDistanceIncluded())
                 .about(from.getAbout())
                 .pickUpPlace(from.getPickUpPlaceDto())

@@ -102,16 +102,16 @@ public class MapperServiceImpl implements MapperService {
                 .doors(from.getDoors())
                 .seats(from.getSeats())
                 .fuelConsumption(from.getFuelConsumption())
-                .features(from.getFeatures())
+ //               .features(from.getFeatures())
                 .carClass(from.getCarClass())
   //              .simplePricePerDay(Float.valueOf(from.getPricePerDaySimple()))
                 .distanceIncluded(from.getDistanceIncluded())
                 .about(from.getAbout())
-                .pickUpPlace(from.getPickUpPlace())
+ //               .pickUpPlace(from.getPickUpPlace())
                 .imageUrl(from.getImage())
-                .owner(from.getOwner())
-                .bookedPeriodDto(from.getBookedPeriods())
-                .statisticsDto(from.getStatistics())
+//                .owner(from.getOwner())
+//                .bookedPeriodDto(from.getBookedPeriods())
+//                .statisticsDto(from.getStatistics())
         .build();
     }
 

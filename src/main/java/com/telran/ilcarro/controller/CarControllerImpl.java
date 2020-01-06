@@ -172,7 +172,7 @@ public class CarControllerImpl implements CarController {
     @PostMapping("/car/reservation?serial_number")
     public BookResponseDTO makeReservation(@RequestParam(name = "serial_number") String carId,
                                            @RequestBody BookRequestDTO dto) {
-        return carService.makeReservation(carId,dto);
+        return carService.makeReservation(carId,dto).orElseThrow();
     }
 
     @Override

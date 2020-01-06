@@ -1,12 +1,7 @@
 package com.telran.ilcarro.service.car;
 
 import com.telran.ilcarro.model.car.*;
-import com.telran.ilcarro.model.car.probably_unused.SchedularUsageDTO;
-import com.telran.ilcarro.model.car.probably_unused.ShortCarDTO;
 import com.telran.ilcarro.model.user.OwnerDtoResponse;
-import com.telran.ilcarro.repository.entity.UserEntity;
-import com.telran.ilcarro.repository.exception.ConflictRepositoryException;
-import com.telran.ilcarro.repository.exception.NotFoundRepositoryException;
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
 import com.telran.ilcarro.service.exceptions.EmptyDataException;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
@@ -88,7 +83,7 @@ public interface CarService {
      * @throws ConflictServiceException - if current car already booked with current date
      * @throws ServiceException - if user unauthorized
      */
-    BookResponseDTO makeReservation(String carId, BookRequestDTO dto);
+    Optional<BookResponseDTO> makeReservation(String carId, BookRequestDTO dto);
 
     /**
      * Get OwnerDtoResponse of current car with serial number as carId
