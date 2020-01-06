@@ -14,6 +14,7 @@ public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
     @Mapping(source = "email", target = "email")
+    @Mapping(target = "registrationDate", expression = "java(java.time.LocalDateTime.now())")
     UserEntity map (String email, RegUserDTO regUserDTO);
 
     @Mapping(source = "userDetailsEntity.email", target = "email")
