@@ -88,7 +88,7 @@ public interface CarService {
      * @throws ConflictServiceException - if current car already booked with current date
      * @throws ServiceException - if user unauthorized
      */
-    BookedPeriodDto makeReservation(String carId, BookRequestDTO dto);
+    BookResponseDTO makeReservation(String carId, BookRequestDTO dto);
 
     /**
      * Get OwnerDtoResponse of current car with serial number as carId
@@ -107,4 +107,7 @@ public interface CarService {
      * @throws ServiceException - if user unauthorized
      */
     List<CarStatDto> getCarStatById(String carId);
+
+
+    List<FullCarDTOResponse> get3BestCars();
 }

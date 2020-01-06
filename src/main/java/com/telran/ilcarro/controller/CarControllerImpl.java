@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @CrossOrigin
@@ -168,9 +169,14 @@ public class CarControllerImpl implements CarController {
     }
 
     @Override
-    @PostMapping("/car/reservation")
-    public BookedPeriodDto makeReservation(@RequestParam(name = "serial_number") String carId,
+    @PostMapping("/car/reservation?serial_number")
+    public BookResponseDTO makeReservation(@RequestParam(name = "serial_number") String carId,
                                            @RequestBody BookRequestDTO dto) {
-        return carService.makeReservation(carId, dto);
+        return carService.makeReservation(carId,dto);
+    }
+
+    @Override
+    public List<FullCarDTOResponse> get3BestCars() {
+        return carService.get3BestCars();
     }
 }

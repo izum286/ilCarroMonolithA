@@ -40,4 +40,6 @@ public interface CarRepository extends MongoRepository<FullCarEntity, String>, C
     FullCarEntity ownerGetCarById(UUID id);
 //todo
     List<BookedPeriodDto>  ownerGetBookedPeriodsByCarId(String carId);
+
+    List<FullCarEntity> getTopByBookedPeriods();
 }

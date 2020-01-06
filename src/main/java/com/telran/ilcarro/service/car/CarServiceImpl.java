@@ -18,11 +18,12 @@ import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.exceptions.ServiceException;
 import com.telran.ilcarro.service.mapper.MapperService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -38,6 +39,7 @@ public class CarServiceImpl implements CarService {
 
     @Autowired
     MapperService mapperService;
+
     @Override
     public Optional<FullCarDTOResponse> addCar(AddUpdateCarDtoRequest carToAdd) {
         try {
@@ -95,8 +97,6 @@ public class CarServiceImpl implements CarService {
     }
 
 
-
-
     @Override
     public List<BookedPeriodDto> getBookedPeriodsByCarId(String carId) {
         try {
@@ -110,16 +110,45 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public BookedPeriodDto makeReservation(String carId, BookRequestDTO dto) {
-//        try{
-//            return carRepository.makeReservation(carId,mapperService.map(dto));
-//        }catch (ServiceException ex){
-//            throw new ServiceException(ex.getMessage(),ex.getCause());
-//        }catch (NotFoundRepositoryException ex){
-//            throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
-//        }
-        return null;
+    public BookResponseDTO makeReservation(String carId, BookRequestDTO dto) {
+        try {
+            FullCarEntity entity = carRepository.getCarByIdForUsers(UUID.fromString(carId));
+            List<BookedPeriodDto> listBookedPeriodDto = entity.getBookedPeriods() == null ? new ArrayList<>() : entity.getBookedPeriods();
+            BookedPeriodDto bookedPeriodDto = new BookedPeriodDto();
+            bookedPeriodDto.setBookingDate(dto.getStartDateTime().format(DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm")));
+            bookedPeriodDto.setEndDateTime(dto.getEndDateTime());
+            bookedPeriodDto.setPersonWhoBookedDto(dto.getPersonWhoBookedDto());
+            listBookedPeriodDto.add(bookedPeriodDto);
+            entity.setBookedPeriods(listBookedPeriodDto);
+
+            carRepository.save(entity);
+
+            BookResponseDTO bookResponseDTO = new BookResponseDTO();
+            bookResponseDTO.setBookingDate(dto.getStartDateTime().format(DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm")));
+            bookedPeriodDto.setPersonWhoBookedDto(dto.getPersonWhoBookedDto());
+
+            return bookResponseDTO;
+        } catch (ServiceException ex) {
+            throw new ServiceException(ex.getMessage(), ex.getCause());
+        } catch (NotFoundRepositoryException ex) {
+            throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
+        }
     }
+
+    @Override
+    public List<FullCarDTOResponse> get3BestCars() {
+        try {
+            List<FullCarEntity> fullCarEntityList = carRepository.getTopByBookedPeriods();
+            return fullCarEntityList.stream()
+                    .map(FullCarDtoEntityConverter::map)
+                    .collect(Collectors.toList());
+        } catch (NotFoundRepositoryException ex) {
+            throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
+        } catch (RepositoryException ex) {
+            throw new ServiceException(ex.getMessage(), ex.getCause());
+        }
+    }
+
 
     @Override
     public Optional<OwnerDtoResponse> getOwnerByCarId(String carId) {
@@ -149,19 +178,5 @@ public class CarServiceImpl implements CarService {
         return null;
     }
 
-    //TODO this method!!!!
-//    @Override
-//    public BookedPeriodDto makeReservation(String carId, BookRequestDTO dto) {
-//        try {
-//            BookedPeriodDto bookedPeriodDto = new BookedPeriodDto(dto.getStartDateTime(), dto.getEndDateTime(), dto.getPersonWhoBookedDto());
-//            FullCarEntity entity = carRepository.getCarByIdForUsers(UUID.fromString(carId));
-//            entity.setRented(true);
-//            carRepository.updateCar(entity);
-//            return bookedPeriodDto;
-//        } catch (NotFoundRepositoryException ex) {
-//            throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
-//        } catch (RepositoryException ex) {
-//            throw new ServiceException(ex.getMessage(), ex.getCause());
-//        }
-//    }
+
 }
