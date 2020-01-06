@@ -68,8 +68,9 @@ public class UserServiceImpl implements UserService{
             }
             UserEntity userToUpd = userRepository.findById(email)
                     .orElseThrow(() -> new NotFoundServiceException(String.format("User profile %s not found", email)));
-            UserEntity entity = userRepository.save(UserMapper.INSTANCE.updUserInfo(userToUpd, updUser));
-            return Optional.of(dtoFabric.getFullUserDto(entity));
+            UserMapper.INSTANCE.updUserInfo(userToUpd, updUser);
+            userRepository.save(userToUpd);
+            return Optional.of(dtoFabric.getFullUserDto(userToUpd));
         } catch (Throwable t) {
             throw new ServiceException(t.getMessage(), t.getCause());
         }
