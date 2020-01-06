@@ -1,8 +1,9 @@
 package com.telran.ilcarro.service.mapper;
 
-import com.telran.ilcarro.model.car.AddUpdateCarDtoRequest;
-import com.telran.ilcarro.model.car.FullCarDTOResponse;
-import com.telran.ilcarro.repository.entity.FullCarEntity;
+import com.telran.ilcarro.model.car.*;
+import com.telran.ilcarro.model.comment.FullCommentDTO;
+import com.telran.ilcarro.model.user.OwnerDtoResponse;
+import com.telran.ilcarro.repository.entity.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
@@ -14,9 +15,33 @@ public interface CarMapper {
 
     CarMapper INSTANCE = Mappers.getMapper(CarMapper.class);
 
-
     FullCarEntity map(AddUpdateCarDtoRequest dto);
 
     @Mapping(target = "imageUrl", source = "entity.image")
     FullCarDTOResponse map(FullCarEntity entity);
+
+    BookedPeriodDto bookedPeriodEntityToBookedPeriodDto(BookedPeriodEntity entity);
+    BookedPeriodEntity bookedPeriodDtoToBookedPeriodEntity(BookedPeriodDto dto);
+
+    FeatureDto featureEntityToFeatureDto(FeatureEntity entity);
+    FeatureEntity featureDtoToFeatureEntity(FeatureDto dto);
+
+    OwnerDtoResponse ownerEntityToOwnerDtoResponse(OwnerEntity entity);
+    OwnerEntity ownerDtoResponseToOwnerEntity(OwnerDtoResponse dto);
+
+    PickUpPlaceDto pickUpPlaceEntityToPickUpPlaceDto(PickUpPlaceEntity entity);
+    PickUpPlaceEntity pickUpPlaceDtoToPickUpPlaceEntity(PickUpPlaceDto dto);
+
+    PricePerDayDto pricePerDayEntityToPricePerDayDto(PricePerDayEntity entity);
+    PricePerDayEntity pricePerDatDtoToPricePerDayEntity(PricePerDayDto dto);
+
+    //TODO что с этими полями? Они нужны вообще?
+//    SchedularUsageEntity schedularUsageDtoToSchedularUsageEntity(SchedularUsageDto dto);
+//    SchedularUsageDto schedularUsageEntityToSchedularUsageDto(SchedularUsageEntity entity);
+
+    CommentEntity fullCommentDtoToCommentEntity(FullCommentDTO dto);
+    FullCommentDTO commentEntityToFullCommentDTO(CommentEntity entity);
+
+    CarStatEntity carStatDtoToCarStatEntity(CarStatDto dto);
+    CarStatDto CarStatEntityToCarStatDto(CarStatEntity entity);
 }
