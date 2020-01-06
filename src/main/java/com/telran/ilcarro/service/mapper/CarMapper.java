@@ -1,6 +1,7 @@
 package com.telran.ilcarro.service.mapper;
 
 import com.telran.ilcarro.model.car.*;
+import com.telran.ilcarro.model.comment.FullCommentDTO;
 import com.telran.ilcarro.model.user.OwnerDtoResponse;
 import com.telran.ilcarro.repository.entity.*;
 import org.mapstruct.Mapper;
@@ -33,4 +34,14 @@ public interface CarMapper {
 
     PricePerDayDto pricePerDayEntityToPricePerDayDto(PricePerDayEntity entity);
     PricePerDayEntity pricePerDatDtoToPricePerDayEntity(PricePerDayDto dto);
+
+    //TODO что с этими полями? Они нужны вообще?
+//    SchedularUsageEntity schedularUsageDtoToSchedularUsageEntity(SchedularUsageDto dto);
+//    SchedularUsageDto schedularUsageEntityToSchedularUsageDto(SchedularUsageEntity entity);
+
+    CommentEntity fullCommentDtoToCommentEntity(FullCommentDTO dto);
+    FullCommentDTO commentEntityToFullCommentDTO(CommentEntity entity);
+
+    CarStatEntity carStatDtoToCarStatEntity(CarStatDto dto);
+    CarStatDto CarStatEntityToCarStatDto(CarStatEntity entity);
 }
