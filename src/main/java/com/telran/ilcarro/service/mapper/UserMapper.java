@@ -21,6 +21,7 @@ public interface UserMapper {
     UserEntity map (String email, RegUserDTO regUserDTO);
 
     @Mapping(source = "userDetailsEntity.email", target = "email")
+    @Mapping(target = "ownCars", ignore = true)
     UserEntity map (UserDetailsEntity userDetailsEntity, FullUserDTO fullUserDTO);
 
     /**
@@ -29,4 +30,9 @@ public interface UserMapper {
      * @param userDTO - DTO with updates
      */
     void updUserInfo(@MappingTarget UserEntity currUser, UpdUserDTO userDTO);
+
+    @Mapping(target = "ownCars", ignore = true)
+    @Mapping(target = "bookedCars", ignore = true)
+    @Mapping(target = "history", ignore = true)
+    FullUserDTO map(UserEntity userEntity);
 }

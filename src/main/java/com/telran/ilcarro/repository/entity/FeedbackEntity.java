@@ -10,7 +10,10 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-
+@Deprecated
+/**
+ * For feedback use class CommentEntity
+ */
 public class FeedbackEntity {
     private String id;
     private String message;
