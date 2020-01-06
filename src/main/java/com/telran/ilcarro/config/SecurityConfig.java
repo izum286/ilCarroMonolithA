@@ -41,14 +41,20 @@ public class SecurityConfig {
     static class SecurityAdapter extends WebSecurityConfigurerAdapter {
 
         @Override
+        public void configure(WebSecurity web) throws Exception {
+            web.ignoring().antMatchers(HttpMethod.POST, "/registration");
+        }
+
+        @Override
         protected void configure(HttpSecurity http) throws Exception {
 
             http
                     .csrf().disable()
+                    .cors().disable()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                     .authorizeRequests()
-                    .antMatchers(HttpMethod.POST, "/registration").permitAll()
+//                    .antMatchers(HttpMethod.POST, "/registration").permitAll()
                     .antMatchers(HttpMethod.GET, "/comments").permitAll()
                     .antMatchers(HttpMethod.GET, "/filters").permitAll()
                     .antMatchers("/user/**").authenticated()
