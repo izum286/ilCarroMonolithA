@@ -30,7 +30,7 @@ public class FullCarEntity {
     private int doors;
     private int seats;
     private float fuelConsumption;
-    private List<FeatureDto> features;
+    private List<FeatureEntity> features;
     private String carClass;
     private PricePerDayEntity pricePerDay;
     private int distanceIncluded;
