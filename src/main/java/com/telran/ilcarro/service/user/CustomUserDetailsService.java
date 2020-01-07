@@ -17,7 +17,7 @@ import java.util.NoSuchElementException;
  * @see UserDetailsRepository
  * @see UserDetailsEntity
  * @author Konkin Anton
- * @date 19.12.2019
+ * 19.12.2019
  */
 public class CustomUserDetailsService implements UserDetailsService {
     UserDetailsRepository repository;

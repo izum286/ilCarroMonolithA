@@ -19,7 +19,7 @@ import java.util.List;
  * to correct objects
  *
  * @author Konkin Anton
- * @date 19.12.2019
+ * 19.12.2019
  */
 
 @Getter

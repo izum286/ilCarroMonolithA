@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  * UserServiceImpl implementation of UserService
  * @see UserService
  * @author Konkin Anton
- * @date 19.12.2019
+ * 19.12.2019
  */
 @Service
 public class UserServiceImpl implements UserService{

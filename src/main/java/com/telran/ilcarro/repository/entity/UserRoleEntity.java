@@ -2,7 +2,6 @@ package com.telran.ilcarro.repository.entity;
 import lombok.*;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author vitalii_adler

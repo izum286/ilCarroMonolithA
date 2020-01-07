@@ -20,7 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * BasicAuth - off. Need to test and switch on
  *
  * @author Konkin Anton
- * @date 23.12.2019
+ * 23.12.2019
  */
 @EnableWebSecurity
 public class SecurityConfig {
@@ -41,7 +41,7 @@ public class SecurityConfig {
     static class SecurityAdapter extends WebSecurityConfigurerAdapter {
 
         @Override
-        public void configure(WebSecurity web) throws Exception {
+        public void configure(WebSecurity web) {
             web.ignoring().antMatchers(HttpMethod.POST, "/registration");
         }
 

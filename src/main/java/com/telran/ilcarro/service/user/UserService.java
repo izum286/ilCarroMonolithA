@@ -14,7 +14,7 @@ import java.util.Optional;
  *
  * UserService interface
  * @author Konkin Anton
- * @date 19.12.2019
+ * 19.12.2019
  */
 public interface UserService {
     Optional<FullUserDTO> addUser(String userEmail, RegUserDTO regUser) throws ConflictServiceException;
@@ -24,8 +24,8 @@ public interface UserService {
 
     /**
      * Method add carId to user cars
-     * @param userID
-     * @param carID
+     * @param userID userId to update information
+     * @param carID car serial number to add
      * @return true
      * @throws NotFoundServiceException - if user not found
      * @throws ConflictServiceException - if carId already in list
@@ -36,8 +36,8 @@ public interface UserService {
 
     /**
      * Method add bookedPeriods to user history
-     * @param userID
-     * @param bookedPeriodEntity
+     * @param userID user ID
+     * @param bookedPeriodEntity entity to add
      * @return true when booked period successfully added
      * @throws NotFoundServiceException - in case when userID not found
      */

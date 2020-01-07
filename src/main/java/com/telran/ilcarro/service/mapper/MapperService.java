@@ -11,6 +11,7 @@ import com.telran.ilcarro.repository.entity.FullCarEntity;
 import com.telran.ilcarro.repository.entity.OwnerEntity;
 import com.telran.ilcarro.service.model.FilterNode;
 
+@Deprecated
 public interface MapperService {
     <U> U map(String from, Class to);
     <T> String map(T from);

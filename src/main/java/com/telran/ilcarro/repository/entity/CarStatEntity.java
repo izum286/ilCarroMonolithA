@@ -3,7 +3,7 @@ package com.telran.ilcarro.repository.entity;
 import lombok.*;
 /**
  * @author Gor Aleks
- * @date 03.01.2020
+ * 03.01.2020
  */
 @Getter
 @Setter

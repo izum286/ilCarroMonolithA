@@ -10,9 +10,9 @@ import com.telran.ilcarro.repository.entity.PricePerDayEntity;
  * PricePerDayEntity <---> PricePerDayDto
  * Implementation of convertation logic for Converters with PricePerDayEntity and PricePerDayDto
  * @author Gor Aleks
- * @date 25.12.2019
+ * .12.2019
  */
-
+@Deprecated
 public class PricePerDayDtoEntityCoverter {
 
     public static PricePerDayDto map(PricePerDayEntity entity){

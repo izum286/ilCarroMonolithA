@@ -6,7 +6,7 @@ import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 /**
  * AuthService interface
  * @author Konkin Anton
- * @date 19.12.2019
+ * 19.12.2019
  */
 public interface AuthService {
     /**

@@ -8,7 +8,7 @@ import java.util.Base64;
  *
  * TokenService interface implementation
  * @author Konkin Anton
- * @date 19.12.2019
+ * 19.12.2019
  */
 
 @Service

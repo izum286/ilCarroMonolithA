@@ -3,7 +3,6 @@ package com.telran.ilcarro.repository;
 import com.telran.ilcarro.model.car.AddUpdateCarDtoRequest;
 import com.telran.ilcarro.model.car.BookedPeriodDto;
 import com.telran.ilcarro.repository.entity.FullCarEntity;
-import com.telran.ilcarro.repository.entity.SchedularUsageEntity;
 import com.telran.ilcarro.repository.entity.ShortCarEntity;
 import org.springframework.stereotype.Repository;
 

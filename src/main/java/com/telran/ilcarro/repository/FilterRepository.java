@@ -5,8 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.Hashtable;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * mock filter repository

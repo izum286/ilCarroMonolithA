@@ -20,7 +20,7 @@ import java.util.List;
  * BasicAuth - off. Need to test and switch on
  *
  * @author Konkin Anton
- * @date 23.12.2019
+ * 23.12.2019
  */
 @CrossOrigin
 @RestController

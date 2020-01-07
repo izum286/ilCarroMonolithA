@@ -8,9 +8,9 @@ import com.telran.ilcarro.repository.entity.FullCarEntity;
  * FullCarDTOResponse <---> FullCarEntity
  * Implementation of convertation logic for CarService with FullCarDTOResponse and FullCarEntity
  * @author Gor Aleks
- * @date 03.01.2020
+ * 03.01.2020
  */
-
+@Deprecated
 public class FullCarDtoEntityConverter {
 
     public static FullCarDTOResponse map(FullCarEntity entity) {
