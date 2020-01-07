@@ -2,8 +2,6 @@ package com.telran.ilcarro.model.car;
 
 import lombok.*;
 
-import java.util.ArrayList;
-
 /**
  * @author vitalii_adler
  * @author izum286

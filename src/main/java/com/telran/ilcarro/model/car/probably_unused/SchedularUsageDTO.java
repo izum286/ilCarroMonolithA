@@ -15,7 +15,6 @@ public class SchedularUsageDTO {
     //TODO probably unused
     private String id;
     private String userId;
-//    private UUID userId;
     private UUID carId;
     private LocalDate startDate;
     private LocalDate endDate;

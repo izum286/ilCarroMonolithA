@@ -5,15 +5,14 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+/**
+ * @author Konkin Anton
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
-
-/**
- * @author Konkin Anton
- */
 public class CommentEntity {
     private String id;
     private String post;

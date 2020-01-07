@@ -10,9 +10,9 @@ import com.telran.ilcarro.repository.entity.ShortCarEntity;
  * FullCarEntity ---> ShortCarEntity
  * Implementation of convertation logic for CarService with FullCarEntity and ShortCarEntity
  * @author Gor Aleks
- * @date 24.12.2019
+ * 24.12.2019
  */
-
+@Deprecated
 public class FullCarEntityToShortCarEntityConverter {
 
     public static ShortCarEntity map(FullCarEntity fullCarEntity){

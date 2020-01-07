@@ -1,16 +1,17 @@
 package com.telran.ilcarro.service.user;
 
 
-import com.telran.ilcarro.model.car.AddUpdateCarDtoRequest;
+import com.telran.ilcarro.model.car.BookedPeriodDto;
 import com.telran.ilcarro.model.user.FullUserDTO;
 import com.telran.ilcarro.model.user.RegUserDTO;
 import com.telran.ilcarro.model.user.UpdUserDTO;
 import com.telran.ilcarro.repository.UserDetailsRepository;
 import com.telran.ilcarro.repository.UserEntityRepository;
+import com.telran.ilcarro.repository.entity.BookedPeriodEntity;
 import com.telran.ilcarro.repository.entity.UserEntity;
 import com.telran.ilcarro.repository.exception.ConflictRepositoryException;
 import com.telran.ilcarro.repository.exception.NotFoundRepositoryException;
-import com.telran.ilcarro.service.DtoFabricService;
+import com.telran.ilcarro.service.car.CarService;
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.exceptions.ServiceException;
@@ -21,13 +22,14 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  *
  * UserServiceImpl implementation of UserService
  * @see UserService
  * @author Konkin Anton
- * @date 19.12.2019
+ * 19.12.2019
  */
 @Service
 public class UserServiceImpl implements UserService{
@@ -38,13 +40,13 @@ public class UserServiceImpl implements UserService{
     UserDetailsRepository userDetailsRepository;
 
     @Autowired
-    DtoFabricService dtoFabric;
+    CarService carService;
 
     @Override
     public Optional<FullUserDTO> addUser(String email, RegUserDTO regUser) {
         try {
             UserEntity entity = userRepository.save(UserMapper.INSTANCE.map(email, regUser));
-            return Optional.of(dtoFabric.getFullUserDto(entity));
+            return getUser(entity.getEmail());
         } catch (ConflictRepositoryException ex) {
             throw new ConflictServiceException(ex.getMessage(), ex.getCause());
         } catch (Throwable t) {
@@ -57,14 +59,16 @@ public class UserServiceImpl implements UserService{
         try {
             UserEntity entity = userRepository.findById(email)
                     .orElseThrow(()-> new NotFoundServiceException(String.format("User %s not found", email)));
-            return Optional.of(dtoFabric.getFullUserDto(entity));
+            FullUserDTO userDTO = UserMapper.INSTANCE.map(entity);
+            userDTO.setBookedCars(getUserBookedCarsPeriods(email).orElse(null));
+            return Optional.of(userDTO);
         } catch (Throwable t) {
             throw new ServiceException(t.getMessage(), t.getCause());
         }
     }
 
     @Override
-    public Optional<FullUserDTO>  updateUser(String email, UpdUserDTO updUser) {
+    public Optional<FullUserDTO> updateUser(String email, UpdUserDTO updUser) {
         try {
             if (!userDetailsRepository.existsById(email)) {
                 throw new NotFoundServiceException(String.format("User %s not found", email));
@@ -73,7 +77,7 @@ public class UserServiceImpl implements UserService{
                     .orElseThrow(() -> new NotFoundServiceException(String.format("User profile %s not found", email)));
             UserMapper.INSTANCE.updUserInfo(userToUpd, updUser);
             userRepository.save(userToUpd);
-            return Optional.of(dtoFabric.getFullUserDto(userToUpd));
+            return getUser(userToUpd.getEmail());
         } catch (Throwable t) {
             throw new ServiceException(t.getMessage(), t.getCause());
         }
@@ -100,7 +104,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public boolean addUserCar(String userID, String carId) {
         try {
-            if (ifUserCarExist(userID, carId)) {
+            if (ifUserCarsExist(userID, carId)) {
                 throw new ConflictServiceException(String.format("Car with id %s already added", carId));
             }
             UserEntity entity = userRepository.findById(userID).get();
@@ -115,7 +119,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public boolean ifUserCarExist(String userID, String carID) {
+    public boolean ifUserCarsExist(String userID, String carID) {
         try {
             UserEntity entity = userRepository.findById(userID)
                     .orElseThrow(() -> new NotFoundServiceException(String.format("User profile %s not found", userID)));
@@ -124,6 +128,41 @@ public class UserServiceImpl implements UserService{
                 return false;
             }
             return entity.getOwnCars().contains(carID);
+        } catch (Throwable t) {
+            throw new ServiceException(t.getMessage(), t.getCause());
+        }
+    }
+
+    @Override
+    public Optional<List<BookedPeriodDto>> getUserBookedCarsPeriods(String userID) {
+        try {
+            UserEntity entity = userRepository.findById(userID)
+                .orElseThrow(() -> new NotFoundServiceException(String.format("User profile %s not found", userID)));
+            List<String> bookedCarsSerialNumbers = entity.getOwnCars();
+            if (bookedCarsSerialNumbers == null || bookedCarsSerialNumbers.isEmpty()) {
+                return Optional.empty();
+            }
+            List<BookedPeriodDto> bookedCarsPeriods = bookedCarsSerialNumbers.stream()
+                    .flatMap(sn -> carService.getBookedPeriodsByCarId(sn).stream())
+                    .collect(Collectors.toList());
+            return Optional.of(bookedCarsPeriods);
+        } catch (Throwable t) {
+            throw new ServiceException(t.getMessage(), t.getCause());
+        }
+    }
+
+    @Override
+    public boolean addBookedPeriodToUserHistory(String userID, BookedPeriodEntity bookedPeriodEntity) {
+        try {
+            UserEntity entity = userRepository.findById(userID)
+                    .orElseThrow(() -> new NotFoundServiceException(String.format("User profile %s not found", userID)));
+            List<BookedPeriodEntity> bookedPeriodEntities = entity.getHistory();
+            if (bookedPeriodEntities == null) {
+                bookedPeriodEntities = new ArrayList<>();
+            }
+            bookedPeriodEntities.add(bookedPeriodEntity);
+            userRepository.save(entity);
+            return true;
         } catch (Throwable t) {
             throw new ServiceException(t.getMessage(), t.getCause());
         }

@@ -14,9 +14,9 @@ import java.util.UUID;
  * SchedularUsageListEntity <---> SchedularUsageListDto
  * Implementation of convertation logic for Converters with SchedularUsageListEntity and SchedularUsageListDto
  * @author Gor Aleks
- * @date 24.12.2019
+ * 24.12.2019
  */
-
+@Deprecated
 public class SchedularUsageListDtoEntityConverter {
 
     public static SchedularUsageDTO map(SchedularUsageEntity entity){

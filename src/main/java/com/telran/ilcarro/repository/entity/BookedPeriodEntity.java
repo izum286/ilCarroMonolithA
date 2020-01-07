@@ -1,7 +1,5 @@
 package com.telran.ilcarro.repository.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.telran.ilcarro.model.user.PersonWhoBookedDto;
 import lombok.*;
 
@@ -19,6 +17,6 @@ public class BookedPeriodEntity {
     private LocalDateTime endDateTime;
     private boolean paid;
     private float amount;
-    private String bookingDate;
+    private LocalDateTime bookingDate;
     PersonWhoBookedDto personWhoBookedDto;
 }

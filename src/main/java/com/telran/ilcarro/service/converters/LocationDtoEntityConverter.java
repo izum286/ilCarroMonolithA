@@ -10,9 +10,9 @@ import com.telran.ilcarro.repository.entity.LocationEntity;
  * LocationEntity <---> LocationDto
  * Implementation of convertation logic for Converters with FullCarEntity and ShortCarEntity
  * @author Gor Aleks
- * @date 24.12.2019
+ * 24.12.2019
  */
-
+@Deprecated
 public class LocationDtoEntityConverter {
 
     public static LocationDTO map(LocationEntity entity){

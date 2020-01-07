@@ -1,6 +1,7 @@
 package com.telran.ilcarro.model.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.telran.ilcarro.model.car.BookedPeriodDto;
 import com.telran.ilcarro.model.car.FullCarDTOResponse;
 import com.telran.ilcarro.model.comment.FullCommentDTO;
 import lombok.*;
@@ -18,7 +19,7 @@ import java.util.List;
  * to correct objects
  *
  * @author Konkin Anton
- * @date 19.12.2019
+ * 19.12.2019
  */
 
 @Getter
@@ -35,8 +36,6 @@ public class FullUserDTO {
     private List<FullCommentDTO> comments;
     private String photo;
     private List<FullCarDTOResponse> ownCars;
-    //TODO
-    private String bookedCars;
-    //TODO
-    private String history;
+    private List<BookedPeriodDto> bookedCars;
+    private List<BookedPeriodDto> history;
 }

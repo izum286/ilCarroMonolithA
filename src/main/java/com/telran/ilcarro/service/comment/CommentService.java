@@ -17,9 +17,8 @@ public interface CommentService {
      * Method return (num) last posts
      * * @param num - number of last posts
      * @return List of Comments DTO
-     * @throws NotFoundServiceException
      */
-    List<FullCommentDTO> getLatestComments(Integer num) throws NotFoundServiceException;
+    List<FullCommentDTO> getLatestComments(Integer num);
 
     /**
      * Method add new comment and  bind it with carId, carOwner and owner of comment
@@ -27,7 +26,9 @@ public interface CommentService {
      * @param ownerEmail - owner of post
      * @param comment - message
      * @return true if Ok, or - throw exception
-     * @throws ConflictServiceException
+     * @throws ConflictServiceException - //TODO need to check and cleanup
+     * @throws NotFoundServiceException - if user, or serial number not found in DB
      */
-    boolean postComment(String serialNumber, String ownerEmail, AddCommentDTO comment) throws ConflictServiceException;
+
+    boolean postComment(String serialNumber, String ownerEmail, AddCommentDTO comment) throws ConflictServiceException, NotFoundServiceException;
 }

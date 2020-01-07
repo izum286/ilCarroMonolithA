@@ -10,9 +10,9 @@ import com.telran.ilcarro.repository.entity.ShortCarEntity;
  * ShortCarDtoEntity <---> ShortCarDto
  * Implementation of convertation logic for CarService with ShortCarDtoEntity and ShortCarDto
  * @author Gor Aleks
- * @date 24.12.2019
+ * 24.12.2019
  */
-
+@Deprecated
 public class ShortCarDtoEntityConverter {
 
     public static ShortCarDTO map(ShortCarEntity entity){

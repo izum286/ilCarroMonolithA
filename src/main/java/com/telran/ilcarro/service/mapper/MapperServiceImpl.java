@@ -18,6 +18,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.UUID;
 
+@Deprecated
 @Service
 public class MapperServiceImpl implements MapperService {
     ObjectMapper mapper = new ObjectMapper();

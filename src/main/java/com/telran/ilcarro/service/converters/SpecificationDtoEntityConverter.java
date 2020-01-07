@@ -8,9 +8,9 @@ import com.telran.ilcarro.repository.entity.SpecsEntity;
  * SpecsEntity <---> SpecsDTO
  * Implementation of convertation logic for Converters with SpecsEntity and SpecsDTO
  * @author Gor Aleks
- * @date 24.12.2019
+ * 24.12.2019
  */
-
+@Deprecated
 public class SpecificationDtoEntityConverter {
 
     public static SpecsDTO map(SpecsEntity entity){

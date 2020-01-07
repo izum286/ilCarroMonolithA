@@ -10,7 +10,6 @@ import com.telran.ilcarro.service.mapper.MapperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.geo.Circle;
 import org.springframework.stereotype.Service;
 

@@ -13,7 +13,7 @@ import java.util.Optional;
 /**
  * CarService interface
  * @author Aleks Gor
- * @date 03.01.2020
+ * 03.01.2020
  */
 
 public interface CarService {

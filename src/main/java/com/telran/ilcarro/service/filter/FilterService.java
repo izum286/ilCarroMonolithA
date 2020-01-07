@@ -2,7 +2,6 @@ package com.telran.ilcarro.service.filter;
 
 import com.telran.ilcarro.model.car.AddUpdateCarDtoRequest;
 import com.telran.ilcarro.model.filter.FilterDTO;
-import com.telran.ilcarro.model.car.FullCarDTOResponse;
 import com.telran.ilcarro.service.model.FilterNode;
 
 public interface FilterService {

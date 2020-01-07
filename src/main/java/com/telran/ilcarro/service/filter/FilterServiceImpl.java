@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.telran.ilcarro.model.car.AddUpdateCarDtoRequest;
 import com.telran.ilcarro.model.filter.FilterDTO;
-import com.telran.ilcarro.model.car.FullCarDTOResponse;
 import com.telran.ilcarro.repository.FilterRepository;
 import com.telran.ilcarro.service.mapper.MapperService;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;

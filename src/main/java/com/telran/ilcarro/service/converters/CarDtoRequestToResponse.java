@@ -7,6 +7,7 @@ import com.telran.ilcarro.model.car.FullCarDTOResponse;
  * probably unused
  * @izum286
  */
+@Deprecated
 public class CarDtoRequestToResponse {
 
     public static FullCarDTOResponse map(AddUpdateCarDtoRequest from) {

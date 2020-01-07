@@ -11,7 +11,7 @@ import java.security.Principal;
  * UserController interface
  *
  * @author Konkin Anton
- * @date 19.12.2019
+ * 19.12.2019
  */
 public interface UserController {
     FullUserDTO registration(RegUserDTO user, String token);

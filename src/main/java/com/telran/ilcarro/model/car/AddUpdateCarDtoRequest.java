@@ -3,7 +3,6 @@ package com.telran.ilcarro.model.car;
 import io.swagger.annotations.ApiModel;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

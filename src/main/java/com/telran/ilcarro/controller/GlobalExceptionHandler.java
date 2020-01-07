@@ -18,7 +18,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      *
      * @return Response entity with code 400 Bad request
      * @author Konkin Anton
-     * @date 15.12.2019
+     * 15.12.2019
      */
     @ExceptionHandler(value = NotFoundServiceException.class)
     public ResponseEntity<?> handle404ServiceException(RuntimeException e) {

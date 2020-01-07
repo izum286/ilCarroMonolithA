@@ -1,10 +1,7 @@
 package com.telran.ilcarro.controller.interfaces;
 
 import com.telran.ilcarro.model.car.*;
-import com.telran.ilcarro.model.car.probably_unused.SchedularUsageDTO;
-import com.telran.ilcarro.model.car.probably_unused.ShortCarDTO;
 
-import java.security.Principal;
 import java.util.List;
 
 /**
