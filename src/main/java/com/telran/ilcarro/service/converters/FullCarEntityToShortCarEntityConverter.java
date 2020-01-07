@@ -15,17 +15,17 @@ import com.telran.ilcarro.repository.entity.ShortCarEntity;
 @Deprecated
 public class FullCarEntityToShortCarEntityConverter {
 
-    public static ShortCarEntity map(FullCarEntity fullCarEntity){
-        return ShortCarEntity.builder()
-//                .id(fullCarEntity.getId())
-                .image(fullCarEntity.getImage())
-                //.isRented(fullCarEntity.isRented())
-//                .location(fullCarEntity.getLocation())
-                .manufacture(fullCarEntity.getMake())
-                .model(fullCarEntity.getModel())
-                .price_per_day(fullCarEntity.getPricePerDay())
-//                .specifications(fullCarEntity.getSpecifications())
-//                .year(fullCarEntity.getYear())
-                .build();
-    }
+//    public static ShortCarEntity map(FullCarEntity fullCarEntity){
+//        return ShortCarEntity.builder()
+////                .id(fullCarEntity.getId())
+////                .image(fullCarEntity.getImage())
+//                //.isRented(fullCarEntity.isRented())
+////                .location(fullCarEntity.getLocation())
+//                .manufacture(fullCarEntity.getMake())
+//                .model(fullCarEntity.getModel())
+//                .price_per_day(fullCarEntity.getPricePerDay())
+////                .specifications(fullCarEntity.getSpecifications())
+////                .year(fullCarEntity.getYear())
+//                .build();
+//    }
 }

@@ -8,11 +8,10 @@ import com.telran.ilcarro.repository.entity.FullCarEntity;
 import com.telran.ilcarro.repository.exception.ConflictRepositoryException;
 import com.telran.ilcarro.repository.exception.NotFoundRepositoryException;
 import com.telran.ilcarro.repository.exception.RepositoryException;
-import com.telran.ilcarro.service.converters.FullCarDtoEntityConverter;
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.exceptions.ServiceException;
-import com.telran.ilcarro.service.mapper.MapperService;
+import com.telran.ilcarro.service.mapper.CarMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,14 +33,11 @@ public class CarServiceImpl implements CarService {
     @Autowired
     CarRepository carRepository;
 
-    @Autowired
-    MapperService mapperService;
-
     @Override
     public Optional<FullCarDTOResponse> addCar(AddUpdateCarDtoRequest carToAdd) {
         try {
             FullCarEntity entity = carRepository.addCar(carToAdd);
-            return Optional.of(mapperService.map(entity));
+            return Optional.of(CarMapper.INSTANCE.map(entity));
         } catch (ConflictRepositoryException ex) {
             throw new ConflictServiceException(ex.getMessage(), ex.getCause());
         }
@@ -52,7 +48,7 @@ public class CarServiceImpl implements CarService {
     public Optional<FullCarDTOResponse> updateCar(AddUpdateCarDtoRequest carToUpdate) {
         try {
             FullCarEntity entity = carRepository.updateCar(carToUpdate);
-            return Optional.of(mapperService.map(entity));
+            return Optional.of(CarMapper.INSTANCE.map(entity));
         } catch (ConflictRepositoryException ex) {
             throw new ConflictServiceException(ex.getMessage(), ex.getCause());
         }
@@ -72,7 +68,7 @@ public class CarServiceImpl implements CarService {
     public Optional<FullCarDTOResponse> getCarById(String carId) {
         try {
             FullCarEntity entity = carRepository.getCarByIdForUsers(UUID.fromString(carId));
-            return Optional.of(FullCarDtoEntityConverter.map(entity));
+            return Optional.of(CarMapper.INSTANCE.map(entity));
         } catch (RepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
         }
@@ -84,7 +80,7 @@ public class CarServiceImpl implements CarService {
         try {
             List<FullCarEntity> fullCarEntityList = carRepository.ownerGetCars();
             return fullCarEntityList.stream()
-                    .map(FullCarDtoEntityConverter::map)
+                    .map(CarMapper.INSTANCE::map)
                     .collect(Collectors.toList());
         } catch (NotFoundRepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
@@ -136,7 +132,7 @@ public class CarServiceImpl implements CarService {
         try {
             List<FullCarEntity> fullCarEntityList = carRepository.getTopByBookedPeriods();
             return fullCarEntityList.stream()
-                    .map(FullCarDtoEntityConverter::map)
+                    .map(CarMapper.INSTANCE::map)
                     .collect(Collectors.toList());
         } catch (NotFoundRepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());

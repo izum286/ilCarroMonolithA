@@ -109,7 +109,7 @@ public class MapperServiceImpl implements MapperService {
                 .distanceIncluded(from.getDistanceIncluded())
                 .about(from.getAbout())
  //               .pickUpPlace(from.getPickUpPlace())
-                .imageUrl(from.getImage())
+//                .imageUrl(from.getImage())
 //                .owner(from.getOwner())
 //                .bookedPeriodDto(from.getBookedPeriods())
 //                .statisticsDto(from.getStatistics())

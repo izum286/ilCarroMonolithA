@@ -36,7 +36,7 @@ public class FullCarEntity {
     private int distanceIncluded;
     private String about;
     private PickUpPlaceEntity pickUpPlace;
-    private List<String> image;
+    private List<String> imageUrl;
 
     private String pricePerDaySimple;
 

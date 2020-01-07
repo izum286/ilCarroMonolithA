@@ -17,31 +17,6 @@ public interface CarMapper {
 
     FullCarEntity map(AddUpdateCarDtoRequest dto);
 
-    @Mapping(target = "imageUrl", source = "entity.image")
     FullCarDTOResponse map(FullCarEntity entity);
 
-    BookedPeriodDto bookedPeriodEntityToBookedPeriodDto(BookedPeriodEntity entity);
-    BookedPeriodEntity bookedPeriodDtoToBookedPeriodEntity(BookedPeriodDto dto);
-
-    FeatureDto featureEntityToFeatureDto(FeatureEntity entity);
-    FeatureEntity featureDtoToFeatureEntity(FeatureDto dto);
-
-    OwnerDtoResponse ownerEntityToOwnerDtoResponse(OwnerEntity entity);
-    OwnerEntity ownerDtoResponseToOwnerEntity(OwnerDtoResponse dto);
-
-    PickUpPlaceDto pickUpPlaceEntityToPickUpPlaceDto(PickUpPlaceEntity entity);
-    PickUpPlaceEntity pickUpPlaceDtoToPickUpPlaceEntity(PickUpPlaceDto dto);
-
-    PricePerDayDto pricePerDayEntityToPricePerDayDto(PricePerDayEntity entity);
-    PricePerDayEntity pricePerDatDtoToPricePerDayEntity(PricePerDayDto dto);
-
-    //TODO что с этими полями? Они нужны вообще?
-//    SchedularUsageEntity schedularUsageDtoToSchedularUsageEntity(SchedularUsageDto dto);
-//    SchedularUsageDto schedularUsageEntityToSchedularUsageDto(SchedularUsageEntity entity);
-
-    CommentEntity fullCommentDtoToCommentEntity(FullCommentDTO dto);
-    FullCommentDTO commentEntityToFullCommentDTO(CommentEntity entity);
-
-    CarStatEntity carStatDtoToCarStatEntity(CarStatDto dto);
-    CarStatDto CarStatEntityToCarStatDto(CarStatEntity entity);
 }
