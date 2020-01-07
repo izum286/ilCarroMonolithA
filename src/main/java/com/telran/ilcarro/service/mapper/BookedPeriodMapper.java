@@ -3,6 +3,7 @@ package com.telran.ilcarro.service.mapper;
 import com.telran.ilcarro.model.car.BookedPeriodDto;
 import com.telran.ilcarro.repository.entity.BookedPeriodEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
 
@@ -16,4 +17,7 @@ public interface BookedPeriodMapper {
     BookedPeriodEntity map(BookedPeriodDto dto);
 
     BookedPeriodDto map(BookedPeriodEntity entity);
+
+    @Mapping(target = "personWhoBookedDto", ignore = true)
+    BookedPeriodDto mapForUserHistory(BookedPeriodEntity entity);
 }

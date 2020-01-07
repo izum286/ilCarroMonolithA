@@ -11,7 +11,7 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(uses = CommentMapper.class,
+@Mapper(uses = {CommentMapper.class, BookedPeriodMapper.class},
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
