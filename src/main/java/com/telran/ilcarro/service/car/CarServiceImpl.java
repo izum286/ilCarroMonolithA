@@ -109,7 +109,7 @@ public class CarServiceImpl implements CarService {
             FullCarEntity entity = carRepository.getCarByIdForUsers(UUID.fromString(carId));
             List<BookedPeriodEntity> listBookedPeriodEntity = entity.getBookedPeriods() == null ? new ArrayList<>() : entity.getBookedPeriods();
             BookedPeriodEntity bookedPeriodEntity = new BookedPeriodEntity();
-            bookedPeriodEntity.setBookingDate(dto.getStartDateTime().format(DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm")));
+            bookedPeriodEntity.setBookingDate(dto.getStartDateTime());
             bookedPeriodEntity.setEndDateTime(dto.getEndDateTime());
             bookedPeriodEntity.setPersonWhoBookedDto(dto.getPersonWhoBookedDto());
             listBookedPeriodEntity.add(bookedPeriodEntity);
