@@ -8,13 +8,11 @@ import com.telran.ilcarro.repository.entity.FullCarEntity;
 import com.telran.ilcarro.repository.exception.ConflictRepositoryException;
 import com.telran.ilcarro.repository.exception.NotFoundRepositoryException;
 import com.telran.ilcarro.repository.exception.RepositoryException;
-import com.telran.ilcarro.service.converters.FullCarDtoEntityConverter;
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.exceptions.ServiceException;
 import com.telran.ilcarro.service.mapper.BookedPeriodMapper;
 import com.telran.ilcarro.service.mapper.CarMapper;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,7 +58,7 @@ public class CarServiceImpl implements CarService {
     public Optional<FullCarDTOResponse> updateCar(AddUpdateCarDtoRequest carToUpdate) {
         try {
             Optional<FullCarEntity> entity = carRepository.findById(carToUpdate.getSerialNumber());
-            if(entity.get()!=null){
+            if(!entity.isEmpty()){
                 FullCarEntity toAdd = CarMapper.INSTANCE.map(carToUpdate);
                 carRepository.save(toAdd);
                 return Optional.of(CarMapper.INSTANCE.map(toAdd));
@@ -81,7 +79,7 @@ public class CarServiceImpl implements CarService {
     public boolean deleteCar(String carId) {
         try {
             Optional<FullCarEntity> entity = carRepository.findById(carId);
-            if(entity.get()!=null){
+            if(!entity.isEmpty()){
                 carRepository.deleteById(carId);
                 return true;
             }
