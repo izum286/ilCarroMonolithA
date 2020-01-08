@@ -28,7 +28,8 @@ public interface CarController {
      * @param carDTO of updated car with updated params
      * @return ShortCarDTO
      */
-    FullCarDTOResponse updateCar(AddUpdateCarDtoRequest carDTO);
+    FullCarDTOResponse updateCar(AddUpdateCarDtoRequest carDTO) throws IllegalAccessException;
+
 
     /**
      * Method for deleting an existing car
@@ -74,6 +75,7 @@ public interface CarController {
      *
      * @return List<FullCarDTO>
      */
-    List<FullCarDTOResponse> get3BestCars();
+    List<FullCarDTOResponse> getThreeBestCars();
+
 
 }
