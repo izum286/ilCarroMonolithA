@@ -104,5 +104,5 @@ public interface CarService {
     List<CarStatDto> getCarStatById(String carId);
 
 
-    List<FullCarDTOResponse> get3BestCars();
+    List<FullCarDTOResponse> getThreeBestCars();
 }

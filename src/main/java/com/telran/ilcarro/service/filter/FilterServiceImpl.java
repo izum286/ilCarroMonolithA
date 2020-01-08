@@ -7,18 +7,18 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.telran.ilcarro.model.car.AddUpdateCarDtoRequest;
 import com.telran.ilcarro.model.filter.FilterDTO;
 import com.telran.ilcarro.repository.FilterRepository;
-import com.telran.ilcarro.service.mapper.MapperService;
+import com.telran.ilcarro.service.unused.MapperService;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.model.FilterNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class FilterServiceImpl implements FilterService {
-    @Autowired
-    MapperService mapperService;
 
     @Autowired
     FilterRepository filterRepository;
@@ -32,7 +32,7 @@ public class FilterServiceImpl implements FilterService {
      */
     @Override
     public void addFilter(AddUpdateCarDtoRequest addUpdateCarDtoRequest) throws IllegalAccessException {
-        addNode(mapperService.map(addUpdateCarDtoRequest));
+        addNode(map(addUpdateCarDtoRequest));
     }
 
     /**
@@ -75,7 +75,7 @@ public class FilterServiceImpl implements FilterService {
      */
     @Override
     public void addNode(FilterDTO filterDTO) throws IllegalAccessException {
-        FilterNode toRawAdd = mapperService.map(filterDTO);
+        FilterNode toRawAdd = map(filterDTO);
         if(!filterRepository.containsKey(filterDTO.getMake())){
             filterRepository.put(filterDTO.getMake(), toRawAdd);
         }else {
@@ -137,4 +137,64 @@ public class FilterServiceImpl implements FilterService {
         }
         return count;
     }
+
+
+
+    /**
+     * mapping method from FilterDto to FilterNode
+     * participated in invoke chain internal methods of FilterService
+     *
+     * @param toAdd
+     * @return new FilterNode
+     * @author izum286
+     */
+
+    public FilterNode map(FilterDTO toAdd) throws IllegalAccessException {
+        ArrayList<FilterNode> nodes = new ArrayList<>();
+        Field[] f = toAdd.getClass().getDeclaredFields();
+        for (Field field : f) {
+            field.setAccessible(true);
+            String fieldType = field.getName();
+            String fieldValue = (String) field.get(toAdd);
+            FilterNode node = new FilterNode();
+            node.setType(fieldType);
+            node.setValue(fieldValue);
+            nodes.add(node);
+        }
+        //traversing from lowest to highest node
+        //and adding lowest node to childList of highest node
+        for (int i = nodes.size() - 1; i > 0; i--) {
+            nodes.get(i - 1).getChilds().add(nodes.get(i));
+        }
+        //return main node
+        return nodes.get(0);
+    }
+
+    /**
+     * mapping method from FullCarDto to FilterDto
+     * participated in invoke chain of /upload->save page
+     *
+     * @param from
+     * @return new FilterDto
+     * @author izum286
+     */
+//TODO This mapper need to be described by MapStruct
+    public FilterDTO map(AddUpdateCarDtoRequest from) {
+        return FilterDTO.builder()
+                .make(from.getMake())
+                .models(from.getModel())
+                .years(String.valueOf(from.getYear()))
+                .engines(from.getEngine())
+                .fuel(from.getFuel())
+                .transmissions(from.getGear())
+                .wd(from.getWheelsDrive())
+                .horsepower(String.valueOf(from.getHorsePower()))
+                .torque(String.valueOf(from.getTorque()))
+                .doors(String.valueOf(from.getDoors()))
+                .seats(String.valueOf(from.getSeats()))
+                .classs(from.getCarClass())
+                .fuelConsumption(String.valueOf(from.getFuelConsumption()))
+                .build();
+    }
+
 }

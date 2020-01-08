@@ -6,7 +6,7 @@ import com.telran.ilcarro.model.filter.FilterDTO;
 import com.telran.ilcarro.repository.CarRepository;
 import com.telran.ilcarro.repository.entity.FullCarEntity;
 import com.telran.ilcarro.service.filter.FilterService;
-import com.telran.ilcarro.service.mapper.MapperService;
+import com.telran.ilcarro.service.unused.MapperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

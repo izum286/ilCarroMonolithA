@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 /**
  * @author vitalii_adler
  * @author izum286
- * diffent constructors added for implement different server responses
  */
 
 @AllArgsConstructor

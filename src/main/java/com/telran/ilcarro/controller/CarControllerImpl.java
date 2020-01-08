@@ -69,8 +69,9 @@ public class CarControllerImpl implements CarController {
     @Override
     @PutMapping("/car")
     //TODO With auth
-    public FullCarDTOResponse updateCar(@RequestBody AddUpdateCarDtoRequest carDTO) {
-        return carService.updateCar(carDTO).orElseThrow();
+        public FullCarDTOResponse updateCar(@RequestBody AddUpdateCarDtoRequest carDTO) throws IllegalAccessException {
+            filterService.addFilter(carDTO);
+            return carService.updateCar(carDTO).orElseThrow();
     }
 
 
@@ -175,8 +176,9 @@ public class CarControllerImpl implements CarController {
         return carService.makeReservation(carId,dto).orElseThrow();
     }
 
-    @Override
-    public List<FullCarDTOResponse> get3BestCars() {
-        return carService.get3BestCars();
+    @GetMapping("/car/best")
+    public List<FullCarDTOResponse> getThreeBestCars() {
+        return carService.getThreeBestCars();
     }
+
 }
