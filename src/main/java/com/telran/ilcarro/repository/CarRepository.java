@@ -1,6 +1,5 @@
 package com.telran.ilcarro.repository;
 
-import com.telran.ilcarro.model.car.AddUpdateCarDtoRequest;
 import com.telran.ilcarro.model.car.BookedPeriodDto;
 import com.telran.ilcarro.repository.entity.FullCarEntity;
 import org.springframework.data.domain.Page;
@@ -25,13 +24,6 @@ public interface CarRepository extends MongoRepository<FullCarEntity, String>, C
     Page<FullCarEntity> findAllByPickUpPlaceWithin(Circle circle, Pageable pageable);
 
 
-    //todo
-   FullCarEntity addCar(AddUpdateCarDtoRequest carToAdd);
-
- //todo
-    FullCarEntity updateCar(AddUpdateCarDtoRequest carToUpdate);
-//todo
-    boolean deleteCar(UUID id);
 //todo
     FullCarEntity getCarByIdForUsers(UUID id);
 //todo
@@ -41,5 +33,4 @@ public interface CarRepository extends MongoRepository<FullCarEntity, String>, C
 //todo
     List<BookedPeriodDto>  ownerGetBookedPeriodsByCarId(String carId);
 
-    List<FullCarEntity> getTopByBookedPeriods();
 }
