@@ -65,6 +65,15 @@ public interface CarService {
      */
     Optional<FullCarDTOResponse> getCarByIdForUsers(String carId);
 
+
+    /**
+     * Get FullCarDTOResponse by car serial number as carId for USER
+     * @param carId String
+     * @return Optional of FullCarDTOResponse
+     * @author izum286
+     */
+    Optional<FullCarDTOResponse> getCarByIdForOwner(String carId, String userEmail);
+
     /**
      * Get List of BookedPeriods for current car by his serial number as carId
      * @param carId String

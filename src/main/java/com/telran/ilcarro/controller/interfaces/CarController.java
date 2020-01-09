@@ -48,6 +48,16 @@ public interface CarController {
     FullCarDTOResponse getCarByIdForUsers(String carId);
 
     /**
+     * Returns the FullCarDTO for authentificated user
+     *
+     * @param carId of car
+     * @return FullCarDTO
+     */
+    FullCarDTOResponse getCarByIdForOwner(String carId, Principal principal);
+
+
+
+    /**
      * Returns list of FullCarDTO for owner
      *
      * @return List<FullCarDTO>

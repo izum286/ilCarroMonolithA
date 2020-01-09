@@ -113,6 +113,23 @@ public class CarControllerImpl implements CarController {
     }
 
 
+    @ApiOperation(value = "Get car by id for users", response = FullCarDTOResponse.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 401, message = "Unauthorized. Please login"),
+            @ApiResponse(code = 404, message = "Car with id: {id} not found")
+    }
+    )
+
+    @GetMapping("/users/cars/car?serial_number")
+    @Override
+    public FullCarDTOResponse getCarByIdForOwner(@RequestParam(name = "serial_number") String carId,
+                                                 Principal principal) {
+        String userEmail = principal.getName();
+        return carService.getCarByIdForOwner(carId, userEmail).orElseThrow();
+    }
+
+
     //**********************************************************************************
 
 
