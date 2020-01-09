@@ -37,7 +37,7 @@ public interface CarController {
      *
      * @param carId of car to be deleted
      */
-    void deleteCar(String carId);
+    void deleteCar(String carId, Principal principal);
 
     /**
      * Returns the FullCarDTO for regular users

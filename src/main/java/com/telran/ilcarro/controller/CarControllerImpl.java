@@ -90,9 +90,9 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @DeleteMapping("/car?serial_number")
-    //TODO With auth
-    public void deleteCar(@RequestParam(name = "serial_number") String carId) {
-        carService.deleteCar(carId);
+    public void deleteCar(@RequestParam(name = "serial_number") String carId, Principal principal) {
+        String userEmail = principal.getName();
+        carService.deleteCar(carId, userEmail);
     }
 
 

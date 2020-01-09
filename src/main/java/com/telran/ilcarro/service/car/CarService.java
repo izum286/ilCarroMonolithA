@@ -46,7 +46,7 @@ public interface CarService {
      * @throws NotFoundServiceException - if car with current serial number was not found
      * @throws ServiceException - if user unauthorized
      */
-    boolean deleteCar(String carId);
+    boolean deleteCar(String carId, String userEmail);
 
     /**
      * Get list of FullCarDtoResponse for cars owner

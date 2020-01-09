@@ -89,8 +89,12 @@ public class CarServiceImpl implements CarService {
      * @return true\false
      */
     @Override
-    public boolean deleteCar(String carId) {
+    public boolean deleteCar(String carId, String userEmail) {
         try {
+            if(!userRepository.findById(userEmail).get().getOwnCars()
+                    .contains(carId)){
+                throw new RepositoryException("no such car owned by user");
+            }
             Optional<FullCarEntity> entity = carRepository.findById(carId);
             if(!entity.isEmpty()){
                 carRepository.deleteById(carId);
