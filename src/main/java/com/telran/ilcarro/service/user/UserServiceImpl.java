@@ -107,7 +107,8 @@ public class UserServiceImpl implements UserService{
             if (ifUserCarsExist(userID, carId)) {
                 throw new ConflictServiceException(String.format("Car with id %s already added", carId));
             }
-            UserEntity entity = userRepository.findById(userID).get();
+            UserEntity entity = userRepository.findById(userID)
+                    .orElseThrow(() -> new NotFoundServiceException(String.format("User profile %s not found", userID)));
             List<String> carsIdList = entity.getOwnCars();
             if (carsIdList == null || carsIdList.isEmpty()) {
                 carsIdList = new ArrayList<>();

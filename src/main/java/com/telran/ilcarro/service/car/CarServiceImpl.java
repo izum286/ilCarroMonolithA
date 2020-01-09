@@ -40,6 +40,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public Optional<FullCarDTOResponse> addCar(AddUpdateCarDtoRequest carToAdd) {
         try {
+            //TODO add logic to update/add carSerial to ownerUser
             FullCarEntity entity = carRepository.save(CarMapper.INSTANCE.map(carToAdd));
             return Optional.of(CarMapper.INSTANCE.map(entity));
         } catch (ConflictRepositoryException e) {

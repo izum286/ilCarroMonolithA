@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.telran.ilcarro.model.car.AddUpdateCarDtoRequest;
 import com.telran.ilcarro.model.filter.FilterDTO;
 import com.telran.ilcarro.repository.FilterRepository;
-import com.telran.ilcarro.service.unused.MapperService;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.model.FilterNode;
 import org.springframework.beans.factory.annotation.Autowired;

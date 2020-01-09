@@ -19,7 +19,7 @@ public interface CarRepository extends MongoRepository<FullCarEntity, String>, C
      * @param circle
      * @param pageable
      * @return Page<FullCarEntity>
-     * @status READY
+     * status READY
      */
     Page<FullCarEntity> findAllByPickUpPlaceWithin(Circle circle, Pageable pageable);
 

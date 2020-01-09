@@ -3,7 +3,6 @@ package com.telran.ilcarro.controller;
 import com.telran.ilcarro.controller.interfaces.CarController;
 import com.telran.ilcarro.model.car.*;
 import com.telran.ilcarro.model.car.probably_unused.ShortCarDTO;
-import com.telran.ilcarro.service.auth.AuthService;
 import com.telran.ilcarro.service.car.CarService;
 import com.telran.ilcarro.service.filter.FilterService;
 import io.swagger.annotations.ApiOperation;
@@ -12,22 +11,19 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
+/**
+ * Car controller implementation
+ *
+ * @author Gor Aleks
+ * @author izum286
+ * @see CarController
+ * @since 1.0
+ */
 
 @CrossOrigin
 @RestController
 public class CarControllerImpl implements CarController {
-
-    /**
-     * Car controller implementation
-     *
-     * @author Gor Aleks
-     * @author izum286
-     * @see CarController
-     * @since 1.0
-     */
-
 
     @Autowired
     CarService carService;

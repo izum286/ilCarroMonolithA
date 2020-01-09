@@ -1,15 +1,10 @@
 package com.telran.ilcarro.repository.entity;
 
-import com.telran.ilcarro.model.car.BookedPeriodDto;
-import com.telran.ilcarro.model.car.CarStatDto;
-import com.telran.ilcarro.model.car.FeatureDto;
-import com.telran.ilcarro.model.car.PickUpPlaceDto;
-import com.telran.ilcarro.model.user.OwnerDtoResponse;
 import lombok.*;
 
+import java.util.List;
 
 //TODO Заглушка FullCarEntity для CarService. Это надо переделать.
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor

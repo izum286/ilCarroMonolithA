@@ -5,13 +5,6 @@ import lombok.*;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
-@ToString
-@Builder
 /**
  * сам нод который содержит в себе всю нужную информацию
  * пример:
@@ -25,6 +18,12 @@ import java.util.List;
  * value: a3             value: a4
  * childs: wd's          childs: wd's
  */
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
+@Builder
 public class FilterNode {
     String type;
     String value;

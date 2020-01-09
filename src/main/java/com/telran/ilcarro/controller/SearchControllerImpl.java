@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
  * @author izum286
  */
 
-//TODO - interface
 @CrossOrigin
 @RestController
 public class SearchControllerImpl implements SearchController {
@@ -29,7 +28,7 @@ public class SearchControllerImpl implements SearchController {
     /**
      *
      * @author izum286
-     * @status READY
+     * status READY
      */
     @ApiOperation(value = "search cars by city, dates, price range,sorted by price", response = SearchResponse.class)
     @ApiResponses(value = {
@@ -61,7 +60,7 @@ public class SearchControllerImpl implements SearchController {
     /**
      *
      * @author izum286
-     * @status READY
+     * status READY
      */
     @ApiOperation(value = "cars by location and radius", response = SearchResponse.class)
     @ApiResponses(value = {
@@ -86,7 +85,7 @@ public class SearchControllerImpl implements SearchController {
     /**
      *
      * @author izum286
-     * @status READY
+     * status READY
      */
     @ApiOperation(value = "search cars by filter", response = SearchResponse.class)
     @ApiResponses(value = {
@@ -106,7 +105,7 @@ public class SearchControllerImpl implements SearchController {
     /**
      *
      * @author izum286
-     * @status IN_Progress
+     * status IN_Progress
      */
     @ApiOperation(value = "search cars by all possible params", response = SearchResponse.class)
     @ApiResponses(value = {
