@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Deprecated
 public class ShortCarEntity {
     private double id;
     private String model;

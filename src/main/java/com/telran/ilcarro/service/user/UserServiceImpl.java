@@ -144,7 +144,7 @@ public class UserServiceImpl implements UserService{
                 return Optional.empty();
             }
             List<BookedPeriodDto> bookedCarsPeriods = bookedCarsSerialNumbers.stream()
-                    .flatMap(sn -> carService.getBookedPeriodsByCarId(sn).stream())
+                    .flatMap(sn -> carService.getBookedPeriodsByCarId(sn, userID).stream())
                     .collect(Collectors.toList());
             return Optional.of(bookedCarsPeriods);
         } catch (Throwable t) {

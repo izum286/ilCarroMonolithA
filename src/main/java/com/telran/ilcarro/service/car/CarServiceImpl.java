@@ -2,9 +2,13 @@ package com.telran.ilcarro.service.car;
 
 import com.telran.ilcarro.model.car.*;
 import com.telran.ilcarro.model.user.OwnerDtoResponse;
+import com.telran.ilcarro.repository.BookedPeriodsRepository;
 import com.telran.ilcarro.repository.CarRepository;
+import com.telran.ilcarro.repository.UserEntityRepository;
 import com.telran.ilcarro.repository.entity.BookedPeriodEntity;
 import com.telran.ilcarro.repository.entity.FullCarEntity;
+import com.telran.ilcarro.repository.entity.OwnerEntity;
+import com.telran.ilcarro.repository.entity.UserEntity;
 import com.telran.ilcarro.repository.exception.ConflictRepositoryException;
 import com.telran.ilcarro.repository.exception.NotFoundRepositoryException;
 import com.telran.ilcarro.repository.exception.RepositoryException;
@@ -13,11 +17,15 @@ import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.exceptions.ServiceException;
 import com.telran.ilcarro.service.mapper.BookedPeriodMapper;
 import com.telran.ilcarro.service.mapper.CarMapper;
+import com.telran.ilcarro.service.mapper.CarMapperAddCar;
+import com.telran.ilcarro.service.mapper.OwnerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 /**
@@ -31,6 +39,12 @@ public class CarServiceImpl implements CarService {
     @Autowired
     CarRepository carRepository;
 
+    @Autowired
+    UserEntityRepository userRepository;
+
+    @Autowired
+    BookedPeriodsRepository bookedPeriodsRepository;
+
 
     /**
      * status - ready
@@ -38,11 +52,14 @@ public class CarServiceImpl implements CarService {
      * @return optional of added car
      */
     @Override
-    public Optional<FullCarDTOResponse> addCar(AddUpdateCarDtoRequest carToAdd) {
+    public Optional<FullCarDTOResponse> addCar(AddUpdateCarDtoRequest carToAdd, String userEmail) {
         try {
-            //TODO add logic to update/add carSerial to ownerUser
-            FullCarEntity entity = carRepository.save(CarMapper.INSTANCE.map(carToAdd));
-            return Optional.of(CarMapper.INSTANCE.map(entity));
+            FullCarEntity entity = CarMapperAddCar.INSTANCE.map(carToAdd);
+            UserEntity user = userRepository.findById(userEmail).get();
+            OwnerEntity owner = OwnerMapper.INSTANCE.map(user);
+            entity.setOwner(owner);
+            FullCarEntity added = carRepository.save(entity);
+            return Optional.of(CarMapper.INSTANCE.map(added));
         } catch (ConflictRepositoryException e) {
             throw new ConflictRepositoryException(e.getMessage(), e.getCause());
         }catch (Throwable t) {
@@ -56,13 +73,17 @@ public class CarServiceImpl implements CarService {
      * @return optional of updated car
      */
     @Override
-    public Optional<FullCarDTOResponse> updateCar(AddUpdateCarDtoRequest carToUpdate) {
+    public Optional<FullCarDTOResponse> updateCar(AddUpdateCarDtoRequest carToUpdate, String userEmail) {
         try {
+            if(!userRepository.findById(userEmail).get().getOwnCars()
+                    .contains(carToUpdate.getSerialNumber())){
+                throw new RepositoryException("no such car owned by user");
+            }
             Optional<FullCarEntity> entity = carRepository.findById(carToUpdate.getSerialNumber());
             if(!entity.isEmpty()){
-                FullCarEntity toAdd = CarMapper.INSTANCE.map(carToUpdate);
-                carRepository.save(toAdd);
-                return Optional.of(CarMapper.INSTANCE.map(toAdd));
+                FullCarEntity toUpdate = CarMapper.INSTANCE.map(carToUpdate);
+                carRepository.save(toUpdate);
+                return Optional.of(CarMapper.INSTANCE.map(toUpdate));
             }else {
                 throw new RepositoryException("something went wrong");
             }
@@ -77,8 +98,12 @@ public class CarServiceImpl implements CarService {
      * @return true\false
      */
     @Override
-    public boolean deleteCar(String carId) {
+    public boolean deleteCar(String carId, String userEmail) {
         try {
+            if(!userRepository.findById(userEmail).get().getOwnCars()
+                    .contains(carId)){
+                throw new RepositoryException("no such car owned by user");
+            }
             Optional<FullCarEntity> entity = carRepository.findById(carId);
             if(!entity.isEmpty()){
                 carRepository.deleteById(carId);
@@ -96,23 +121,60 @@ public class CarServiceImpl implements CarService {
      * @return true\false
      */
     @Override
-    public Optional<FullCarDTOResponse> getCarById(String carId) {
+    public Optional<FullCarDTOResponse> getCarByIdForUsers(String carId) {
         try {
             Optional<FullCarEntity> entity = carRepository.findById(carId);
-            return Optional.of(CarMapper.INSTANCE.map(entity.get()));
+            List<BookedPeriodDto> shortPeriods = entity.get().getBookedPeriods()
+                    .stream().map(bp->BookedPeriodMapper.INSTANCE.mapForGetCarByIdForUsers(bp))
+                    .collect(Collectors.toList());
+            FullCarDTOResponse toProvide = CarMapper.INSTANCE.map(entity.get());
+            toProvide.setBookedPeriodDto(shortPeriods);
+            return Optional.of(toProvide);
         } catch (RepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
         }
     }
 
-
+    /**
+     * status - ready
+     * @author - izum286
+     * @return Optional<FullCarDTOResponse>
+     */
     @Override
-    public List<FullCarDTOResponse> ownerGetCars() {
+    public Optional<FullCarDTOResponse> getCarByIdForOwner(String carId, String userEmail) {
         try {
-            List<FullCarEntity> fullCarEntityList = carRepository.ownerGetCars();
-            return fullCarEntityList.stream()
-                    .map(car -> CarMapper.INSTANCE.map(car))
-                    .collect(Collectors.toList());
+            if(!userRepository.findById(userEmail).get().getOwnCars()
+                    .contains(carId)){
+                throw new RepositoryException("no such car owned by user");
+            }
+            Optional<FullCarEntity> entity = carRepository.findById(carId);
+            FullCarDTOResponse response = CarMapper.INSTANCE.mapWithoutOwnerFullBookedPeriods(entity.get());
+            return Optional.of(response);
+        } catch (RepositoryException ex) {
+            throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
+        }
+    }
+
+    /**
+     * status - ready
+     * @author - izum286
+     * @param userEmail as Owner
+     * @return List<FullCarDTOResponse> Owner cars
+     *
+     */
+    @Override
+    public List<FullCarDTOResponse> ownerGetCars(String userEmail) {
+        try {
+            List<String> ownerCars = userRepository.findById(userEmail).get().getOwnCars();
+            if(ownerCars.isEmpty()){
+                return Collections.emptyList();
+            }
+            List<FullCarEntity> cars = ownerCars.stream()
+                    .map(carId ->{
+                    FullCarEntity entity = carRepository.findById(carId).get();
+                    return entity;
+            }).collect(Collectors.toList());
+            return cars.stream().map(car->CarMapper.INSTANCE.mapWithoutOwnerFullBookedPeriods(car)).collect(Collectors.toList());
         } catch (NotFoundRepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
         } catch (RepositoryException ex) {
@@ -127,8 +189,12 @@ public class CarServiceImpl implements CarService {
      * @return true\false
      */
     @Override
-    public List<BookedPeriodDto> getBookedPeriodsByCarId(String carId) {
+    public List<BookedPeriodDto> getBookedPeriodsByCarId(String carId, String userEmail) {
         try {
+            if(!userRepository.findById(userEmail).get().getOwnCars()
+                    .contains(carId)){
+                throw new RepositoryException("no such car owned by user");
+            }
             List<BookedPeriodEntity> list = carRepository.findById(carId).get()
                     .getBookedPeriods();
             return list.stream().map(b-> BookedPeriodMapper.INSTANCE.map(b))
@@ -139,26 +205,31 @@ public class CarServiceImpl implements CarService {
             throw new ServiceException(ex.getMessage(), ex.getCause());
         }
     }
-
+    /**
+     * status - ready
+     * code cleanup by izum286
+     * @return BookResponseDTO
+     */
     @Override
-    public Optional<BookResponseDTO> makeReservation(String carId, BookRequestDTO dto) {
+    public Optional<BookResponseDTO> makeReservation(String carId, BookRequestDTO dto, String userEmail) {
         try {
-            FullCarEntity entity = carRepository.getCarByIdForUsers(UUID.fromString(carId));
-            List<BookedPeriodEntity> listBookedPeriodEntity = entity.getBookedPeriods() == null ? new ArrayList<>() : entity.getBookedPeriods();
-            BookedPeriodEntity bookedPeriodEntity = new BookedPeriodEntity();
-            bookedPeriodEntity.setBookingDate(dto.getStartDateTime());
-            bookedPeriodEntity.setEndDateTime(dto.getEndDateTime());
-            bookedPeriodEntity.setPersonWhoBookedDto(dto.getPersonWhoBookedDto());
-            listBookedPeriodEntity.add(bookedPeriodEntity);
+            FullCarEntity entity = carRepository.findById(carId).orElseThrow();
+            List<BookedPeriodEntity> listBookedPeriodEntity = entity.getBookedPeriods() == null ? new CopyOnWriteArrayList<>() : entity.getBookedPeriods();
+            BookedPeriodEntity newPeriod = new BookedPeriodEntity();
+            newPeriod.setBookingDate(LocalDateTime.now());
+            newPeriod.setStartDateTime(dto.getStartDateTime());
+            newPeriod.setEndDateTime(dto.getEndDateTime());
+            newPeriod.setPersonWhoBookedDto(dto.getPersonWhoBookedDto());
+            newPeriod.setAmount(Float.valueOf(entity.getPricePerDaySimple()));
+            newPeriod.setPaid(true); newPeriod.setActive(true);
+            bookedPeriodsRepository.save(newPeriod);
+            listBookedPeriodEntity.add(newPeriod);
             entity.setBookedPeriods(listBookedPeriodEntity);
-
             carRepository.save(entity);
-
-            BookResponseDTO bookResponseDTO = new BookResponseDTO();
-            bookResponseDTO.setBookingDate(dto.getStartDateTime().format(DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm")));
-            bookedPeriodEntity.setPersonWhoBookedDto(dto.getPersonWhoBookedDto());
-
-            return Optional.of(bookResponseDTO);
+            String periodId = newPeriod.getOrderId();
+            BookedPeriodEntity responseEntity = bookedPeriodsRepository.findById(periodId).orElseThrow();
+            BookResponseDTO responseDto = BookedPeriodMapper.INSTANCE.mapToResponse(responseEntity);
+            return Optional.of(responseDto);
         } catch (ServiceException ex) {
             throw new ServiceException(ex.getMessage(), ex.getCause());
         } catch (NotFoundRepositoryException ex) {

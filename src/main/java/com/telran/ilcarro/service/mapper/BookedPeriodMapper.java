@@ -1,5 +1,6 @@
 package com.telran.ilcarro.service.mapper;
 
+import com.telran.ilcarro.model.car.BookResponseDTO;
 import com.telran.ilcarro.model.car.BookedPeriodDto;
 import com.telran.ilcarro.repository.entity.BookedPeriodEntity;
 import org.mapstruct.Mapper;
@@ -7,7 +8,12 @@ import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(uses = CommentMapper.class,
+/**
+ * AleksGor
+ * AntonKonkin
+ * izum286
+ */
+@Mapper(uses = CommentMapper.class, imports = {BookedPeriodEntity.class},
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface BookedPeriodMapper {
 
@@ -16,8 +22,23 @@ public interface BookedPeriodMapper {
 
     BookedPeriodEntity map(BookedPeriodDto dto);
 
+    BookResponseDTO mapToResponse(BookedPeriodEntity entity);
+
+
+
+
     BookedPeriodDto map(BookedPeriodEntity entity);
 
     @Mapping(target = "personWhoBookedDto", ignore = true)
     BookedPeriodDto mapForUserHistory(BookedPeriodEntity entity);
+
+    /**
+     * used for Get car by id for users - providing only start & and dates
+     */
+    @Mapping(target = "personWhoBookedDto", ignore = true)
+    @Mapping(target = "orderId", ignore = true)
+    @Mapping(target = "paid", ignore = true)
+    @Mapping(target = "amount", ignore = true)
+    @Mapping(target = "bookingDate", ignore = true)
+    BookedPeriodDto mapForGetCarByIdForUsers(BookedPeriodEntity entity);
 }

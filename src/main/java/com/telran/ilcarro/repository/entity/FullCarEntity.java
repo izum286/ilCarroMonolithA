@@ -1,6 +1,7 @@
 package com.telran.ilcarro.repository.entity;
 
 import lombok.*;
+import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @Setter
 @Builder
 public class FullCarEntity {
+    @Id
     private String serialNumber;
     private String model;
     private String make;
@@ -40,7 +42,7 @@ public class FullCarEntity {
     private List<UserEntity> owner_cars;
 
     private List<BookedPeriodEntity> bookedPeriods;
-    private List<SchedularUsageEntity> usages;
+    //private List<SchedularUsageEntity> usages;
     private List<CommentEntity> feedBacks;
     private CarStatEntity statistics;
     private int trips;
