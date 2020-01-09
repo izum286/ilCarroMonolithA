@@ -3,16 +3,18 @@ package com.telran.ilcarro.service.car;
 import com.telran.ilcarro.model.car.*;
 import com.telran.ilcarro.model.user.OwnerDtoResponse;
 import com.telran.ilcarro.repository.CarRepository;
+import com.telran.ilcarro.repository.UserEntityRepository;
 import com.telran.ilcarro.repository.entity.BookedPeriodEntity;
 import com.telran.ilcarro.repository.entity.FullCarEntity;
+import com.telran.ilcarro.repository.entity.OwnerEntity;
+import com.telran.ilcarro.repository.entity.UserEntity;
 import com.telran.ilcarro.repository.exception.ConflictRepositoryException;
 import com.telran.ilcarro.repository.exception.NotFoundRepositoryException;
 import com.telran.ilcarro.repository.exception.RepositoryException;
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.exceptions.ServiceException;
-import com.telran.ilcarro.service.mapper.BookedPeriodMapper;
-import com.telran.ilcarro.service.mapper.CarMapperAddCar;
+import com.telran.ilcarro.service.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,9 @@ public class CarServiceImpl implements CarService {
     @Autowired
     CarRepository carRepository;
 
+    @Autowired
+    UserEntityRepository userRepository;
+
 
     /**
      * status - ready
@@ -40,8 +45,12 @@ public class CarServiceImpl implements CarService {
     @Override
     public Optional<FullCarDTOResponse> addCar(AddUpdateCarDtoRequest carToAdd, String userEmail) {
         try {
-            FullCarEntity entity = carRepository.save(CarMapperAddCar.INSTANCE.map(carToAdd));
-            return Optional.of(CarMapperAddCar.INSTANCE.map(entity));
+            FullCarEntity entity = CarMapperAddCar.INSTANCE.map(carToAdd);
+            UserEntity user = userRepository.findById(userEmail).get();
+            OwnerEntity owner = OwnerMapper.INSTANCE.map(user);
+            entity.setOwner(owner);
+            FullCarEntity added = carRepository.save(entity);
+            return Optional.of(CarMapper.INSTANCE.map(added));
         } catch (ConflictRepositoryException e) {
             throw new ConflictRepositoryException(e.getMessage(), e.getCause());
         }catch (Throwable t) {

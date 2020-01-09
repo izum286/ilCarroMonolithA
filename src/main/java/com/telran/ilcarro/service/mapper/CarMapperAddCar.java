@@ -10,6 +10,7 @@ import com.telran.ilcarro.model.car.AddUpdateCarDtoRequest;
 import com.telran.ilcarro.model.car.FullCarDTOResponse;
 import com.telran.ilcarro.repository.entity.BookedPeriodEntity;
 import com.telran.ilcarro.repository.entity.CarStatEntity;
+import com.telran.ilcarro.repository.entity.CommentEntity;
 import com.telran.ilcarro.repository.entity.FullCarEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -19,13 +20,14 @@ import org.mapstruct.factory.Mappers;
 import java.util.ArrayList;
 
 
-@Mapper(componentModel = "spring",imports = {BookedPeriodEntity.class, ArrayList.class, CarStatEntity.class},
+@Mapper(componentModel = "spring",imports = {BookedPeriodEntity.class, ArrayList.class, CarStatEntity.class, CommentEntity.class},
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface CarMapperAddCar {
 
     CarMapperAddCar INSTANCE = Mappers.getMapper(CarMapperAddCar.class);
     @Mapping(target = "bookedPeriods",expression = "java(new ArrayList<BookedPeriodEntity>())")
     @Mapping(target = "statistics",expression = "java(new CarStatEntity())")
+    @Mapping(target = "feedBacks",expression = "java(new ArrayList<CommentEntity>())")
     FullCarEntity map(AddUpdateCarDtoRequest dto);
 
     @Mapping(target = "bookedPeriodDto",source = "bookedPeriods")
