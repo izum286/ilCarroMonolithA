@@ -29,7 +29,7 @@ public interface CarController {
      * @param carDTO of updated car with updated params
      * @return ShortCarDTO
      */
-    FullCarDTOResponse updateCar(AddUpdateCarDtoRequest carDTO) throws IllegalAccessException;
+    FullCarDTOResponse updateCar(AddUpdateCarDtoRequest carDTO , Principal principal) throws IllegalAccessException;
 
 
     /**

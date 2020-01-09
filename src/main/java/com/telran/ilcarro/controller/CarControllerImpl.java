@@ -69,9 +69,10 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @PutMapping("/car")
-        public FullCarDTOResponse updateCar(@RequestBody AddUpdateCarDtoRequest carDTO) throws IllegalAccessException {
+        public FullCarDTOResponse updateCar(@RequestBody AddUpdateCarDtoRequest carDTO, Principal principal) throws IllegalAccessException {
         filterService.addFilter(carDTO);
-            return carService.updateCar(carDTO).orElseThrow();
+        String userEmail = principal.getName();
+            return carService.updateCar(carDTO, userEmail).orElseThrow();
     }
 
 

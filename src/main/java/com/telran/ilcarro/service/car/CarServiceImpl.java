@@ -64,13 +64,17 @@ public class CarServiceImpl implements CarService {
      * @return optional of updated car
      */
     @Override
-    public Optional<FullCarDTOResponse> updateCar(AddUpdateCarDtoRequest carToUpdate) {
+    public Optional<FullCarDTOResponse> updateCar(AddUpdateCarDtoRequest carToUpdate, String userEmail) {
         try {
+            if(!userRepository.findById(userEmail).get().getOwnCars()
+                    .contains(carToUpdate.getSerialNumber())){
+                throw new RepositoryException("no such car owned by user");
+            }
             Optional<FullCarEntity> entity = carRepository.findById(carToUpdate.getSerialNumber());
             if(!entity.isEmpty()){
-                FullCarEntity toAdd = CarMapperAddCar.INSTANCE.map(carToUpdate);
-                carRepository.save(toAdd);
-                return Optional.of(CarMapperAddCar.INSTANCE.map(toAdd));
+                FullCarEntity toUpdate = CarMapper.INSTANCE.map(carToUpdate);
+                carRepository.save(toUpdate);
+                return Optional.of(CarMapper.INSTANCE.map(toUpdate));
             }else {
                 throw new RepositoryException("something went wrong");
             }
@@ -107,19 +111,19 @@ public class CarServiceImpl implements CarService {
     public Optional<FullCarDTOResponse> getCarById(String carId) {
         try {
             Optional<FullCarEntity> entity = carRepository.findById(carId);
-            return Optional.of(CarMapperAddCar.INSTANCE.map(entity.get()));
+            return Optional.of(CarMapper.INSTANCE.map(entity.get()));
         } catch (RepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
         }
     }
 
-
+//TODO need principal
     @Override
     public List<FullCarDTOResponse> ownerGetCars() {
         try {
             List<FullCarEntity> fullCarEntityList = carRepository.ownerGetCars();
             return fullCarEntityList.stream()
-                    .map(car -> CarMapperAddCar.INSTANCE.map(car))
+                    .map(car -> CarMapper.INSTANCE.map(car))
                     .collect(Collectors.toList());
         } catch (NotFoundRepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
@@ -186,7 +190,7 @@ public class CarServiceImpl implements CarService {
                     .sorted(Comparator.comparing(FullCarEntity::getTrips).reversed())
                     .limit(3)
                     .collect(Collectors.toList());
-            return fullCarEntityList.stream().map(car -> CarMapperAddCar.INSTANCE.map(car))
+            return fullCarEntityList.stream().map(car -> CarMapper.INSTANCE.map(car))
                     .collect(Collectors.toList());
         } catch (Throwable t) {
             throw new ServiceException(t.getMessage(), t.getCause());

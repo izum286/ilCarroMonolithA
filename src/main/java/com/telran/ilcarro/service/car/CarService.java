@@ -37,7 +37,7 @@ public interface CarService {
      * @throws NotFoundServiceException - if car with current serial number was not found
      * @throws ServiceException - if user unauthorized
      */
-    Optional<FullCarDTOResponse> updateCar(AddUpdateCarDtoRequest carDTO);
+    Optional<FullCarDTOResponse> updateCar(AddUpdateCarDtoRequest carDTO, String userEmail);
 
     /**
      * Delete exists Car by serial number as carId
