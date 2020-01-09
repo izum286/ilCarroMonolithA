@@ -3,7 +3,6 @@ package com.telran.ilcarro.controller;
 import com.telran.ilcarro.controller.interfaces.CarController;
 import com.telran.ilcarro.model.car.*;
 import com.telran.ilcarro.model.car.probably_unused.ShortCarDTO;
-import com.telran.ilcarro.service.auth.AuthService;
 import com.telran.ilcarro.service.car.CarService;
 import com.telran.ilcarro.service.filter.FilterService;
 import io.swagger.annotations.ApiOperation;
@@ -99,7 +98,7 @@ public class CarControllerImpl implements CarController {
     //**********************************************************************************
 
 
-    @ApiOperation(value = "Get car by if for users", response = FullCarDTOResponse.class)
+    @ApiOperation(value = "Get car by id for users", response = FullCarDTOResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = ""),
             @ApiResponse(code = 401, message = "Unauthorized. Please login"),
@@ -110,7 +109,7 @@ public class CarControllerImpl implements CarController {
     @Override
     @GetMapping("/car?serial_number")
     public FullCarDTOResponse getCarByIdForUsers(@RequestParam(name = "serial_number") String carId) {
-        return carService.getCarById(carId).orElseThrow();
+        return carService.getCarByIdForUsers(carId).orElseThrow();
     }
 
 
@@ -148,7 +147,7 @@ public class CarControllerImpl implements CarController {
     @Override
     @GetMapping("/user/cars/car?serial_number")
     public FullCarDTOResponse ownerGetCarById(@RequestParam(name = "serial_number") String carId) {
-        return carService.getCarById(carId).orElseThrow();
+        return carService.getCarByIdForUsers(carId).orElseThrow();
     }
 
 

@@ -63,7 +63,7 @@ public interface CarService {
      * @throws NotFoundServiceException - if car with current serial number was not found
      * @throws ServiceException - if user unauthorized
      */
-    Optional<FullCarDTOResponse> getCarById(String carId);
+    Optional<FullCarDTOResponse> getCarByIdForUsers(String carId);
 
     /**
      * Get List of BookedPeriods for current car by his serial number as carId

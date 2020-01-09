@@ -112,10 +112,15 @@ public class CarServiceImpl implements CarService {
      * @return true\false
      */
     @Override
-    public Optional<FullCarDTOResponse> getCarById(String carId) {
+    public Optional<FullCarDTOResponse> getCarByIdForUsers(String carId) {
         try {
             Optional<FullCarEntity> entity = carRepository.findById(carId);
-            return Optional.of(CarMapper.INSTANCE.map(entity.get()));
+            List<BookedPeriodDto> shortPeriods = entity.get().getBookedPeriods()
+                    .stream().map(bp->BookedPeriodMapper.INSTANCE.mapForGetCarByIdForUsers(bp))
+                    .collect(Collectors.toList());
+            FullCarDTOResponse toProvide = CarMapper.INSTANCE.map(entity.get());
+            toProvide.setBookedPeriodDto(shortPeriods);
+            return Optional.of(toProvide);
         } catch (RepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
         }
