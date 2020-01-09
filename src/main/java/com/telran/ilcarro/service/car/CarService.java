@@ -82,7 +82,7 @@ public interface CarService {
      * @throws ServiceException - if user unauthorized
      * @throws ConflictServiceException - //TODO что в данном методе, согласно протоколу, является конфликтом?
      */
-    List<BookedPeriodDto> getBookedPeriodsByCarId(String carId);
+    List<BookedPeriodDto> getBookedPeriodsByCarId(String carId, String userEmail);
 
     /**
      * Make new BookedPeriodDTO as dto for current car with serial number as carId

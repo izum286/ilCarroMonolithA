@@ -78,7 +78,7 @@ public interface CarController {
      * @param carId of car
      * @return List<ShedularUsageDTO>
      */
-    List<BookedPeriodDto> ownerGetBookedPeriodsByCarId(String carId);
+    List<BookedPeriodDto> ownerGetBookedPeriodsByCarId(String carId, Principal principal);
 
     BookResponseDTO makeReservation(String carId, BookRequestDTO dto, Principal principal);
 

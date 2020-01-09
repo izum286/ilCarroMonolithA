@@ -182,10 +182,13 @@ public class CarServiceImpl implements CarService {
      * code cleanup by izum286
      * @return true\false
      */
-    //TODO auth
     @Override
-    public List<BookedPeriodDto> getBookedPeriodsByCarId(String carId) {
+    public List<BookedPeriodDto> getBookedPeriodsByCarId(String carId, String userEmail) {
         try {
+            if(!userRepository.findById(userEmail).get().getOwnCars()
+                    .contains(carId)){
+                throw new RepositoryException("no such car owned by user");
+            }
             List<BookedPeriodEntity> list = carRepository.findById(carId).get()
                     .getBookedPeriods();
             return list.stream().map(b-> BookedPeriodMapper.INSTANCE.map(b))

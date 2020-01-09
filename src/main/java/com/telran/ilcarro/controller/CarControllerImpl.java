@@ -183,8 +183,10 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @GetMapping("/user/cars/periods?serial_number")
-    public List<BookedPeriodDto> ownerGetBookedPeriodsByCarId(@RequestParam(name = "serial_number") String carId) {
-        return carService.getBookedPeriodsByCarId(carId);
+    public List<BookedPeriodDto> ownerGetBookedPeriodsByCarId(@RequestParam(name = "serial_number") String carId,
+                                                              Principal principal) {
+        String userEmail = principal.getName();
+        return carService.getBookedPeriodsByCarId(carId, userEmail);
     }
 
     @Override
