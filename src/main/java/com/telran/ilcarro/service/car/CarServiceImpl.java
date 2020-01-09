@@ -2,6 +2,7 @@ package com.telran.ilcarro.service.car;
 
 import com.telran.ilcarro.model.car.*;
 import com.telran.ilcarro.model.user.OwnerDtoResponse;
+import com.telran.ilcarro.repository.BookedPeriodsRepository;
 import com.telran.ilcarro.repository.CarRepository;
 import com.telran.ilcarro.repository.UserEntityRepository;
 import com.telran.ilcarro.repository.entity.BookedPeriodEntity;
@@ -21,8 +22,10 @@ import com.telran.ilcarro.service.mapper.OwnerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 /**
@@ -38,6 +41,9 @@ public class CarServiceImpl implements CarService {
 
     @Autowired
     UserEntityRepository userRepository;
+
+    @Autowired
+    BookedPeriodsRepository bookedPeriodsRepository;
 
 
     /**
@@ -199,26 +205,31 @@ public class CarServiceImpl implements CarService {
             throw new ServiceException(ex.getMessage(), ex.getCause());
         }
     }
-
+    /**
+     * status - ready
+     * code cleanup by izum286
+     * @return BookResponseDTO
+     */
     @Override
     public Optional<BookResponseDTO> makeReservation(String carId, BookRequestDTO dto, String userEmail) {
         try {
-            FullCarEntity entity = carRepository.getCarByIdForUsers(UUID.fromString(carId));
-            List<BookedPeriodEntity> listBookedPeriodEntity = entity.getBookedPeriods() == null ? new ArrayList<>() : entity.getBookedPeriods();
-            BookedPeriodEntity bookedPeriodEntity = new BookedPeriodEntity();
-            bookedPeriodEntity.setBookingDate(dto.getStartDateTime());
-            bookedPeriodEntity.setEndDateTime(dto.getEndDateTime());
-            bookedPeriodEntity.setPersonWhoBookedDto(dto.getPersonWhoBookedDto());
-            listBookedPeriodEntity.add(bookedPeriodEntity);
+            FullCarEntity entity = carRepository.findById(carId).orElseThrow();
+            List<BookedPeriodEntity> listBookedPeriodEntity = entity.getBookedPeriods() == null ? new CopyOnWriteArrayList<>() : entity.getBookedPeriods();
+            BookedPeriodEntity newPeriod = new BookedPeriodEntity();
+            newPeriod.setBookingDate(LocalDateTime.now());
+            newPeriod.setStartDateTime(dto.getStartDateTime());
+            newPeriod.setEndDateTime(dto.getEndDateTime());
+            newPeriod.setPersonWhoBookedDto(dto.getPersonWhoBookedDto());
+            newPeriod.setAmount(Float.valueOf(entity.getPricePerDaySimple()));
+            newPeriod.setPaid(true); newPeriod.setActive(true);
+            bookedPeriodsRepository.save(newPeriod);
+            listBookedPeriodEntity.add(newPeriod);
             entity.setBookedPeriods(listBookedPeriodEntity);
-
             carRepository.save(entity);
-
-            BookResponseDTO bookResponseDTO = new BookResponseDTO();
-            bookResponseDTO.setBookingDate(dto.getStartDateTime().format(DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm")));
-            bookedPeriodEntity.setPersonWhoBookedDto(dto.getPersonWhoBookedDto());
-
-            return Optional.of(bookResponseDTO);
+            String periodId = newPeriod.getOrderId();
+            BookedPeriodEntity responseEntity = bookedPeriodsRepository.findById(periodId).orElseThrow();
+            BookResponseDTO responseDto = BookedPeriodMapper.INSTANCE.mapToResponse(responseEntity);
+            return Optional.of(responseDto);
         } catch (ServiceException ex) {
             throw new ServiceException(ex.getMessage(), ex.getCause());
         } catch (NotFoundRepositoryException ex) {

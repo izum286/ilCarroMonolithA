@@ -1,5 +1,6 @@
 package com.telran.ilcarro.service.mapper;
 
+import com.telran.ilcarro.model.car.BookResponseDTO;
 import com.telran.ilcarro.model.car.BookedPeriodDto;
 import com.telran.ilcarro.repository.entity.BookedPeriodEntity;
 import org.mapstruct.Mapper;
@@ -12,7 +13,7 @@ import org.mapstruct.factory.Mappers;
  * AntonKonkin
  * izum286
  */
-@Mapper(uses = CommentMapper.class,
+@Mapper(uses = CommentMapper.class, imports = {BookedPeriodEntity.class},
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface BookedPeriodMapper {
 
@@ -20,6 +21,11 @@ public interface BookedPeriodMapper {
 
 
     BookedPeriodEntity map(BookedPeriodDto dto);
+
+    BookResponseDTO mapToResponse(BookedPeriodEntity entity);
+
+
+
 
     BookedPeriodDto map(BookedPeriodEntity entity);
 

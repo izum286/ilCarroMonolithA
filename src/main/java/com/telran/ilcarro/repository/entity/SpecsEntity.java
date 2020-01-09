@@ -10,6 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Deprecated
 public class SpecsEntity {
     private String engine;
     private String fuelCons;

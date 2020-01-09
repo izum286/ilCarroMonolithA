@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Deprecated
 public class SchedularUsageEntity {
     private String id;
     private String userId;
