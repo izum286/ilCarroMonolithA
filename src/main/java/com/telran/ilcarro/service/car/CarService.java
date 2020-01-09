@@ -7,6 +7,7 @@ import com.telran.ilcarro.service.exceptions.EmptyDataException;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.exceptions.ServiceException;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +27,7 @@ public interface CarService {
      * @throws ConflictServiceException - if car with current serial number already exists
      * @throws ServiceException - if user unauthorized
      */
-    Optional<FullCarDTOResponse> addCar(AddUpdateCarDtoRequest carDTO);
+    Optional<FullCarDTOResponse> addCar(AddUpdateCarDtoRequest carDTO, String userEmail);
 
     /**
      * Update exists Car as AddUpdateCarDtoRequest
@@ -83,7 +84,7 @@ public interface CarService {
      * @throws ConflictServiceException - if current car already booked with current date
      * @throws ServiceException - if user unauthorized
      */
-    Optional<BookResponseDTO> makeReservation(String carId, BookRequestDTO dto);
+    Optional<BookResponseDTO> makeReservation(String carId, BookRequestDTO dto, String userEmail);
 
     /**
      * Get OwnerDtoResponse of current car with serial number as carId

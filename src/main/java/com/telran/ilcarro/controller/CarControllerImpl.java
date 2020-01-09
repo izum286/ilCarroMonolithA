@@ -48,9 +48,10 @@ public class CarControllerImpl implements CarController {
     @Override
     @PostMapping("/car")
 
-    public FullCarDTOResponse addCar(@RequestBody AddUpdateCarDtoRequest carDTO) throws IllegalAccessException {
+    public FullCarDTOResponse addCar(@RequestBody AddUpdateCarDtoRequest carDTO, Principal principal) throws IllegalAccessException {
+        String userEmail = principal.getName();
         filterService.addFilter(carDTO);
-        return carService.addCar(carDTO).orElseThrow();
+        return carService.addCar(carDTO, userEmail).orElseThrow();
     }
 
 
@@ -68,9 +69,8 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @PutMapping("/car")
-    //TODO With auth
         public FullCarDTOResponse updateCar(@RequestBody AddUpdateCarDtoRequest carDTO) throws IllegalAccessException {
-            filterService.addFilter(carDTO);
+        filterService.addFilter(carDTO);
             return carService.updateCar(carDTO).orElseThrow();
     }
 
@@ -172,8 +172,9 @@ public class CarControllerImpl implements CarController {
     @Override
     @PostMapping("/car/reservation?serial_number")
     public BookResponseDTO makeReservation(@RequestParam(name = "serial_number") String carId,
-                                           @RequestBody BookRequestDTO dto) {
-        return carService.makeReservation(carId,dto).orElseThrow();
+                                           @RequestBody BookRequestDTO dto, Principal principal) {
+        String userEmail = principal.getName();
+        return carService.makeReservation(carId, dto, userEmail).orElseThrow();
     }
 
     @GetMapping("/car/best")

@@ -2,6 +2,7 @@ package com.telran.ilcarro.controller.interfaces;
 
 import com.telran.ilcarro.model.car.*;
 
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ public interface CarController {
      * @param carDTO of new car
      * @return ShortCarDTO
      */
-    FullCarDTOResponse addCar(AddUpdateCarDtoRequest carDTO) throws IllegalAccessException;
+    FullCarDTOResponse addCar(AddUpdateCarDtoRequest carDTO, Principal principal) throws IllegalAccessException;
 
     /**
      * Returns the shortCarDTO that was created from FullCarDTO
@@ -69,7 +70,7 @@ public interface CarController {
      */
     List<BookedPeriodDto> ownerGetBookedPeriodsByCarId(String carId);
 
-    BookResponseDTO makeReservation(String carId, BookRequestDTO dto);
+    BookResponseDTO makeReservation(String carId, BookRequestDTO dto, Principal principal);
 
     /**
      *

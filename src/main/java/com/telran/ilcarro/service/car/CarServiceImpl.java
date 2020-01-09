@@ -38,7 +38,7 @@ public class CarServiceImpl implements CarService {
      * @return optional of added car
      */
     @Override
-    public Optional<FullCarDTOResponse> addCar(AddUpdateCarDtoRequest carToAdd) {
+    public Optional<FullCarDTOResponse> addCar(AddUpdateCarDtoRequest carToAdd, String userEmail) {
         try {
             FullCarEntity entity = carRepository.save(CarMapperAddCar.INSTANCE.map(carToAdd));
             return Optional.of(CarMapperAddCar.INSTANCE.map(entity));
@@ -140,7 +140,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Optional<BookResponseDTO> makeReservation(String carId, BookRequestDTO dto) {
+    public Optional<BookResponseDTO> makeReservation(String carId, BookRequestDTO dto, String userEmail) {
         try {
             FullCarEntity entity = carRepository.getCarByIdForUsers(UUID.fromString(carId));
             List<BookedPeriodEntity> listBookedPeriodEntity = entity.getBookedPeriods() == null ? new ArrayList<>() : entity.getBookedPeriods();
