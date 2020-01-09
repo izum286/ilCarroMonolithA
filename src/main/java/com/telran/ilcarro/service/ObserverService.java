@@ -1,7 +1,7 @@
 package com.telran.ilcarro.service;
 
 import com.telran.ilcarro.model.car.probably_unused.SchedularUsageDTO;
-import com.telran.ilcarro.repository.CarRepositoryImpl;
+import com.telran.ilcarro.repository.CarRepository;
 import com.telran.ilcarro.repository.SchedularActiveUsagesRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ public class ObserverService {
     SchedularActiveUsagesRepo activeUsagesRepo;
 
     @Autowired
-    CarRepositoryImpl carRepositoryImpl;
+    CarRepository carRepository;
 
     /**
      * TODO

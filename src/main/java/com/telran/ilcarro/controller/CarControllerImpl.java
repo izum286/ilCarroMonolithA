@@ -3,7 +3,6 @@ package com.telran.ilcarro.controller;
 import com.telran.ilcarro.controller.interfaces.CarController;
 import com.telran.ilcarro.model.car.*;
 import com.telran.ilcarro.model.car.probably_unused.ShortCarDTO;
-import com.telran.ilcarro.service.auth.AuthService;
 import com.telran.ilcarro.service.car.CarService;
 import com.telran.ilcarro.service.filter.FilterService;
 import io.swagger.annotations.ApiOperation;
@@ -48,9 +47,10 @@ public class CarControllerImpl implements CarController {
     @Override
     @PostMapping("/car")
 
-    public FullCarDTOResponse addCar(@RequestBody AddUpdateCarDtoRequest carDTO) throws IllegalAccessException {
+    public FullCarDTOResponse addCar(@RequestBody AddUpdateCarDtoRequest carDTO, Principal principal) throws IllegalAccessException {
+        String userEmail = principal.getName();
         filterService.addFilter(carDTO);
-        return carService.addCar(carDTO).orElseThrow();
+        return carService.addCar(carDTO, userEmail).orElseThrow();
     }
 
 
@@ -68,10 +68,10 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @PutMapping("/car")
-    //TODO With auth
-        public FullCarDTOResponse updateCar(@RequestBody AddUpdateCarDtoRequest carDTO) throws IllegalAccessException {
-            filterService.addFilter(carDTO);
-            return carService.updateCar(carDTO).orElseThrow();
+        public FullCarDTOResponse updateCar(@RequestBody AddUpdateCarDtoRequest carDTO, Principal principal) throws IllegalAccessException {
+        filterService.addFilter(carDTO);
+        String userEmail = principal.getName();
+            return carService.updateCar(carDTO, userEmail).orElseThrow();
     }
 
 
@@ -89,16 +89,16 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @DeleteMapping("/car?serial_number")
-    //TODO With auth
-    public void deleteCar(@RequestParam(name = "serial_number") String carId) {
-        carService.deleteCar(carId);
+    public void deleteCar(@RequestParam(name = "serial_number") String carId, Principal principal) {
+        String userEmail = principal.getName();
+        carService.deleteCar(carId, userEmail);
     }
 
 
     //**********************************************************************************
 
 
-    @ApiOperation(value = "Get car by if for users", response = FullCarDTOResponse.class)
+    @ApiOperation(value = "Get car by id for users", response = FullCarDTOResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = ""),
             @ApiResponse(code = 401, message = "Unauthorized. Please login"),
@@ -109,7 +109,24 @@ public class CarControllerImpl implements CarController {
     @Override
     @GetMapping("/car?serial_number")
     public FullCarDTOResponse getCarByIdForUsers(@RequestParam(name = "serial_number") String carId) {
-        return carService.getCarById(carId).orElseThrow();
+        return carService.getCarByIdForUsers(carId).orElseThrow();
+    }
+
+
+    @ApiOperation(value = "Get car by id for users", response = FullCarDTOResponse.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 401, message = "Unauthorized. Please login"),
+            @ApiResponse(code = 404, message = "Car with id: {id} not found")
+    }
+    )
+
+    @GetMapping("/users/cars/car?serial_number")
+    @Override
+    public FullCarDTOResponse getCarByIdForOwner(@RequestParam(name = "serial_number") String carId,
+                                                 Principal principal) {
+        String userEmail = principal.getName();
+        return carService.getCarByIdForOwner(carId, userEmail).orElseThrow();
     }
 
 
@@ -127,8 +144,9 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @GetMapping("/user/cars")
-    public List<FullCarDTOResponse> ownerGetCars() {
-        return carService.ownerGetCars();
+    public List<FullCarDTOResponse> ownerGetCars(Principal principal) {
+        String userEmail = principal.getName();
+        return carService.ownerGetCars(userEmail);
     }
 
 
@@ -147,7 +165,7 @@ public class CarControllerImpl implements CarController {
     @Override
     @GetMapping("/user/cars/car?serial_number")
     public FullCarDTOResponse ownerGetCarById(@RequestParam(name = "serial_number") String carId) {
-        return carService.getCarById(carId).orElseThrow();
+        return carService.getCarByIdForUsers(carId).orElseThrow();
     }
 
 
@@ -165,15 +183,18 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @GetMapping("/user/cars/periods?serial_number")
-    public List<BookedPeriodDto> ownerGetBookedPeriodsByCarId(@RequestParam(name = "serial_number") String carId) {
-        return carService.getBookedPeriodsByCarId(carId);
+    public List<BookedPeriodDto> ownerGetBookedPeriodsByCarId(@RequestParam(name = "serial_number") String carId,
+                                                              Principal principal) {
+        String userEmail = principal.getName();
+        return carService.getBookedPeriodsByCarId(carId, userEmail);
     }
 
     @Override
     @PostMapping("/car/reservation?serial_number")
     public BookResponseDTO makeReservation(@RequestParam(name = "serial_number") String carId,
-                                           @RequestBody BookRequestDTO dto) {
-        return carService.makeReservation(carId,dto).orElseThrow();
+                                           @RequestBody BookRequestDTO dto, Principal principal) {
+        String userEmail = principal.getName();
+        return carService.makeReservation(carId, dto, userEmail).orElseThrow();
     }
 
     @GetMapping("/car/best")

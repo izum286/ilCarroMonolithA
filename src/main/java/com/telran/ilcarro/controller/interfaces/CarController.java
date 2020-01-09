@@ -2,6 +2,7 @@ package com.telran.ilcarro.controller.interfaces;
 
 import com.telran.ilcarro.model.car.*;
 
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ public interface CarController {
      * @param carDTO of new car
      * @return ShortCarDTO
      */
-    FullCarDTOResponse addCar(AddUpdateCarDtoRequest carDTO) throws IllegalAccessException;
+    FullCarDTOResponse addCar(AddUpdateCarDtoRequest carDTO, Principal principal) throws IllegalAccessException;
 
     /**
      * Returns the shortCarDTO that was created from FullCarDTO
@@ -28,7 +29,7 @@ public interface CarController {
      * @param carDTO of updated car with updated params
      * @return ShortCarDTO
      */
-    FullCarDTOResponse updateCar(AddUpdateCarDtoRequest carDTO) throws IllegalAccessException;
+    FullCarDTOResponse updateCar(AddUpdateCarDtoRequest carDTO , Principal principal) throws IllegalAccessException;
 
 
     /**
@@ -36,7 +37,7 @@ public interface CarController {
      *
      * @param carId of car to be deleted
      */
-    void deleteCar(String carId);
+    void deleteCar(String carId, Principal principal);
 
     /**
      * Returns the FullCarDTO for regular users
@@ -47,11 +48,21 @@ public interface CarController {
     FullCarDTOResponse getCarByIdForUsers(String carId);
 
     /**
+     * Returns the FullCarDTO for authentificated user
+     *
+     * @param carId of car
+     * @return FullCarDTO
+     */
+    FullCarDTOResponse getCarByIdForOwner(String carId, Principal principal);
+
+
+
+    /**
      * Returns list of FullCarDTO for owner
      *
      * @return List<FullCarDTO>
      */
-    List<FullCarDTOResponse> ownerGetCars();
+    List<FullCarDTOResponse> ownerGetCars(Principal principal);
 
     /**
      * Returns the FullCarDTO for car owner by id of his car
@@ -67,9 +78,9 @@ public interface CarController {
      * @param carId of car
      * @return List<ShedularUsageDTO>
      */
-    List<BookedPeriodDto> ownerGetBookedPeriodsByCarId(String carId);
+    List<BookedPeriodDto> ownerGetBookedPeriodsByCarId(String carId, Principal principal);
 
-    BookResponseDTO makeReservation(String carId, BookRequestDTO dto);
+    BookResponseDTO makeReservation(String carId, BookRequestDTO dto, Principal principal);
 
     /**
      *

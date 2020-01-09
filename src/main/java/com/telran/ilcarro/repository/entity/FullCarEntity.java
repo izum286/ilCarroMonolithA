@@ -6,6 +6,7 @@ import com.telran.ilcarro.model.car.FeatureDto;
 import com.telran.ilcarro.model.car.PickUpPlaceDto;
 import com.telran.ilcarro.model.user.OwnerDtoResponse;
 import lombok.*;
+import org.springframework.data.annotation.Id;
 
 
 //TODO Заглушка FullCarEntity для CarService. Это надо переделать.
@@ -17,6 +18,7 @@ import java.util.List;
 @Setter
 @Builder
 public class FullCarEntity {
+    @Id
     private String serialNumber;
     private String model;
     private String make;
@@ -45,7 +47,7 @@ public class FullCarEntity {
     private List<UserEntity> owner_cars;
 
     private List<BookedPeriodEntity> bookedPeriods;
-    private List<SchedularUsageEntity> usages;
+    //private List<SchedularUsageEntity> usages;
     private List<CommentEntity> feedBacks;
     private CarStatEntity statistics;
     private int trips;
