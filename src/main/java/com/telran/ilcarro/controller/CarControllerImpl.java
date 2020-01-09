@@ -144,8 +144,9 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @GetMapping("/user/cars")
-    public List<FullCarDTOResponse> ownerGetCars() {
-        return carService.ownerGetCars();
+    public List<FullCarDTOResponse> ownerGetCars(Principal principal) {
+        String userEmail = principal.getName();
+        return carService.ownerGetCars(userEmail);
     }
 
 

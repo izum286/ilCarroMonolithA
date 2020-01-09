@@ -54,7 +54,7 @@ public interface CarService {
      * @throws NotFoundServiceException - if car with current serial number was not found
      * @throws ServiceException - if user unauthorized
      */
-    List<FullCarDTOResponse> ownerGetCars();
+    List<FullCarDTOResponse> ownerGetCars(String userEmail);
 
     /**
      * Get FullCarDTOResponse by car serial number as carId

@@ -62,7 +62,7 @@ public interface CarController {
      *
      * @return List<FullCarDTO>
      */
-    List<FullCarDTOResponse> ownerGetCars();
+    List<FullCarDTOResponse> ownerGetCars(Principal principal);
 
     /**
      * Returns the FullCarDTO for car owner by id of his car

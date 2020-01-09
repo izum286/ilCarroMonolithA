@@ -14,7 +14,10 @@ import com.telran.ilcarro.repository.exception.RepositoryException;
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.exceptions.ServiceException;
-import com.telran.ilcarro.service.mapper.*;
+import com.telran.ilcarro.service.mapper.BookedPeriodMapper;
+import com.telran.ilcarro.service.mapper.CarMapper;
+import com.telran.ilcarro.service.mapper.CarMapperAddCar;
+import com.telran.ilcarro.service.mapper.OwnerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -126,6 +129,11 @@ public class CarServiceImpl implements CarService {
         }
     }
 
+    /**
+     * status - ready
+     * @author - izum286
+     * @return Optional<FullCarDTOResponse>
+     */
     @Override
     public Optional<FullCarDTOResponse> getCarByIdForOwner(String carId, String userEmail) {
         try {
@@ -141,14 +149,26 @@ public class CarServiceImpl implements CarService {
         }
     }
 
-    //TODO need principal
+    /**
+     * status - ready
+     * @author - izum286
+     * @param userEmail as Owner
+     * @return List<FullCarDTOResponse> Owner cars
+     *
+     */
     @Override
-    public List<FullCarDTOResponse> ownerGetCars() {
+    public List<FullCarDTOResponse> ownerGetCars(String userEmail) {
         try {
-            List<FullCarEntity> fullCarEntityList = carRepository.ownerGetCars();
-            return fullCarEntityList.stream()
-                    .map(car -> CarMapper.INSTANCE.map(car))
-                    .collect(Collectors.toList());
+            List<String> ownerCars = userRepository.findById(userEmail).get().getOwnCars();
+            if(ownerCars.isEmpty()){
+                return Collections.emptyList();
+            }
+            List<FullCarEntity> cars = ownerCars.stream()
+                    .map(carId ->{
+                    FullCarEntity entity = carRepository.findById(carId).get();
+                    return entity;
+            }).collect(Collectors.toList());
+            return cars.stream().map(car->CarMapper.INSTANCE.mapWithoutOwnerFullBookedPeriods(car)).collect(Collectors.toList());
         } catch (NotFoundRepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
         } catch (RepositoryException ex) {
@@ -162,6 +182,7 @@ public class CarServiceImpl implements CarService {
      * code cleanup by izum286
      * @return true\false
      */
+    //TODO auth
     @Override
     public List<BookedPeriodDto> getBookedPeriodsByCarId(String carId) {
         try {
