@@ -147,8 +147,8 @@ public class CarServiceImpl implements CarService {
                     .contains(carId)){
                 throw new RepositoryException("no such car owned by user");
             }
-            Optional<FullCarEntity> entity = carRepository.findById(carId);
-            FullCarDTOResponse response = CarMapper.INSTANCE.mapWithoutOwnerFullBookedPeriods(entity.get());
+            FullCarEntity entity = carRepository.findById(carId).orElseThrow();
+            FullCarDTOResponse response = CarMapper.INSTANCE.mapWithoutOwnerFullBookedPeriods(entity);
             return Optional.of(response);
         } catch (RepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
