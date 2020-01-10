@@ -123,11 +123,16 @@ public class CarServiceImpl implements CarService {
     @Override
     public Optional<FullCarDTOResponse> getCarByIdForUsers(String carId) {
         try {
+            List<BookedPeriodDto> shortPeriods = new CopyOnWriteArrayList<>();
             FullCarEntity entity = carRepository.findById(carId).orElseThrow();
-            List<BookedPeriodDto> shortPeriods = entity.getBookedPeriods()
-                    .stream().map(bp->BookedPeriodMapper.INSTANCE.mapForGetCarByIdForUsers(bp))
-                    .collect(Collectors.toList());
             FullCarDTOResponse toProvide = CarMapper.INSTANCE.map(entity);
+            if (!entity.getBookedPeriods().isEmpty()) {
+                shortPeriods = entity.getBookedPeriods()
+                       .stream().map(bp->BookedPeriodMapper.INSTANCE.mapForGetCarByIdForUsers(bp))
+                       .collect(Collectors.toList());
+                toProvide.setBookedPeriodDto(shortPeriods);
+                return Optional.of(toProvide);
+            }
             toProvide.setBookedPeriodDto(shortPeriods);
             return Optional.of(toProvide);
         } catch (RepositoryException ex) {
