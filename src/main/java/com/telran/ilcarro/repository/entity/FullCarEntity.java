@@ -39,11 +39,11 @@ public class FullCarEntity {
 
 
     private OwnerEntity owner;
-    private List<UserEntity> owner_cars;
+
 
     private List<BookedPeriodEntity> bookedPeriods;
-    //private List<SchedularUsageEntity> usages;
-    private List<CommentEntity> feedBacks;
+
+
     private CarStatEntity statistics;
     private int trips;
 
