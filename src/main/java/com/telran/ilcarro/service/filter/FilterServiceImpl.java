@@ -129,9 +129,9 @@ public class FilterServiceImpl implements FilterService {
     public int findNextIndx(FilterNode exist, FilterNode toMerge) {
         int count =0;
         List<FilterNode> list = exist.getChilds();
-        for (int i = 0; i < list.size(); i++) {
-            if(!list.get(i).getValue().equals(toMerge.getValue())){
-                count+=1;
+        for (FilterNode filterNode : list) {
+            if (!filterNode.getValue().equals(toMerge.getValue())) {
+                count += 1;
             }
         }
         return count;
