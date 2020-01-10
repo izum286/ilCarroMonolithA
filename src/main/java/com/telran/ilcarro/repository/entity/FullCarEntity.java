@@ -2,16 +2,16 @@ package com.telran.ilcarro.repository.entity;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
-
-//TODO Заглушка FullCarEntity для CarService. Это надо переделать.
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
+@Document(collection = "cars")
 public class FullCarEntity {
     @Id
     private String serialNumber;
