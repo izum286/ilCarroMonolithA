@@ -2,6 +2,7 @@ package com.telran.ilcarro.service.car;
 
 import com.telran.ilcarro.model.car.*;
 import com.telran.ilcarro.model.user.OwnerDtoResponse;
+import com.telran.ilcarro.repository.entity.OwnerEntity;
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
 import com.telran.ilcarro.service.exceptions.EmptyDataException;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
@@ -98,11 +99,11 @@ public interface CarService {
     /**
      * Get OwnerDtoResponse of current car with serial number as carId
      * @param carId String
-     * @return Optional of OwnerDtoResponse
+     * @return Optional of OwnerEntity
      * @throws NotFoundServiceException - if car with current serial number was not found
      * @throws ServiceException - if user unauthorized
      */
-    Optional<OwnerDtoResponse> getOwnerByCarId(String carId);
+//    Optional<String> getOwnerByCarId(String carId);
 
     /**
      * Get Car statistic of trips and rating of current car with serial number as carId

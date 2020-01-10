@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.geo.Circle;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import java.util.Optional;
+
 /**
  * @author izum286
  */
@@ -18,6 +20,8 @@ public interface CarRepository extends MongoRepository<FullCarEntity, String>, C
      * status READY
      */
     Page<FullCarEntity> findAllByPickUpPlaceWithin(Circle circle, Pageable pageable);
+
+    Optional<FullCarEntity> getFullCarEntityBySerialNumber(String serialNumber);
 
 
 }

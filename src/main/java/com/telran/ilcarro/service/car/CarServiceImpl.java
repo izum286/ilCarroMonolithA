@@ -19,6 +19,7 @@ import com.telran.ilcarro.service.mapper.BookedPeriodMapper;
 import com.telran.ilcarro.service.mapper.CarMapper;
 import com.telran.ilcarro.service.mapper.CarMapperAddCar;
 import com.telran.ilcarro.service.mapper.OwnerMapper;
+import com.telran.ilcarro.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +46,9 @@ public class CarServiceImpl implements CarService {
     UserEntityRepository userRepository;
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     BookedPeriodsRepository bookedPeriodsRepository;
 
 
@@ -60,6 +64,8 @@ public class CarServiceImpl implements CarService {
             UserEntity user = userRepository.findById(userEmail).orElseThrow();
             OwnerEntity owner = OwnerMapper.INSTANCE.map(user);
             entity.setOwner(owner);
+            //Add car serialNumber to user profile
+            userService.addUserCar(userEmail, carToAdd.getSerialNumber());
             FullCarEntity added = carRepository.save(entity);
             return Optional.of(CarMapper.INSTANCE.map(added));
         } catch (ConflictRepositoryException e) {
@@ -263,18 +269,19 @@ public class CarServiceImpl implements CarService {
     }
 
 
-    @Override
-    public Optional<OwnerDtoResponse> getOwnerByCarId(String carId) {
+//    @Override
+//    public Optional<String> getOwnerByCarId(String carId) {
 //        try {
-//            OwnerEntity entity = carRepository.getOwnerByCarId(carId);
-//            return Optional.of(mapperService.map(entity));
+//            OwnerEntity entity = carRepository.getFullCarEntityBySerialNumber(carId).map(FullCarEntity::getOwner)
+//                    .orElseThrow(() -> new NotFoundServiceException(String.format("Car with id %s not found", carId)));
+//            return Optional.of(entity.);
 //        } catch (ServiceException ex) {
 //            throw new ServiceException(ex.getMessage(), ex.getCause());
 //        } catch (RepositoryException ex){
 //            throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
 //        }
-        return Optional.empty();
-    }
+//        return Optional.empty();
+//    }
 
     @Override
     public List<CarStatDto> getCarStatById(String carId) {

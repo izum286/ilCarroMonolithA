@@ -50,10 +50,9 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public boolean postComment(String serialNumber, String ownerEmail, AddCommentDTO comment) {
         try {
-            //TODO chek if serialNumber is exists from carRepo/ Now only for user test01
-            String ownerOfCar = "test04";
-            UserEntity userEntity = userEntityRepository.findById(ownerOfCar)
-                    .orElseThrow(() -> new NotFoundServiceException(String.format("User profile %s not found", ownerOfCar)));
+            //TODO need check
+            UserEntity userEntity = userEntityRepository.getUserEntityByOwnCarsContains(serialNumber)
+                    .orElseThrow(() -> new NotFoundServiceException(String.format("Car id %s not found", serialNumber)));
             if (userEntity.getComments() == null) {
                 userEntity.setComments(new ArrayList<>());
             }

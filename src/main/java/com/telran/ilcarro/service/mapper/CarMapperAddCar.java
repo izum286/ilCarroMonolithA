@@ -27,7 +27,7 @@ public interface CarMapperAddCar {
     CarMapperAddCar INSTANCE = Mappers.getMapper(CarMapperAddCar.class);
     @Mapping(target = "bookedPeriods",expression = "java(new ArrayList<BookedPeriodEntity>())")
     @Mapping(target = "statistics",expression = "java(new CarStatEntity())")
-    @Mapping(target = "feedBacks",expression = "java(new ArrayList<CommentEntity>())")
+//    @Mapping(target = "feedBacks",expression = "java(new ArrayList<CommentEntity>())")
     FullCarEntity map(AddUpdateCarDtoRequest dto);
 
     @Mapping(target = "bookedPeriodDto",source = "bookedPeriods")
