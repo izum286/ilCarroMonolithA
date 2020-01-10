@@ -55,7 +55,7 @@ public class CarServiceImpl implements CarService {
     public Optional<FullCarDTOResponse> addCar(AddUpdateCarDtoRequest carToAdd, String userEmail) {
         try {
             FullCarEntity entity = CarMapperAddCar.INSTANCE.map(carToAdd);
-            UserEntity user = userRepository.findById(userEmail).get();
+            UserEntity user = userRepository.findById(userEmail).orElseThrow();
             OwnerEntity owner = OwnerMapper.INSTANCE.map(user);
             entity.setOwner(owner);
             FullCarEntity added = carRepository.save(entity);
@@ -75,7 +75,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public Optional<FullCarDTOResponse> updateCar(AddUpdateCarDtoRequest carToUpdate, String userEmail) {
         try {
-            if(!userRepository.findById(userEmail).get().getOwnCars()
+            if(!userRepository.findById(userEmail).orElseThrow().getOwnCars()
                     .contains(carToUpdate.getSerialNumber())){
                 throw new RepositoryException("no such car owned by user");
             }
@@ -100,7 +100,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public boolean deleteCar(String carId, String userEmail) {
         try {
-            if(!userRepository.findById(userEmail).get().getOwnCars()
+            if(!userRepository.findById(userEmail).orElseThrow().getOwnCars()
                     .contains(carId)){
                 throw new RepositoryException("no such car owned by user");
             }
@@ -148,7 +148,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public Optional<FullCarDTOResponse> getCarByIdForOwner(String carId, String userEmail) {
         try {
-            if(!userRepository.findById(userEmail).get().getOwnCars()
+            if(!userRepository.findById(userEmail).orElseThrow().getOwnCars()
                     .contains(carId)){
                 throw new RepositoryException("no such car owned by user");
             }
@@ -170,15 +170,12 @@ public class CarServiceImpl implements CarService {
     @Override
     public List<FullCarDTOResponse> ownerGetCars(String userEmail) {
         try {
-            List<String> ownerCars = userRepository.findById(userEmail).get().getOwnCars();
+            List<String> ownerCars = userRepository.findById(userEmail).orElseThrow().getOwnCars();
             if(ownerCars.isEmpty()){
                 return Collections.emptyList();
             }
             List<FullCarEntity> cars = ownerCars.stream()
-                    .map(carId ->{
-                    FullCarEntity entity = carRepository.findById(carId).get();
-                    return entity;
-            }).collect(Collectors.toList());
+                    .map(carId -> carRepository.findById(carId).orElseThrow()).collect(Collectors.toList());
             return cars.stream().map(car->CarMapper.INSTANCE.mapWithoutOwnerFullBookedPeriods(car)).collect(Collectors.toList());
         } catch (NotFoundRepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
@@ -196,11 +193,11 @@ public class CarServiceImpl implements CarService {
     @Override
     public List<BookedPeriodDto> getBookedPeriodsByCarId(String carId, String userEmail) {
         try {
-            if(!userRepository.findById(userEmail).get().getOwnCars()
+            if(!userRepository.findById(userEmail).orElseThrow().getOwnCars()
                     .contains(carId)){
                 throw new RepositoryException("no such car owned by user");
             }
-            List<BookedPeriodEntity> list = carRepository.findById(carId).get()
+            List<BookedPeriodEntity> list = carRepository.findById(carId).orElseThrow()
                     .getBookedPeriods();
             return list.stream().map(b-> BookedPeriodMapper.INSTANCE.map(b))
                     .collect(Collectors.toList());
