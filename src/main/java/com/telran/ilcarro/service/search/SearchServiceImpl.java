@@ -42,6 +42,7 @@ public class SearchServiceImpl implements  SearchService{
         Page<FullCarEntity> cars = carRepository
                 .cityDatesPriceSortByPrice(city, dateFrom, dateTo, minPrice, maxPrice,
                         PageRequest.of(currentPage, itemsOnPage), sort);
+        //TODO MapStruct usage
         List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> mapperService.map(e)).collect(Collectors.toList());
         res.setCars(carDTOResponses);
         res.setCurrentPage(currentPage);

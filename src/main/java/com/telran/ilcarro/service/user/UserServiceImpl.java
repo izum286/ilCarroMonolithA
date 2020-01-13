@@ -110,10 +110,12 @@ public class UserServiceImpl implements UserService{
             UserEntity entity = userRepository.findById(userID)
                     .orElseThrow(() -> new NotFoundServiceException(String.format("User profile %s not found", userID)));
             List<String> carsIdList = entity.getOwnCars();
-            if (carsIdList == null || carsIdList.isEmpty()) {
+            if (carsIdList == null) {
                 carsIdList = new ArrayList<>();
             }
-            return carsIdList.add(carId);
+            carsIdList.add(carId);
+            userRepository.save(entity);
+            return true;
         } catch (Throwable t) {
             throw new ServiceException(t.getMessage(), t.getCause());
         }

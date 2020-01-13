@@ -43,6 +43,7 @@ public class UserControllerImpl  implements UserController {
     @Override
     public FullUserDTO registration(@RequestBody RegUserDTO user, @RequestHeader("Authorization") String token) {
         String userEmail = authService.registration(token);
+        //TODO normal exception on ElseThrow
         return userService.addUser(userEmail, user).orElseThrow();
     }
 
@@ -58,7 +59,7 @@ public class UserControllerImpl  implements UserController {
     @Override
     public FullUserDTO login(Principal principal) {
         String userEmail = principal.getName();
-
+        //TODO check for history and bookedPeriods inside FullUserDTO
         return userService.getUser(userEmail).orElseThrow();
     }
 

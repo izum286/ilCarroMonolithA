@@ -34,7 +34,7 @@ public class FullCarEntity {
     private String about;
     private PickUpPlaceEntity pickUpPlace;
     private List<String> imageUrl;
-
+    private boolean isDeleted; //TODO check logic
     private String pricePerDaySimple;
 
 

@@ -4,7 +4,10 @@ import com.telran.ilcarro.controller.interfaces.CarController;
 import com.telran.ilcarro.model.car.*;
 import com.telran.ilcarro.model.car.probably_unused.ShortCarDTO;
 import com.telran.ilcarro.service.car.CarService;
+import com.telran.ilcarro.service.exceptions.ConflictServiceException;
+import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.filter.FilterService;
+import com.telran.ilcarro.service.user.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -32,6 +35,9 @@ public class CarControllerImpl implements CarController {
     @Autowired
     FilterService filterService;
 
+    @Autowired
+    UserService userService;
+
     @ApiOperation(value = "Add new car", response = ShortCarDTO.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = ""),
@@ -48,7 +54,7 @@ public class CarControllerImpl implements CarController {
     public FullCarDTOResponse addCar(@RequestBody AddUpdateCarDtoRequest carDTO, Principal principal) throws IllegalAccessException {
         String userEmail = principal.getName();
         filterService.addFilter(carDTO);
-        return carService.addCar(carDTO, userEmail).orElseThrow();
+        return carService.addCar(carDTO, userEmail).orElseThrow(() -> new ConflictServiceException(String.format("Car %s already exist", carDTO.getSerialNumber())));
     }
 
 
@@ -69,6 +75,7 @@ public class CarControllerImpl implements CarController {
         public FullCarDTOResponse updateCar(@RequestBody AddUpdateCarDtoRequest carDTO, Principal principal) throws IllegalAccessException {
         filterService.addFilter(carDTO);
         String userEmail = principal.getName();
+        //TODO add correct exception
             return carService.updateCar(carDTO, userEmail).orElseThrow();
     }
 
@@ -107,6 +114,7 @@ public class CarControllerImpl implements CarController {
     @Override
     @GetMapping("/car?serial_number")
     public FullCarDTOResponse getCarByIdForUsers(@RequestParam(name = "serial_number") String carId) {
+        //TODO Exception
         return carService.getCarByIdForUsers(carId).orElseThrow();
     }
 

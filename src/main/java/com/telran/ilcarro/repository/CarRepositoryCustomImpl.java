@@ -35,6 +35,7 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
     @Override
     public Page<FullCarEntity> cityDatesPriceSortByPrice(String city, LocalDateTime start, LocalDateTime end,
                                                          double priceFrom, double priceTo, Pageable pageable, boolean sort){
+        //TODO check for exceptions
         Query query = new Query().with(pageable);
         List<Criteria> criteria = new ArrayList<>();
         if(sort){
@@ -52,6 +53,7 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
 
     @Override
     public Page<FullCarEntity> byFilter(FilterDTO filter, Pageable pageable) {
+        //TODO check for exceptions
         Query query = new Query().with(pageable);
         List<Criteria> criteria = new ArrayList<>();
         if(filter.getMake()!=null){
@@ -103,7 +105,7 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
                                                     String latt, String longt, String radius, String city,
                                                     LocalDateTime dateFrom, LocalDateTime dateTo,
                                                     double minPrice, double maxPrice, Pageable pageable, boolean sort) {
-
+        //TODO check for exceptions
         Query query = new Query().with(pageable);
         List<Criteria> criteria = new ArrayList<>();
         if(sort){
