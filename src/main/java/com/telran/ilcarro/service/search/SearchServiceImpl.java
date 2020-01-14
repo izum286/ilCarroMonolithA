@@ -37,65 +37,68 @@ public class SearchServiceImpl implements  SearchService{
     public SearchResponse cityDatesPriceSortByPrice(String city, LocalDateTime dateFrom, LocalDateTime dateTo,
                                                     double minPrice, double maxPrice, boolean sort,
                                                     int itemsOnPage, int currentPage) {
-        SearchResponse res = new SearchResponse();
-        Page<FullCarEntity> cars = null;
         try {
-            cars = carRepository
-                    .cityDatesPriceSortByPrice(city, dateFrom, dateTo, minPrice, maxPrice,
-                            PageRequest.of(currentPage, itemsOnPage), sort);
-        } catch (RepositoryException e) {
-            e.printStackTrace();
+            SearchResponse res = new SearchResponse();
+            Page<FullCarEntity>
+                cars = carRepository
+                        .cityDatesPriceSortByPrice(city, dateFrom, dateTo, minPrice, maxPrice,
+                                PageRequest.of(currentPage, itemsOnPage), sort);
+            if (cars == null) throw new RepositoryException("No such Cars according to search request");
+            List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> CarMapper.INSTANCE.map(e)).collect(Collectors.toList());
+            res.setCars(carDTOResponses);
+            res.setCurrentPage(currentPage);
+            res.setItemsOnPage(itemsOnPage);
+            res.setItemsTotal(cars.getTotalElements());
+            res.setMegaFilter(filterService.provideFilter());
+            //TODO carStatistics object for every car
+            return res;
+        } catch (Throwable t) {
+            throw new RepositoryException("Something went wrong");
         }
-        List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> CarMapper.INSTANCE.map(e)).collect(Collectors.toList());
-        res.setCars(carDTOResponses);
-        res.setCurrentPage(currentPage);
-        res.setItemsOnPage(itemsOnPage);
-        res.setItemsTotal(cars.getTotalElements());
-        res.setMegaFilter(filterService.provideFilter());
-        //TODO carStatistics object for every car
-        return res;
     }
 
     @Override
     public SearchResponse geoAndRadius(String latitude, String longitude, String radius, int itemsOnPage, int currentPage) {
-        SearchResponse res = new SearchResponse();
-        Page<FullCarEntity> cars = null;
         try {
-            cars = carRepository
-                    .findAllByPickUpPlaceWithin(
-                            new Circle(Double.parseDouble(latitude), Double.parseDouble(longitude), Double.parseDouble(radius)),
-                            PageRequest.of(currentPage, itemsOnPage));
-        } catch (RepositoryException e) {
-            e.printStackTrace();
+            SearchResponse res = new SearchResponse();
+            Page<FullCarEntity> cars  = carRepository
+                        .findAllByPickUpPlaceWithin(
+                                new Circle(Double.parseDouble(latitude), Double.parseDouble(longitude), Double.parseDouble(radius)),
+                                PageRequest.of(currentPage, itemsOnPage));
+
+            if (cars == null) throw new RepositoryException("No such Cars according to search request");
+            List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> CarMapper.INSTANCE.map(e)).collect(Collectors.toList());
+            res.setCars(carDTOResponses);
+            res.setCurrentPage(currentPage);
+            res.setItemsOnPage(itemsOnPage);
+            res.setItemsTotal(cars.getTotalElements());
+            res.setMegaFilter(filterService.provideFilter());
+            //TODO carStatistics object for every car
+            return res;
+        } catch (Throwable t) {
+            throw new RepositoryException("Something went wrong");
         }
-        List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> CarMapper.INSTANCE.map(e)).collect(Collectors.toList());
-        res.setCars(carDTOResponses);
-        res.setCurrentPage(currentPage);
-        res.setItemsOnPage(itemsOnPage);
-        res.setItemsTotal(cars.getTotalElements());
-        res.setMegaFilter(filterService.provideFilter());
-        //TODO carStatistics object for every car
-        return res;
     }
 
     @Override
     public SearchResponse byFilter(FilterDTO filter, int itemsOnPage, int currentPage) {
-        SearchResponse res = new SearchResponse();
-        Page<FullCarEntity> cars = null;
         try {
-            cars = carRepository
-                    .byFilter(filter, PageRequest.of(currentPage,itemsOnPage));
-        } catch (RepositoryException e) {
-            e.printStackTrace();
+            SearchResponse res = new SearchResponse();
+            Page<FullCarEntity> cars  = carRepository
+                        .byFilter(filter, PageRequest.of(currentPage,itemsOnPage));
+
+            if (cars == null) throw new RepositoryException("No such Cars according to search request");
+            List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> CarMapper.INSTANCE.map(e)).collect(Collectors.toList());
+            res.setCars(carDTOResponses);
+            res.setCurrentPage(currentPage);
+            res.setItemsOnPage(itemsOnPage);
+            res.setItemsTotal(cars.getTotalElements());
+            res.setMegaFilter(filterService.provideFilter());
+            //TODO carStatistics object for every car
+            return res;
+        } catch (Throwable t) {
+            throw new RepositoryException("Something went wrong");
         }
-        List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> CarMapper.INSTANCE.map(e)).collect(Collectors.toList());
-        res.setCars(carDTOResponses);
-        res.setCurrentPage(currentPage);
-        res.setItemsOnPage(itemsOnPage);
-        res.setItemsTotal(cars.getTotalElements());
-        res.setMegaFilter(filterService.provideFilter());
-        //TODO carStatistics object for every car
-        return res;
     }
 
     @Override
@@ -103,22 +106,23 @@ public class SearchServiceImpl implements  SearchService{
                                                String latt, String longt, String radius, String city,
                                                LocalDateTime dateFrom, LocalDateTime dateTo,
                                                double minPrice, double maxPrice, boolean sort) {
-        SearchResponse res = new SearchResponse();
-        Page<FullCarEntity> cars = null;
         try {
-            cars = carRepository
-                    .searchAllSortByPrice(itemsOnPage, currentPage, filter, latt, longt, radius, city, dateFrom, dateTo, minPrice, maxPrice,
-                            PageRequest.of(currentPage, itemsOnPage), sort);
-        } catch (RepositoryException e) {
-            e.printStackTrace();
+            SearchResponse res = new SearchResponse();
+            Page<FullCarEntity> cars = carRepository
+                        .searchAllSortByPrice(itemsOnPage, currentPage, filter, latt, longt, radius, city, dateFrom, dateTo, minPrice, maxPrice,
+                                PageRequest.of(currentPage, itemsOnPage), sort);
+
+            if (cars == null) throw new RepositoryException("No such Cars according to search request");
+            List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> CarMapper.INSTANCE.map(e)).collect(Collectors.toList());
+            res.setCars(carDTOResponses);
+            res.setCurrentPage(currentPage);
+            res.setItemsOnPage(itemsOnPage);
+            res.setItemsTotal(cars.getTotalElements());
+            res.setMegaFilter(filterService.provideFilter());
+            //TODO carStatistics object for every car
+            return res;
+        } catch (Throwable t) {
+            throw new RepositoryException("Something went wrong");
         }
-        List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> CarMapper.INSTANCE.map(e)).collect(Collectors.toList());
-        res.setCars(carDTOResponses);
-        res.setCurrentPage(currentPage);
-        res.setItemsOnPage(itemsOnPage);
-        res.setItemsTotal(cars.getTotalElements());
-        res.setMegaFilter(filterService.provideFilter());
-        //TODO carStatistics object for every car
-        return res;
     }
 }
