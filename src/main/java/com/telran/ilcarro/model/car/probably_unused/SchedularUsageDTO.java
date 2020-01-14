@@ -11,6 +11,7 @@ import java.util.UUID;
 @Setter
 @ToString
 @Builder
+@Deprecated
 public class SchedularUsageDTO {
     //TODO probably unused
     private String id;

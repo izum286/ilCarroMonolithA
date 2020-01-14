@@ -8,6 +8,7 @@ import lombok.*;
 @Setter
 @ToString
 @Builder
+@Deprecated
 public class SpecsDTO {
     //TODO - probably unused class
     private String engine;

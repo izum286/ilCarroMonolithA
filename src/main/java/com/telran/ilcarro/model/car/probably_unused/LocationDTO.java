@@ -8,6 +8,7 @@ import lombok.*;
 @Setter
 @ToString
 @Builder
+@Deprecated
 public class LocationDTO {
     //TODO - probably unused class
     private String country;
