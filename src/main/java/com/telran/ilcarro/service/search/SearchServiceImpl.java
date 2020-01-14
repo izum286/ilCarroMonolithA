@@ -7,10 +7,9 @@ import com.telran.ilcarro.repository.CarRepository;
 import com.telran.ilcarro.repository.entity.FullCarEntity;
 import com.telran.ilcarro.repository.exception.RepositoryException;
 import com.telran.ilcarro.service.filter.FilterService;
-import com.telran.ilcarro.service.unused.MapperService;
+import com.telran.ilcarro.service.mapper.CarMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.geo.Circle;
 import org.springframework.stereotype.Service;
@@ -33,8 +32,6 @@ public class SearchServiceImpl implements  SearchService{
     @Autowired
     FilterService filterService;
 
-    @Autowired
-    MapperService mapperService;
 
     @Override
     public SearchResponse cityDatesPriceSortByPrice(String city, LocalDateTime dateFrom, LocalDateTime dateTo,
@@ -49,8 +46,7 @@ public class SearchServiceImpl implements  SearchService{
         } catch (RepositoryException e) {
             e.printStackTrace();
         }
-        //TODO MapStruct usage
-        List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> mapperService.map(e)).collect(Collectors.toList());
+        List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> CarMapper.INSTANCE.map(e)).collect(Collectors.toList());
         res.setCars(carDTOResponses);
         res.setCurrentPage(currentPage);
         res.setItemsOnPage(itemsOnPage);
@@ -72,7 +68,7 @@ public class SearchServiceImpl implements  SearchService{
         } catch (RepositoryException e) {
             e.printStackTrace();
         }
-        List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> mapperService.map(e)).collect(Collectors.toList());
+        List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> CarMapper.INSTANCE.map(e)).collect(Collectors.toList());
         res.setCars(carDTOResponses);
         res.setCurrentPage(currentPage);
         res.setItemsOnPage(itemsOnPage);
@@ -92,7 +88,7 @@ public class SearchServiceImpl implements  SearchService{
         } catch (RepositoryException e) {
             e.printStackTrace();
         }
-        List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> mapperService.map(e)).collect(Collectors.toList());
+        List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> CarMapper.INSTANCE.map(e)).collect(Collectors.toList());
         res.setCars(carDTOResponses);
         res.setCurrentPage(currentPage);
         res.setItemsOnPage(itemsOnPage);
@@ -116,7 +112,7 @@ public class SearchServiceImpl implements  SearchService{
         } catch (RepositoryException e) {
             e.printStackTrace();
         }
-        List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> mapperService.map(e)).collect(Collectors.toList());
+        List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> CarMapper.INSTANCE.map(e)).collect(Collectors.toList());
         res.setCars(carDTOResponses);
         res.setCurrentPage(currentPage);
         res.setItemsOnPage(itemsOnPage);
