@@ -31,7 +31,7 @@ public interface UserMapper {
      */
     void updUserInfo(@MappingTarget UserEntity currUser, UpdUserDTO userDTO);
 
-//    @Mapping(target = "ownCars", ignore = true)
+    @Mapping(target = "ownCars", ignore = true)
     @Mapping(target = "bookedCars", ignore = true)
     @Mapping(target = "history", ignore = true)
     FullUserDTO map(UserEntity userEntity);

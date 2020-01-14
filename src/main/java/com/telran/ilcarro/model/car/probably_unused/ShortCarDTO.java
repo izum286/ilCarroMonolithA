@@ -12,6 +12,7 @@ import java.util.List;
 @Setter
 @ToString
 @Builder
+@Deprecated
 public class ShortCarDTO {
     //TODO - probably unused class
     private double id;
