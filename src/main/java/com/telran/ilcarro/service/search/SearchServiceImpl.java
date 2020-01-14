@@ -5,10 +5,12 @@ import com.telran.ilcarro.model.car.SearchResponse;
 import com.telran.ilcarro.model.filter.FilterDTO;
 import com.telran.ilcarro.repository.CarRepository;
 import com.telran.ilcarro.repository.entity.FullCarEntity;
+import com.telran.ilcarro.repository.exception.RepositoryException;
 import com.telran.ilcarro.service.filter.FilterService;
 import com.telran.ilcarro.service.unused.MapperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.geo.Circle;
 import org.springframework.stereotype.Service;
@@ -39,9 +41,14 @@ public class SearchServiceImpl implements  SearchService{
                                                     double minPrice, double maxPrice, boolean sort,
                                                     int itemsOnPage, int currentPage) {
         SearchResponse res = new SearchResponse();
-        Page<FullCarEntity> cars = carRepository
-                .cityDatesPriceSortByPrice(city, dateFrom, dateTo, minPrice, maxPrice,
-                        PageRequest.of(currentPage, itemsOnPage), sort);
+        Page<FullCarEntity> cars = null;
+        try {
+            cars = carRepository
+                    .cityDatesPriceSortByPrice(city, dateFrom, dateTo, minPrice, maxPrice,
+                            PageRequest.of(currentPage, itemsOnPage), sort);
+        } catch (RepositoryException e) {
+            e.printStackTrace();
+        }
         //TODO MapStruct usage
         List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> mapperService.map(e)).collect(Collectors.toList());
         res.setCars(carDTOResponses);
@@ -56,10 +63,15 @@ public class SearchServiceImpl implements  SearchService{
     @Override
     public SearchResponse geoAndRadius(String latitude, String longitude, String radius, int itemsOnPage, int currentPage) {
         SearchResponse res = new SearchResponse();
-        Page<FullCarEntity> cars = carRepository
-                .findAllByPickUpPlaceWithin(
-                        new Circle(Double.parseDouble(latitude), Double.parseDouble(longitude), Double.parseDouble(radius)),
-                        PageRequest.of(currentPage, itemsOnPage));
+        Page<FullCarEntity> cars = null;
+        try {
+            cars = carRepository
+                    .findAllByPickUpPlaceWithin(
+                            new Circle(Double.parseDouble(latitude), Double.parseDouble(longitude), Double.parseDouble(radius)),
+                            PageRequest.of(currentPage, itemsOnPage));
+        } catch (RepositoryException e) {
+            e.printStackTrace();
+        }
         List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> mapperService.map(e)).collect(Collectors.toList());
         res.setCars(carDTOResponses);
         res.setCurrentPage(currentPage);
@@ -73,8 +85,13 @@ public class SearchServiceImpl implements  SearchService{
     @Override
     public SearchResponse byFilter(FilterDTO filter, int itemsOnPage, int currentPage) {
         SearchResponse res = new SearchResponse();
-        Page<FullCarEntity> cars = carRepository
-                .byFilter(filter, PageRequest.of(currentPage,itemsOnPage));
+        Page<FullCarEntity> cars = null;
+        try {
+            cars = carRepository
+                    .byFilter(filter, PageRequest.of(currentPage,itemsOnPage));
+        } catch (RepositoryException e) {
+            e.printStackTrace();
+        }
         List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> mapperService.map(e)).collect(Collectors.toList());
         res.setCars(carDTOResponses);
         res.setCurrentPage(currentPage);
@@ -91,9 +108,14 @@ public class SearchServiceImpl implements  SearchService{
                                                LocalDateTime dateFrom, LocalDateTime dateTo,
                                                double minPrice, double maxPrice, boolean sort) {
         SearchResponse res = new SearchResponse();
-        Page<FullCarEntity> cars = carRepository
-                .searchAllSortByPrice(itemsOnPage, currentPage, filter, latt, longt, radius, city, dateFrom, dateTo, minPrice, maxPrice,
-                        PageRequest.of(currentPage, itemsOnPage), sort);
+        Page<FullCarEntity> cars = null;
+        try {
+            cars = carRepository
+                    .searchAllSortByPrice(itemsOnPage, currentPage, filter, latt, longt, radius, city, dateFrom, dateTo, minPrice, maxPrice,
+                            PageRequest.of(currentPage, itemsOnPage), sort);
+        } catch (RepositoryException e) {
+            e.printStackTrace();
+        }
         List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> mapperService.map(e)).collect(Collectors.toList());
         res.setCars(carDTOResponses);
         res.setCurrentPage(currentPage);
