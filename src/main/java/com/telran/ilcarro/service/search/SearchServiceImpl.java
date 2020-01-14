@@ -50,7 +50,6 @@ public class SearchServiceImpl implements  SearchService{
             res.setItemsOnPage(itemsOnPage);
             res.setItemsTotal(cars.getTotalElements());
             res.setMegaFilter(filterService.provideFilter());
-            //TODO carStatistics object for every car
             return res;
         } catch (Throwable t) {
             throw new RepositoryException("Something went wrong");
@@ -73,7 +72,6 @@ public class SearchServiceImpl implements  SearchService{
             res.setItemsOnPage(itemsOnPage);
             res.setItemsTotal(cars.getTotalElements());
             res.setMegaFilter(filterService.provideFilter());
-            //TODO carStatistics object for every car
             return res;
         } catch (Throwable t) {
             throw new RepositoryException("Something went wrong");
@@ -94,7 +92,6 @@ public class SearchServiceImpl implements  SearchService{
             res.setItemsOnPage(itemsOnPage);
             res.setItemsTotal(cars.getTotalElements());
             res.setMegaFilter(filterService.provideFilter());
-            //TODO carStatistics object for every car
             return res;
         } catch (Throwable t) {
             throw new RepositoryException("Something went wrong");
@@ -119,7 +116,6 @@ public class SearchServiceImpl implements  SearchService{
             res.setItemsOnPage(itemsOnPage);
             res.setItemsTotal(cars.getTotalElements());
             res.setMegaFilter(filterService.provideFilter());
-            //TODO carStatistics object for every car
             return res;
         } catch (Throwable t) {
             throw new RepositoryException("Something went wrong");
