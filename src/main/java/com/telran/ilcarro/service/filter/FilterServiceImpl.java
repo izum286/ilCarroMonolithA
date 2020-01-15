@@ -8,13 +8,16 @@ import com.telran.ilcarro.model.car.AddUpdateCarDtoRequest;
 import com.telran.ilcarro.model.filter.FilterDTO;
 import com.telran.ilcarro.repository.FilterRepository;
 import com.telran.ilcarro.repository.entity.FilterNodeEntity;
+import com.telran.ilcarro.repository.exception.RepositoryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @SuppressWarnings("JavaDoc")
 @Service
@@ -22,9 +25,20 @@ public class FilterServiceImpl implements FilterService {
 
     @Autowired
     FilterRepository filterRepository;
-
-    FilterNodeEntity root = new FilterNodeEntity();
+    FilterNodeEntity root = new FilterNodeEntity("root", "allCars");
     Hashtable<String, FilterNodeEntity> hashArray = new Hashtable<>();
+
+
+    @PostConstruct
+    public void initializeRoot(){
+        try {
+            if(filterRepository.findById("root").isEmpty()){
+                filterRepository.save(root);
+            }
+        } catch (Exception e) {
+            throw new RepositoryException("something went wrong");
+        }
+    }
     /**
      * Method for automatically add new filter from /upload page
      * call -> addNode
@@ -70,6 +84,7 @@ public class FilterServiceImpl implements FilterService {
      */
     @Override
     public void addNode(FilterDTO filterDTO) throws IllegalAccessException {
+        //TODO - fill root node
         FilterNodeEntity toRawAdd = map(filterDTO);
         if(!hashArray.containsKey(filterDTO.getMake())){
             hashArray.put(filterDTO.getMake(), toRawAdd);
@@ -146,7 +161,7 @@ public class FilterServiceImpl implements FilterService {
      */
 
     public FilterNodeEntity map(FilterDTO toAdd) throws IllegalAccessException {
-        ArrayList<FilterNodeEntity> nodes = new ArrayList<>();
+        List<FilterNodeEntity> nodes = new CopyOnWriteArrayList<>();
         Field[] f = toAdd.getClass().getDeclaredFields();
         for (Field field : f) {
             field.setAccessible(true);
