@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.telran.ilcarro.model.car.AddUpdateCarDtoRequest;
 import com.telran.ilcarro.model.filter.FilterDTO;
 import com.telran.ilcarro.repository.FilterRepository;
-import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.repository.entity.FilterNodeEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+@SuppressWarnings("JavaDoc")
 @Service
 public class FilterServiceImpl implements FilterService {
 
@@ -29,7 +29,7 @@ public class FilterServiceImpl implements FilterService {
      * Method for automatically add new filter from /upload page
      * call -> addNode
      *
-     * @param addUpdateCarDtoRequest
+     *
      * @author izum286
      */
     @Override
@@ -57,8 +57,7 @@ public class FilterServiceImpl implements FilterService {
         }
         filterRepository.save(root);
 
-        String s = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(filterRepository.findAll().get(0));
-        return s;
+        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(filterRepository.findAll().get(0));
     }
 
     /**
@@ -91,6 +90,7 @@ public class FilterServiceImpl implements FilterService {
      * @param toMerge
      * @author izum286
      */
+    @SuppressWarnings("JavaDoc")
     @Override
     public void mergeNodes(FilterNodeEntity exist, FilterNodeEntity toMerge) {
         // avoiding adding duplicates in last node
