@@ -42,7 +42,9 @@ public class SecurityConfig {
 
         @Override
         public void configure(WebSecurity web) {
-            web.ignoring().antMatchers(HttpMethod.POST, "/registration");
+            web.ignoring()
+                    .antMatchers(HttpMethod.POST, "/registration");
+//                    .antMatchers(HttpMethod.OPTIONS, "/**");
         }
 
         @Override
@@ -50,11 +52,12 @@ public class SecurityConfig {
 
             http
                     .csrf().disable()
-                    .cors().disable()
+//                    .cors().disable()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                     .authorizeRequests()
 //                    .antMatchers(HttpMethod.POST, "/registration").permitAll()
+                    .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     .antMatchers(HttpMethod.GET, "/comments").permitAll()
                     .antMatchers(HttpMethod.GET, "/filters").permitAll()
                     .antMatchers("/user/**").authenticated()

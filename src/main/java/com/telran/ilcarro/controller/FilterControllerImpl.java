@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author izum286
  */
-@CrossOrigin
+//@CrossOrigin
 @RestController
 public class FilterControllerImpl implements FilterController {
 

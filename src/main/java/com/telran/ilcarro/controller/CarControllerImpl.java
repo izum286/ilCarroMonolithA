@@ -25,7 +25,7 @@ import java.util.List;
  * @since 1.0
  */
 
-@CrossOrigin
+//@CrossOrigin
 @RestController
 public class CarControllerImpl implements CarController {
 

@@ -21,7 +21,7 @@ import java.security.Principal;
  * @author Konkin Anton
  * 19.12.2019
  */
-@CrossOrigin
+//@CrossOrigin
 @RestController
 public class UserControllerImpl  implements UserController {
     @Autowired
@@ -55,7 +55,7 @@ public class UserControllerImpl  implements UserController {
             @ApiResponse(code = 401, message = "Unauthorized"),
     }
     )
-    @PostMapping("user/login")
+    @GetMapping("user/login")
     @Override
     public FullUserDTO login(Principal principal) {
         String userEmail = principal.getName();

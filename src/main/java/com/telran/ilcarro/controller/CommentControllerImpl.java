@@ -22,7 +22,7 @@ import java.util.List;
  * @author Konkin Anton
  * 23.12.2019
  */
-@CrossOrigin
+//@CrossOrigin
 @RestController
 public class CommentControllerImpl implements CommentController {
     @Autowired

@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
  * @author izum286
  */
 
-@CrossOrigin
+//@CrossOrigin
 @RestController
 public class SearchControllerImpl implements SearchController {
 
