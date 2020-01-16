@@ -24,10 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
@@ -55,23 +52,24 @@ public class CarServiceImpl implements CarService {
     /**
      * status - ready
      * code cleanup by izum286
+     *
      * @return optional of added car
      */
     @Override
     public Optional<FullCarDTOResponse> addCar(AddUpdateCarDtoRequest carToAdd, String userEmail) {
         try {
+            //TODO do by DB Transaction
             FullCarEntity entity = CarMapperAddCar.INSTANCE.map(carToAdd);
-            //TODO add exception
-            UserEntity user = userRepository.findById(userEmail).orElseThrow();
+            UserEntity user = userRepository.findById(userEmail).orElseThrow(
+                    () -> new NotFoundServiceException(String.format("User %s not found", userEmail))
+            );
             OwnerEntity owner = OwnerMapper.INSTANCE.map(user);
             entity.setOwner(owner);
             //Add car serialNumber to user profile
             FullCarEntity added = carRepository.save(entity);
             userService.addUserCar(userEmail, carToAdd.getSerialNumber());
             return Optional.of(CarMapper.INSTANCE.map(added));
-//        } catch (ConflictRepositoryException e) {
-//            throw new ConflictRepositoryException(e.getMessage(), e.getCause());
-        }catch (Throwable t) {
+        } catch (Throwable t) {
             throw new ServiceException(t.getMessage(), t.getCause());
         }
     }
@@ -79,25 +77,25 @@ public class CarServiceImpl implements CarService {
     /**
      * status - ready
      * code cleanup by izum286
+     * code refactoring Anton Konkin
+     *
      * @return optional of updated car
      */
     @Override
     public Optional<FullCarDTOResponse> updateCar(AddUpdateCarDtoRequest carToUpdate, String userEmail) {
         try {
-            if(!userRepository.findById(userEmail)
+            if (!userRepository.findById(userEmail)
                     .orElseThrow(() -> new NotFoundServiceException(String.format("User profile %s not found", userEmail))).getOwnCars()
-                    .contains(carToUpdate.getSerialNumber())){
+                    .contains(carToUpdate.getSerialNumber())) {
                 throw new RepositoryException("no such car owned by user");
             }
-            Optional<FullCarEntity> entity = carRepository.findById(carToUpdate.getSerialNumber());
-            if(!entity.isEmpty()){
-                FullCarEntity toUpdate = CarMapper.INSTANCE.map(carToUpdate);
-                carRepository.save(toUpdate);
-                return Optional.of(CarMapper.INSTANCE.map(toUpdate));
-            }else {
-                //TODO add this exception to orElseThrow
-                throw new RepositoryException("something went wrong");
-            }
+            FullCarEntity entity = carRepository.findById(carToUpdate.getSerialNumber()).orElseThrow(
+                    () -> new NotFoundServiceException(String.format("Car with id %s not found in carRepository", carToUpdate.getSerialNumber()))
+            );
+            FullCarEntity toUpdate = CarMapper.INSTANCE.map(carToUpdate);
+            CarMapper.INSTANCE.updCar(entity, toUpdate);
+            carRepository.save(toUpdate);
+            return Optional.of(CarMapper.INSTANCE.map(entity));
         } catch (Throwable ex) {
             throw new ConflictServiceException(ex.getMessage(), ex.getCause());
         }
@@ -106,30 +104,34 @@ public class CarServiceImpl implements CarService {
     /**
      * status - ready
      * code cleanup by izum286
+     *
      * @return true\false
      */
     @Override
     public boolean deleteCar(String carId, String userEmail) {
-        //TODO need to use boolean flag isDeleted from FullCarEntity or separate collection
         try {
-            if(!userRepository.findById(userEmail).orElseThrow().getOwnCars()
-                    .contains(carId)){
+            if (!userRepository.findById(userEmail).orElseThrow(
+                    () -> new NotFoundServiceException(String.format("User profile %s not found", userEmail))
+            ).getOwnCars()
+                    .contains(carId)) {
                 throw new RepositoryException("no such car owned by user");
             }
-            Optional<FullCarEntity> entity = carRepository.findById(carId);
-            if(!entity.isEmpty()){
-                carRepository.deleteById(carId);
-                return true;
-            }
-            return false;
-        } catch (RepositoryException ex) {
-            throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
+
+            FullCarEntity carEntity = carRepository.findById(carId).orElseThrow(
+                    () -> new NotFoundServiceException(String.format("Car with id %s not found in carRepository", carId))
+            );
+            carEntity.setDeleted(true);
+            carRepository.save(carEntity);
+            return true;
+        } catch (Throwable ex) {
+            throw new ServiceException(ex.getMessage(), ex.getCause());
         }
     }
 
     /**
      * status - ready
      * code cleanup by izum286
+     *
      * @return true\false
      */
     @Override
@@ -141,8 +143,8 @@ public class CarServiceImpl implements CarService {
             FullCarDTOResponse toProvide = CarMapper.INSTANCE.map(entity);
             if (!entity.getBookedPeriods().isEmpty()) {
                 shortPeriods = entity.getBookedPeriods()
-                       .stream().map(bp->BookedPeriodMapper.INSTANCE.mapForGetCarByIdForUsers(bp))
-                       .collect(Collectors.toList());
+                        .stream().map(bp -> BookedPeriodMapper.INSTANCE.mapForGetCarByIdForUsers(bp))
+                        .collect(Collectors.toList());
                 toProvide.setBookedPeriodDto(shortPeriods);
                 return Optional.of(toProvide);
             }
@@ -150,23 +152,23 @@ public class CarServiceImpl implements CarService {
             return Optional.of(toProvide);
         } catch (RepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
-        }
-        catch (Throwable t) {
+        } catch (Throwable t) {
             throw new ServiceException(t.getMessage(), t.getCause());
         }
     }
 
     /**
      * status - ready
-     * @author - izum286
+     *
      * @return Optional<FullCarDTOResponse>
+     * @author - izum286
      */
     @Override
     public Optional<FullCarDTOResponse> getCarByIdForOwner(String carId, String userEmail) {
         try {
             //TODO Exception orElseThrow
-            if(!userRepository.findById(userEmail).orElseThrow().getOwnCars()
-                    .contains(carId)){
+            if (!userRepository.findById(userEmail).orElseThrow().getOwnCars()
+                    .contains(carId)) {
                 throw new RepositoryException("no such car owned by user");
             }
             //TODO Exception orElseThrow
@@ -175,18 +177,17 @@ public class CarServiceImpl implements CarService {
             return Optional.of(response);
         } catch (RepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
-        }
-        catch (Throwable t) {
+        } catch (Throwable t) {
             throw new ServiceException(t.getMessage(), t.getCause());
         }
     }
 
     /**
      * status - ready
-     * @author - izum286
+     *
      * @param userEmail as Owner
      * @return List<FullCarDTOResponse> Owner cars
-     *
+     * @author - izum286
      */
     @Override
     public List<FullCarDTOResponse> ownerGetCars(String userEmail) {
@@ -194,39 +195,14 @@ public class CarServiceImpl implements CarService {
             List<String> ownerCars = userRepository.findById(userEmail).orElseThrow(
                     () -> new NotFoundServiceException(String.format("User %s not found", userEmail))
             ).getOwnCars();
-            if(ownerCars == null || ownerCars.isEmpty()){
+            if (ownerCars == null || ownerCars.isEmpty()) {
                 return Collections.emptyList();
             }
-            //TODO Exception orElseThrow
             List<FullCarEntity> cars = ownerCars.stream()
                     .map(carId -> carRepository.findById(carId).orElseThrow()).collect(Collectors.toList());
-            return cars.stream().map(car->CarMapper.INSTANCE.mapWithoutOwnerFullBookedPeriods(car)).collect(Collectors.toList());
-        } catch (NotFoundRepositoryException ex) {
-            throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
-        }
-        catch (Throwable t) {
-            throw new ServiceException(t.getMessage(), t.getCause());
-        }
-    }
-
-
-    /**
-     * status - ready
-     * code cleanup by izum286
-     * @return true\false
-     */
-    @Override
-    public List<BookedPeriodDto> getBookedPeriodsByCarId(String carId, String userEmail) {
-        try {
-            //TODO Exception orElseThrow
-            if(!userRepository.findById(userEmail).orElseThrow().getOwnCars()
-                    .contains(carId)){
-                throw new RepositoryException("no such car owned by user");
-            }
-            //TODO Exception orElseThrow
-            List<BookedPeriodEntity> list = carRepository.findById(carId).orElseThrow()
-                    .getBookedPeriods();
-            return list.stream().map(b-> BookedPeriodMapper.INSTANCE.map(b))
+            return cars.stream()
+                    .filter(car -> !car.isDeleted())
+                    .map(car -> CarMapper.INSTANCE.mapWithoutOwnerFullBookedPeriods(car))
                     .collect(Collectors.toList());
         } catch (NotFoundRepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
@@ -234,9 +210,43 @@ public class CarServiceImpl implements CarService {
             throw new ServiceException(t.getMessage(), t.getCause());
         }
     }
+
+
     /**
      * status - ready
      * code cleanup by izum286
+     *
+     * @return true\false
+     */
+    @Override
+    public List<BookedPeriodDto> getBookedPeriodsByCarId(String carId, String userEmail) {
+        try {
+            if (!userRepository.findById(userEmail).orElseThrow(
+                    () -> new NotFoundServiceException(String.format("User %s not found", userEmail))
+            ).getOwnCars()
+                    .contains(carId)) {
+                throw new NotFoundServiceException("no such car owned by user");
+            }
+            List<BookedPeriodEntity> list = carRepository.findById(carId).orElseThrow(
+                    () -> new NotFoundServiceException(String.format("Car %s not found in carRepo", carId))
+            )
+                    .getBookedPeriods();
+            if (list == null) {
+                return new ArrayList<>();
+            }
+            return list.stream().map(b -> BookedPeriodMapper.INSTANCE.map(b))
+                    .collect(Collectors.toList());
+        } catch (NotFoundRepositoryException ex) {
+            throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
+        } catch (Throwable t) {
+            throw new ServiceException(t.getMessage(), t.getCause());
+        }
+    }
+
+    /**
+     * status - ready
+     * code cleanup by izum286
+     *
      * @return BookResponseDTO
      */
     @Override
@@ -253,7 +263,8 @@ public class CarServiceImpl implements CarService {
             newPeriod.setEndDateTime(dto.getEndDateTime());
             newPeriod.setPersonWhoBookedDto(dto.getPersonWhoBookedDto());
             newPeriod.setAmount(Float.valueOf(entity.getPricePerDaySimple()));
-            newPeriod.setPaid(true); newPeriod.setActive(true);
+            newPeriod.setPaid(true);
+            newPeriod.setActive(true);
             bookedPeriodsRepository.save(newPeriod);
             listBookedPeriodEntity.add(newPeriod);
             entity.setBookedPeriods(listBookedPeriodEntity);
@@ -273,6 +284,7 @@ public class CarServiceImpl implements CarService {
     /**
      * status - ready
      * code cleanup by izum286
+     *
      * @return list of three most popular cars
      */
     @Override
