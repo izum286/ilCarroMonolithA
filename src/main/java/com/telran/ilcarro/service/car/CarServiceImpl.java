@@ -151,7 +151,9 @@ public class CarServiceImpl implements CarService {
         } catch (RepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
         }
-        //TODO Catch Throwable
+        catch (Throwable t) {
+            throw new ServiceException(t.getMessage(), t.getCause());
+        }
     }
 
     /**
@@ -174,7 +176,9 @@ public class CarServiceImpl implements CarService {
         } catch (RepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
         }
-        //TODO Catch Throwable
+        catch (Throwable t) {
+            throw new ServiceException(t.getMessage(), t.getCause());
+        }
     }
 
     /**
@@ -187,9 +191,10 @@ public class CarServiceImpl implements CarService {
     @Override
     public List<FullCarDTOResponse> ownerGetCars(String userEmail) {
         try {
-            //TODO Exception orElseThrow
-            List<String> ownerCars = userRepository.findById(userEmail).orElseThrow().getOwnCars();
-            if(ownerCars.isEmpty()){
+            List<String> ownerCars = userRepository.findById(userEmail).orElseThrow(
+                    () -> new NotFoundServiceException(String.format("User %s not found", userEmail))
+            ).getOwnCars();
+            if(ownerCars == null || ownerCars.isEmpty()){
                 return Collections.emptyList();
             }
             //TODO Exception orElseThrow
@@ -198,10 +203,10 @@ public class CarServiceImpl implements CarService {
             return cars.stream().map(car->CarMapper.INSTANCE.mapWithoutOwnerFullBookedPeriods(car)).collect(Collectors.toList());
         } catch (NotFoundRepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
-        } catch (RepositoryException ex) {
-            throw new ServiceException(ex.getMessage(), ex.getCause());
         }
-        //TODO Catch Throwable
+        catch (Throwable t) {
+            throw new ServiceException(t.getMessage(), t.getCause());
+        }
     }
 
 
@@ -225,10 +230,9 @@ public class CarServiceImpl implements CarService {
                     .collect(Collectors.toList());
         } catch (NotFoundRepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
-        } catch (RepositoryException ex) {
-            throw new ServiceException(ex.getMessage(), ex.getCause());
+        } catch (Throwable t) {
+            throw new ServiceException(t.getMessage(), t.getCause());
         }
-        //TODO Catch Throwable
     }
     /**
      * status - ready
@@ -287,21 +291,6 @@ public class CarServiceImpl implements CarService {
 
     }
 
-//Delete
-//    @Override
-//    public Optional<String> getOwnerByCarId(String carId) {
-//        try {
-//            OwnerEntity entity = carRepository.getFullCarEntityBySerialNumber(carId).map(FullCarEntity::getOwner)
-//                    .orElseThrow(() -> new NotFoundServiceException(String.format("Car with id %s not found", carId)));
-//            return Optional.of(entity.);
-//        } catch (ServiceException ex) {
-//            throw new ServiceException(ex.getMessage(), ex.getCause());
-//        } catch (RepositoryException ex){
-//            throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
-//        }
-//        return Optional.empty();
-//    }
-//Delete
     @Override
     public List<CarStatDto> getCarStatById(String carId) {
 //        try{

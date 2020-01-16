@@ -5,7 +5,7 @@ import com.telran.ilcarro.model.car.*;
 import com.telran.ilcarro.model.car.probably_unused.ShortCarDTO;
 import com.telran.ilcarro.service.car.CarService;
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
-import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
+import com.telran.ilcarro.service.exceptions.ServiceException;
 import com.telran.ilcarro.service.filter.FilterService;
 import com.telran.ilcarro.service.user.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -25,7 +25,6 @@ import java.util.List;
  * @since 1.0
  */
 
-//@CrossOrigin
 @RestController
 public class CarControllerImpl implements CarController {
 
@@ -38,7 +37,7 @@ public class CarControllerImpl implements CarController {
     @Autowired
     UserService userService;
 
-    @ApiOperation(value = "Add new car", response = ShortCarDTO.class)
+    @ApiOperation(value = "Add new car", response = FullCarDTOResponse .class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = ""),
             @ApiResponse(code = 400, message = "Bad request"),
@@ -48,15 +47,19 @@ public class CarControllerImpl implements CarController {
     }
     )
 
-    @Override
-    @PostMapping("/car")
 
-    public FullCarDTOResponse addCar(@RequestBody AddUpdateCarDtoRequest carDTO, Principal principal) throws IllegalAccessException {
+    @PostMapping("car")
+    @Override
+    public FullCarDTOResponse addCar(@RequestBody AddUpdateCarDtoRequest carDTO, Principal principal) {
         String userEmail = principal.getName();
-        filterService.addFilter(carDTO);
+        try {
+            filterService.addFilter(carDTO);
+        } catch (IllegalAccessException ex) {
+            throw new ServiceException("Something go wrong");
+        }
+//        System.out.println(carDTO);
         return carService.addCar(carDTO, userEmail).orElseThrow(() -> new ConflictServiceException(String.format("Car %s already exist", carDTO.getSerialNumber())));
     }
-
 
     //**********************************************************************************
 
@@ -72,7 +75,7 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @PutMapping("/car")
-        public FullCarDTOResponse updateCar(@RequestBody AddUpdateCarDtoRequest carDTO, Principal principal) throws IllegalAccessException {
+        public FullCarDTOResponse updateCar(@RequestParam("serial_number") String serial_number, @RequestBody AddUpdateCarDtoRequest carDTO, Principal principal) throws IllegalAccessException {
         filterService.addFilter(carDTO);
         String userEmail = principal.getName();
         //TODO add correct exception
