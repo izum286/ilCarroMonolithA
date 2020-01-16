@@ -15,6 +15,7 @@ import com.telran.ilcarro.service.car.CarService;
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.exceptions.ServiceException;
+import com.telran.ilcarro.service.mapper.BookedPeriodMapper;
 import com.telran.ilcarro.service.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,14 +26,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- *
  * UserServiceImpl implementation of UserService
- * @see UserService
+ *
  * @author Konkin Anton
  * 19.12.2019
+ * @see UserService
  */
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     @Autowired
     UserEntityRepository userRepository;
 
@@ -58,9 +59,16 @@ public class UserServiceImpl implements UserService{
     public Optional<FullUserDTO> getUser(String email) {
         try {
             UserEntity entity = userRepository.findById(email)
-                    .orElseThrow(()-> new NotFoundServiceException(String.format("User %s not found", email)));
+                    .orElseThrow(() -> new NotFoundServiceException(String.format("User %s not found", email)));
             FullUserDTO userDTO = UserMapper.INSTANCE.map(entity);
             userDTO.setBooked_car(getUserBookedCarsPeriods(email).orElse(new ArrayList<>()));
+            userDTO.setOwn_cars(carService.ownerGetCars(email));
+            if (entity.getHistory() == null) {
+                entity.setHistory(new ArrayList<>());
+            }
+            userDTO.setHistory(entity.getHistory().stream()
+                    .map(BookedPeriodMapper.INSTANCE::map)
+                    .collect(Collectors.toList()));
             return Optional.of(userDTO);
         } catch (Throwable t) {
             throw new ServiceException(t.getMessage(), t.getCause());
@@ -140,7 +148,7 @@ public class UserServiceImpl implements UserService{
     public Optional<List<BookedPeriodDto>> getUserBookedCarsPeriods(String userID) {
         try {
             UserEntity entity = userRepository.findById(userID)
-                .orElseThrow(() -> new NotFoundServiceException(String.format("User profile %s not found", userID)));
+                    .orElseThrow(() -> new NotFoundServiceException(String.format("User profile %s not found", userID)));
             List<String> bookedCarsSerialNumbers = entity.getOwnCars();
             if (bookedCarsSerialNumbers == null || bookedCarsSerialNumbers.isEmpty()) {
                 return Optional.empty();

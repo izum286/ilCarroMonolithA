@@ -42,6 +42,7 @@ public class UserControllerImpl  implements UserController {
     @PostMapping("registration")
     @Override
     public FullUserDTO registration(@RequestBody RegUserDTO user, @RequestHeader("Authorization") String token) {
+        //TODO Password validator for correct _Sym601$
         String userEmail = authService.registration(token);
         //TODO normal exception on ElseThrow
         return userService.addUser(userEmail, user).orElseThrow();
