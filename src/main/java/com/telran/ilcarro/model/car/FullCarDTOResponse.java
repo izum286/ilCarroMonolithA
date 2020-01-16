@@ -1,6 +1,7 @@
 package com.telran.ilcarro.model.car;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.telran.ilcarro.model.user.OwnerDtoResponse;
 import io.swagger.annotations.ApiModel;
 import lombok.*;
@@ -28,6 +29,7 @@ import java.util.List;
 @Builder
 @ApiModel(value = "FullCarDTOResponse",description = "Full Car data transfer object")
 public class FullCarDTOResponse {
+    @JsonProperty("serial_number")
     private String serialNumber;
     private String model;
     private String make;
@@ -35,27 +37,36 @@ public class FullCarDTOResponse {
     private String engine;
     private String fuel;
     private String gear;
+    @JsonProperty("wheels_drive")
     private String wheelsDrive;
+    @JsonProperty("horse_power")
     private float horsePower;
     private float torque;
     private int doors;
     private int seats;
+    @JsonProperty("fuel_consumption")
     private float fuelConsumption;
     private List<FeatureDto> features;
+    @JsonProperty("car_class")
     private String carClass;
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("price_per_day")
     private PricePerDayDto pricePerDay;
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     private float pricePerDaySimple;
+    @JsonProperty("image_url")
     List<String> imageUrl;
+    @JsonProperty("distance_included")
     private int distanceIncluded;
     private String about;
+    @JsonProperty("pick_up_place")
     PickUpPlaceDto pickUpPlace;
 
     OwnerDtoResponse owner;
-
+    @JsonProperty("booked_periods")
     List<BookedPeriodDto> bookedPeriodDto;
-    CarStatDto statisticsDto;
+    @JsonProperty("statistics")
+    private CarStatDto statisticsDto;
 
 
 }
