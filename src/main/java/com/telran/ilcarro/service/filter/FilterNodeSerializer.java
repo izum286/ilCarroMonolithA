@@ -3,7 +3,7 @@ package com.telran.ilcarro.service.filter;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.telran.ilcarro.service.model.FilterNode;
+import com.telran.ilcarro.repository.entity.FilterNodeEntity;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -55,13 +55,13 @@ import java.io.IOException;
  *                 "key: " : "4"
  */
 @Component
-public class FilterNodeSerializer extends JsonSerializer<FilterNode> {
+public class FilterNodeSerializer extends JsonSerializer<FilterNodeEntity> {
     @Override
-    public void serialize(FilterNode filterNode, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+    public void serialize(FilterNodeEntity filterNodeEntity, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         jgen.writeStartObject(); //<---start object
-        jgen.writeStringField("key: ", filterNode.getValue());
-        if(!filterNode.getChilds().isEmpty()){
-            for(FilterNode node : filterNode.getChilds()) {
+        jgen.writeStringField("key: ", filterNodeEntity.getValue());
+        if(!filterNodeEntity.getChilds().isEmpty()){
+            for(FilterNodeEntity node : filterNodeEntity.getChilds()) {
                 jgen.writeArrayFieldStart(node.getType()); //<-- start NewJsonArray
                 serialize(node,  jgen,                     //<-- recursive call serialize method
                         provider);

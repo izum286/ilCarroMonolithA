@@ -1,20 +1,21 @@
 package com.telran.ilcarro.service.filter;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.telran.ilcarro.model.car.AddUpdateCarDtoRequest;
 import com.telran.ilcarro.model.filter.FilterDTO;
 import com.telran.ilcarro.repository.FilterRepository;
-import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
-import com.telran.ilcarro.service.model.FilterNode;
+import com.telran.ilcarro.repository.entity.FilterNodeEntity;
+import com.telran.ilcarro.service.exceptions.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 
 @Service
 public class FilterServiceImpl implements FilterService {
@@ -26,11 +27,11 @@ public class FilterServiceImpl implements FilterService {
      * Method for automatically add new filter from /upload page
      * call -> addNode
      *
-     * @param addUpdateCarDtoRequest
+     *
      * @author izum286
      */
     @Override
-    public void addFilter(AddUpdateCarDtoRequest addUpdateCarDtoRequest) throws IllegalAccessException {
+    public void addFilter(AddUpdateCarDtoRequest addUpdateCarDtoRequest) {
         addNode(map(addUpdateCarDtoRequest));
     }
 
@@ -41,27 +42,18 @@ public class FilterServiceImpl implements FilterService {
      * @author izum286
      */
     @Override
-    public String provideFilter() {
-        ObjectMapper mapper = new ObjectMapper();
-        SimpleModule module = new SimpleModule("custom",
-                Version.unknownVersion());
-        module.addSerializer(FilterNode.class, new FilterNodeSerializer());
-        mapper.registerModule(module);
-        FilterNode root = new FilterNode();
-        root.setValue("allCars");
-        if(filterRepository.size() == 0){
-            throw new NotFoundServiceException("There is no filters yet");
-        }
-        for (FilterNode n: filterRepository.values()){
-            root.getChilds().add(n);
-        }
-        String s = null;
+    public String provideFilter(){
         try {
-            s = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(root);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            ObjectMapper mapper = new ObjectMapper();
+            SimpleModule module = new SimpleModule("custom",
+                    Version.unknownVersion());
+            module.addSerializer(FilterNodeEntity.class, new FilterNodeSerializer());
+            mapper.registerModule(module);
+            FilterNodeEntity res = filterRepository.findById("root").orElseGet(()->new FilterNodeEntity("root", "allCars"));
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(res);
+        } catch (Throwable e) {
+            throw new ServiceException(e.getMessage(), e.getCause());
         }
-        return s;
     }
 
     /**
@@ -73,16 +65,32 @@ public class FilterServiceImpl implements FilterService {
      * @author izum286
      */
     @Override
-    public void addNode(FilterDTO filterDTO) throws IllegalAccessException {
-        FilterNode toRawAdd = map(filterDTO);
-        if(!filterRepository.containsKey(filterDTO.getMake())){
-            filterRepository.put(filterDTO.getMake(), toRawAdd);
-        }else {
-            //начинаем сравнивать ноды со сдвигом на 1 в ноде добавления СВЕРХУ
-            //и в случае разницы  - сливаем
-            FilterNode fromList = filterRepository.get(filterDTO.getMake());
-            FilterNode toCompare = toRawAdd.getChilds().get(0);
-            mergeNodes(fromList, toCompare);
+    public void addNode(FilterDTO filterDTO)  {
+        try {
+            FilterNodeEntity toRawAdd = map(filterDTO);
+            if(filterRepository.findById("root").isEmpty()){
+                FilterNodeEntity root = new FilterNodeEntity("root", "allCars");
+                root.getChilds().add(toRawAdd);
+                filterRepository.save(root);
+            }else {
+                FilterNodeEntity root = filterRepository.findById("root").orElseThrow(()->new RuntimeException("something went wrong with DB"));
+                List<FilterNodeEntity> childs = root.getChilds();
+
+                Optional<FilterNodeEntity> fromDb
+                        = childs.stream().filter(child->child.getValue().equals(filterDTO.getMake())).findAny();
+
+                if(!fromDb.isPresent()){
+                    root.getChilds().add(toRawAdd);
+                    filterRepository.save(root);
+                }else{
+                    //начинаем сравнивать ноды со сдвигом на 1 в ноде добавления СВЕРХУ
+                    //и в случае разницы  - сливаем
+                    mergeNodes(fromDb.get(), toRawAdd.getChilds().get(0));
+                    filterRepository.save(root);
+                }
+            }
+        } catch (Throwable t) {
+            throw new ServiceException(t.getMessage(), t.getCause());
         }
     }
 
@@ -94,26 +102,31 @@ public class FilterServiceImpl implements FilterService {
      * @param toMerge
      * @author izum286
      */
+    @SuppressWarnings("JavaDoc")
     @Override
-    public void mergeNodes(FilterNode exist, FilterNode toMerge) {
-        // avoiding adding duplicates in last node
-        if (toMerge.getType().equals("exit")){
-            return;
-        }
-        if(exist.getChilds().stream().
-                anyMatch(n->n.getValue().equals(toMerge.getValue()))){
-            int indx = findNextIndx(exist, toMerge);
-            /**
-             * alternative way to find index
-             * AtomicInteger i = new AtomicInteger(); // any mutable integer wrapper
-             * int index = fromList.getChilds().stream()
-             *     .peek(v -> i.incrementAndGet())
-             *     .anyMatch(node -> node.getValue().equals(toCompare.getValue())) ? i.get()-1 : -1;
-             * @author: Inozemtsev
-             */
-            mergeNodes(exist.getChilds().get(indx), toMerge.getChilds().stream().findFirst().orElse(new FilterNode("exit")));
-        }else {
-            exist.getChilds().add(toMerge);
+    public void mergeNodes(FilterNodeEntity exist, FilterNodeEntity toMerge) {
+        try {
+            // avoiding adding duplicates in last node
+            if (toMerge.getType().equals("exit")){
+                return;
+            }
+            if(exist.getChilds().stream().
+                    anyMatch(n->n.getValue().equals(toMerge.getValue()))){
+                int indx = findNextIndx(exist, toMerge);
+                /**
+                 * alternative way to find index
+                 * AtomicInteger i = new AtomicInteger(); // any mutable integer wrapper
+                 * int index = fromList.getChilds().stream()
+                 *     .peek(v -> i.incrementAndGet())
+                 *     .anyMatch(node -> node.getValue().equals(toCompare.getValue())) ? i.get()-1 : -1;
+                 * @author: Inozemtsev
+                 */
+                mergeNodes(exist.getChilds().get(indx), toMerge.getChilds().stream().findFirst().orElse(new FilterNodeEntity("exit")));
+            }else {
+                exist.getChilds().add(toMerge);
+            }
+        } catch (Throwable e) {
+            throw new ServiceException(e.getMessage(), e.getCause());
         }
     }
 
@@ -126,11 +139,11 @@ public class FilterServiceImpl implements FilterService {
      * @author izum286
      */
     @Override
-    public int findNextIndx(FilterNode exist, FilterNode toMerge) {
+    public int findNextIndx(FilterNodeEntity exist, FilterNodeEntity toMerge) {
         int count =0;
-        List<FilterNode> list = exist.getChilds();
-        for (FilterNode filterNode : list) {
-            if (!filterNode.getValue().equals(toMerge.getValue())) {
+        List<FilterNodeEntity> list = exist.getChilds();
+        for (FilterNodeEntity filterNodeEntity : list) {
+            if (!filterNodeEntity.getValue().equals(toMerge.getValue())) {
                 count += 1;
             }
         }
@@ -148,14 +161,14 @@ public class FilterServiceImpl implements FilterService {
      * @author izum286
      */
 
-    public FilterNode map(FilterDTO toAdd) throws IllegalAccessException {
-        ArrayList<FilterNode> nodes = new ArrayList<>();
+    public FilterNodeEntity map(FilterDTO toAdd) throws IllegalAccessException {
+        List<FilterNodeEntity> nodes = new CopyOnWriteArrayList<>();
         Field[] f = toAdd.getClass().getDeclaredFields();
         for (Field field : f) {
             field.setAccessible(true);
             String fieldType = field.getName();
             String fieldValue = (String) field.get(toAdd);
-            FilterNode node = new FilterNode();
+            FilterNodeEntity node = new FilterNodeEntity();
             node.setType(fieldType);
             node.setValue(fieldValue);
             nodes.add(node);

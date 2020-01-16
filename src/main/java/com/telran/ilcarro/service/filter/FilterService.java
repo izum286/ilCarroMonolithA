@@ -1,8 +1,9 @@
 package com.telran.ilcarro.service.filter;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.telran.ilcarro.model.car.AddUpdateCarDtoRequest;
 import com.telran.ilcarro.model.filter.FilterDTO;
-import com.telran.ilcarro.service.model.FilterNode;
+import com.telran.ilcarro.repository.entity.FilterNodeEntity;
 
 public interface FilterService {
     /**
@@ -11,14 +12,14 @@ public interface FilterService {
      * @param addUpdateCarDtoRequest
      * @author izum286
      */
-    void addFilter (AddUpdateCarDtoRequest addUpdateCarDtoRequest) throws IllegalAccessException;
+    void addFilter (AddUpdateCarDtoRequest addUpdateCarDtoRequest);
 
     /**
      * Method return json string of all filters
      * @return
      * @author izum286
      */
-    String provideFilter();
+    String provideFilter() ;
 
     /**
      * Method added new node from FullCarDto from data which typed
@@ -27,7 +28,7 @@ public interface FilterService {
      * @param filterDTO
      * @author izum286
      */
-    void addNode(FilterDTO filterDTO) throws IllegalAccessException;
+    void addNode(FilterDTO filterDTO) ;
 
     /**
      * Recursive Method that takes 2 nodes to merge him in point of different values
@@ -36,7 +37,7 @@ public interface FilterService {
      * @param toMerge
      * @author izum286
      */
-    void mergeNodes(FilterNode exist, FilterNode toMerge);
+    void mergeNodes(FilterNodeEntity exist, FilterNodeEntity toMerge);
 
     /**
      * Method to find index of correspondent node in list of childs
@@ -45,5 +46,5 @@ public interface FilterService {
      * @return
      * @author izum286
      */
-    int findNextIndx(FilterNode where, FilterNode from);
+    int findNextIndx(FilterNodeEntity where, FilterNodeEntity from);
 }

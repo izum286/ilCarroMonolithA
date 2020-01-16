@@ -1,6 +1,8 @@
-package com.telran.ilcarro.service.model;
+package com.telran.ilcarro.repository.entity;
 
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -24,12 +26,19 @@ import java.util.List;
 @Setter
 @ToString
 @Builder
-public class FilterNode {
+@Document(collection = "filter")
+public class FilterNodeEntity {
+    @Id
     String type;
     String value;
-    List<FilterNode> childs = Collections.synchronizedList(new LinkedList<>());
+    List<FilterNodeEntity> childs = Collections.synchronizedList(new LinkedList<>());
 
-    public FilterNode(String exit) {
+    public FilterNodeEntity(String exit) {
         this.type = exit;
+    }
+
+    public FilterNodeEntity(String type, String value) {
+        this.type = type;
+        this.value = value;
     }
 }
