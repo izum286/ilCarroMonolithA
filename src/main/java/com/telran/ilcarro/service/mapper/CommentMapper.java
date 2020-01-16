@@ -15,6 +15,7 @@ public interface CommentMapper {
     @Mapping(target = "post_date", source = "comment.postDateTime")
     @Mapping(target = "first_name", source = "comment.lastName")
     @Mapping(target = "second_name", source = "comment.firstName")
+    @Mapping(target = "photo", source = "photo", defaultValue = "https://a.d-cd.net/4e0c9b9s-1920.jpg")
     FullCommentDTO map(CommentEntity comment);
 
     @Mapping(target = "postDateTime", expression = "java(java.time.LocalDateTime.now())")

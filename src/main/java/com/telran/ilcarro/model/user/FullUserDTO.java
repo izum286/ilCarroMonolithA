@@ -29,13 +29,13 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class FullUserDTO {
-    private String firstName;
-    private String lastName;
+    private String first_name;
+    private String second_name;
     @JsonFormat(pattern = "dd/MM/yyyy")
-    private LocalDateTime registrationDate;
+    private LocalDateTime registration_date;
     private List<FullCommentDTO> comments;
     private String photo;
-    private List<FullCarDTOResponse> ownCars;
-    private List<BookedPeriodDto> bookedCars;
+    private List<FullCarDTOResponse> own_cars;
+    private List<BookedPeriodDto> booked_car;
     private List<BookedPeriodDto> history;
 }
