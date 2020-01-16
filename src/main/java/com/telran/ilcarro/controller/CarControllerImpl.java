@@ -5,6 +5,7 @@ import com.telran.ilcarro.model.car.*;
 import com.telran.ilcarro.model.car.probably_unused.ShortCarDTO;
 import com.telran.ilcarro.service.car.CarService;
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
+import com.telran.ilcarro.service.exceptions.FilterServiceException;
 import com.telran.ilcarro.service.exceptions.ServiceException;
 import com.telran.ilcarro.service.filter.FilterService;
 import com.telran.ilcarro.service.user.UserService;
@@ -55,16 +56,15 @@ public class CarControllerImpl implements CarController {
         try {
             filterService.addFilter(carDTO);
         } catch (IllegalAccessException ex) {
-            throw new ServiceException("Something go wrong");
+            throw new FilterServiceException("Something go wrong", ex.getCause());
         }
-//        System.out.println(carDTO);
         return carService.addCar(carDTO, userEmail).orElseThrow(() -> new ConflictServiceException(String.format("Car %s already exist", carDTO.getSerialNumber())));
     }
 
     //**********************************************************************************
 
 
-    @ApiOperation(value = "Update car", response = ShortCarDTO.class)
+    @ApiOperation(value = "Update car", response = FullCarDTOResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = ""),
             @ApiResponse(code = 400, message = "Bad request"),
@@ -75,11 +75,17 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @PutMapping("/car")
-        public FullCarDTOResponse updateCar(@RequestParam("serial_number") String serial_number, @RequestBody AddUpdateCarDtoRequest carDTO, Principal principal) throws IllegalAccessException {
-        filterService.addFilter(carDTO);
+        public FullCarDTOResponse updateCar(@RequestParam("serial_number") String serial_number, @RequestBody AddUpdateCarDtoRequest carDTO, Principal principal) {
+        //TODO check serial inside dto and serial_number or ->
+        carDTO.setSerialNumber(serial_number);
+        try {
+            filterService.addFilter(carDTO);
+        } catch (IllegalAccessException ex) {
+            throw new FilterServiceException("Something go wrong", ex.getCause());
+        }
         String userEmail = principal.getName();
         //TODO add correct exception
-            return carService.updateCar(carDTO, userEmail).orElseThrow();
+        return carService.updateCar(carDTO, userEmail).orElseThrow();
     }
 
 
@@ -96,7 +102,7 @@ public class CarControllerImpl implements CarController {
     )
 
     @Override
-    @DeleteMapping("/car?serial_number")
+    @DeleteMapping("/car")
     public void deleteCar(@RequestParam(name = "serial_number") String carId, Principal principal) {
         String userEmail = principal.getName();
         carService.deleteCar(carId, userEmail);
@@ -115,9 +121,10 @@ public class CarControllerImpl implements CarController {
     )
 
     @Override
-    @GetMapping("/car?serial_number")
+    @GetMapping("/car")
     public FullCarDTOResponse getCarByIdForUsers(@RequestParam(name = "serial_number") String carId) {
         //TODO Exception
+        //Check bookedPeriod to NULL
         return carService.getCarByIdForUsers(carId).orElseThrow();
     }
 

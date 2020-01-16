@@ -31,7 +31,7 @@ public interface CarController {
      * @param carDTO of updated car with updated params
      * @return ShortCarDTO
      */
-    FullCarDTOResponse updateCar(String serial_number, AddUpdateCarDtoRequest carDTO , Principal principal) throws IllegalAccessException;
+    FullCarDTOResponse updateCar(String serial_number, AddUpdateCarDtoRequest carDTO , Principal principal);
 
 
     /**

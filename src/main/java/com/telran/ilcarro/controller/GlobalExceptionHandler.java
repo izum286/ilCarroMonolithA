@@ -1,6 +1,7 @@
 package com.telran.ilcarro.controller;
 
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
+import com.telran.ilcarro.service.exceptions.FilterServiceException;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.exceptions.ServiceException;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = ServiceException.class)
     public ResponseEntity<?> handleServiceException(RuntimeException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = FilterServiceException.class)
+    public ResponseEntity<?> handleFilterServiceException(RuntimeException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
