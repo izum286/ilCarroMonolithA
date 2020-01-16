@@ -12,14 +12,14 @@ public interface FilterService {
      * @param addUpdateCarDtoRequest
      * @author izum286
      */
-    void addFilter (AddUpdateCarDtoRequest addUpdateCarDtoRequest) throws IllegalAccessException;
+    void addFilter (AddUpdateCarDtoRequest addUpdateCarDtoRequest);
 
     /**
      * Method return json string of all filters
      * @return
      * @author izum286
      */
-    String provideFilter() throws JsonProcessingException;
+    String provideFilter() ;
 
     /**
      * Method added new node from FullCarDto from data which typed
@@ -28,7 +28,7 @@ public interface FilterService {
      * @param filterDTO
      * @author izum286
      */
-    void addNode(FilterDTO filterDTO) throws IllegalAccessException;
+    void addNode(FilterDTO filterDTO) ;
 
     /**
      * Recursive Method that takes 2 nodes to merge him in point of different values

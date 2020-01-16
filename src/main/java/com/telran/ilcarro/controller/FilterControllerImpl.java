@@ -29,7 +29,7 @@ public class FilterControllerImpl implements FilterController {
     )
     @GetMapping("filters")
     @Override
-    public String getFilters() throws JsonProcessingException {
+    public String getFilters(){
         return filterService.provideFilter();
     }
 }
