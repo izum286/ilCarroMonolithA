@@ -21,13 +21,14 @@ import java.util.ArrayList;
 
 
 @Mapper(componentModel = "spring",imports = {BookedPeriodEntity.class, ArrayList.class, CarStatEntity.class, CommentEntity.class},
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_DEFAULT)
 public interface CarMapperAddCar {
 
     CarMapperAddCar INSTANCE = Mappers.getMapper(CarMapperAddCar.class);
     @Mapping(target = "bookedPeriods",expression = "java(new ArrayList<BookedPeriodEntity>())")
     @Mapping(target = "statistics",expression = "java(new CarStatEntity())")
-//    @Mapping(target = "feedBacks",expression = "java(new ArrayList<CommentEntity>())")
+    @Mapping(target = "pricePerDay.value", source = "pricePerDay")
+    @Mapping(target = "pricePerDay.currency", defaultValue = "ILS")
     FullCarEntity map(AddUpdateCarDtoRequest dto);
 
     @Mapping(target = "bookedPeriodDto",source = "bookedPeriods")

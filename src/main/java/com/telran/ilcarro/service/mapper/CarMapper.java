@@ -7,10 +7,7 @@ package com.telran.ilcarro.service.mapper;
 import com.telran.ilcarro.model.car.AddUpdateCarDtoRequest;
 import com.telran.ilcarro.model.car.FullCarDTOResponse;
 import com.telran.ilcarro.repository.entity.FullCarEntity;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(uses = CommentMapper.class,
@@ -19,6 +16,8 @@ public interface CarMapper {
 
     CarMapper INSTANCE = Mappers.getMapper(CarMapper.class);
 
+    @Mapping(target = "pricePerDay.value", source = "pricePerDay")
+    @Mapping(target = "pricePerDay.currency", defaultValue = "ILS")
     FullCarEntity map(AddUpdateCarDtoRequest dto);
 
     FullCarDTOResponse map(FullCarEntity entity);
@@ -31,5 +30,7 @@ public interface CarMapper {
     @Named("mapWithoutOwnerFullBookedPeriods")
     @Mapping(target = "owner", ignore = true)
     FullCarDTOResponse mapWithoutOwnerFullBookedPeriods(FullCarEntity entity);
+
+    void updCar(@MappingTarget FullCarEntity carToUpd, FullCarEntity carFromUpd);
 
 }
