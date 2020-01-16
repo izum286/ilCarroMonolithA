@@ -7,15 +7,15 @@ import lombok.*;
 import java.util.List;
 
 /**
- * @author vitalii_adler
+ * @author Anton Konkin
  * @author izum286
  */
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @ApiModel(value = "AddUpdateCarDtoRequest",description = "Request from user to add or update existing car")
 public class AddUpdateCarDtoRequest {
@@ -40,7 +40,7 @@ public class AddUpdateCarDtoRequest {
     @JsonProperty("car_class")
     private String carClass;
     @JsonProperty("price_per_day")
-    private PricePerDayDto pricePerDay;
+    private float pricePerDay;
     @JsonProperty("distance_included")
     private int distanceIncluded;
     private String about;
