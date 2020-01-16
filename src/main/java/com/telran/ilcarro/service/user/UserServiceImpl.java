@@ -120,6 +120,7 @@ public class UserServiceImpl implements UserService {
             List<String> carsIdList = entity.getOwnCars();
             if (carsIdList == null) {
                 carsIdList = new ArrayList<>();
+                entity.setOwnCars(carsIdList);
             }
             carsIdList.add(carId);
             userRepository.save(entity);
