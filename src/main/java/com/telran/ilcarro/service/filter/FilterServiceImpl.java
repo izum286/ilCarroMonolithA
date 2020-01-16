@@ -17,6 +17,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @SuppressWarnings("JavaDoc")
@@ -25,20 +26,9 @@ public class FilterServiceImpl implements FilterService {
 
     @Autowired
     FilterRepository filterRepository;
-    FilterNodeEntity root = new FilterNodeEntity("root", "allCars");
-    Hashtable<String, FilterNodeEntity> hashArray = new Hashtable<>();
+    //FilterNodeEntity root = new FilterNodeEntity("root", "allCars");
+    //Hashtable<String, FilterNodeEntity> hashArray = new Hashtable<>();
 
-
-    @PostConstruct
-    public void initializeRoot(){
-        try {
-            if(filterRepository.findById("root").isEmpty()){
-                filterRepository.save(root);
-            }
-        } catch (Exception e) {
-            throw new RepositoryException("something went wrong");
-        }
-    }
     /**
      * Method for automatically add new filter from /upload page
      * call -> addNode
@@ -56,7 +46,6 @@ public class FilterServiceImpl implements FilterService {
      *
      * @return
      * @author izum286
-     * TODO new logic
      */
     @Override
     public String provideFilter() throws JsonProcessingException {
@@ -65,13 +54,8 @@ public class FilterServiceImpl implements FilterService {
                 Version.unknownVersion());
         module.addSerializer(FilterNodeEntity.class, new FilterNodeSerializer());
         mapper.registerModule(module);
-        root.setValue("allCars");
-        for (FilterNodeEntity n: hashArray.values()){
-            root.getChilds().add(n);
-        }
-        filterRepository.save(root);
-
-        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(filterRepository.findAll().get(0));
+        FilterNodeEntity res = filterRepository.findById("root").orElseGet(()->new FilterNodeEntity("root", "allCars"));
+        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(res);
     }
 
     /**
@@ -84,16 +68,27 @@ public class FilterServiceImpl implements FilterService {
      */
     @Override
     public void addNode(FilterDTO filterDTO) throws IllegalAccessException {
-        //TODO - fill root node
         FilterNodeEntity toRawAdd = map(filterDTO);
-        if(!hashArray.containsKey(filterDTO.getMake())){
-            hashArray.put(filterDTO.getMake(), toRawAdd);
+        if(filterRepository.findById("root").isEmpty()){
+            FilterNodeEntity root = new FilterNodeEntity("root", "allCars");
+            root.getChilds().add(toRawAdd);
+            filterRepository.save(root);
         }else {
-            //начинаем сравнивать ноды со сдвигом на 1 в ноде добавления СВЕРХУ
-            //и в случае разницы  - сливаем
-            FilterNodeEntity fromList = hashArray.get(filterDTO.getMake());
-            FilterNodeEntity toCompare = toRawAdd.getChilds().get(0);
-            mergeNodes(fromList, toCompare);
+            FilterNodeEntity root = filterRepository.findById("root").orElseThrow(()->new RuntimeException("something went wrong with DB"));
+            List<FilterNodeEntity> childs = root.getChilds();
+
+            Optional<FilterNodeEntity> fromDb
+                    = childs.stream().filter(child->child.getValue().equals(filterDTO.getMake())).findAny();
+
+            if(!fromDb.isPresent()){
+                root.getChilds().add(toRawAdd);
+                filterRepository.save(root);
+            }else{
+                //начинаем сравнивать ноды со сдвигом на 1 в ноде добавления СВЕРХУ
+                //и в случае разницы  - сливаем
+                mergeNodes(fromDb.get(), toRawAdd.getChilds().get(0));
+                filterRepository.save(root);
+            }
         }
     }
 

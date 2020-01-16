@@ -1,5 +1,6 @@
 package com.telran.ilcarro.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.telran.ilcarro.controller.interfaces.FilterController;
 import com.telran.ilcarro.service.filter.FilterService;
 import io.swagger.annotations.ApiOperation;
@@ -28,7 +29,7 @@ public class FilterControllerImpl implements FilterController {
     )
     @GetMapping("filters")
     @Override
-    public String getFilters() {
+    public String getFilters() throws JsonProcessingException {
         return filterService.provideFilter();
     }
 }
