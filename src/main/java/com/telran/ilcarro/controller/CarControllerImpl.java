@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+
 /**
  * Car controller implementation
  *
@@ -38,7 +39,7 @@ public class CarControllerImpl implements CarController {
     @Autowired
     UserService userService;
 
-    @ApiOperation(value = "Add new car", response = FullCarDTOResponse .class)
+    @ApiOperation(value = "Add new car", response = FullCarDTOResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = ""),
             @ApiResponse(code = 400, message = "Bad request"),
@@ -53,11 +54,7 @@ public class CarControllerImpl implements CarController {
     @Override
     public FullCarDTOResponse addCar(@RequestBody AddUpdateCarDtoRequest carDTO, Principal principal) {
         String userEmail = principal.getName();
-        try {
-            filterService.addFilter(carDTO);
-        } catch (IllegalAccessException ex) {
-            throw new FilterServiceException("Something go wrong", ex.getCause());
-        }
+        filterService.addFilter(carDTO);
         return carService.addCar(carDTO, userEmail).orElseThrow(() -> new ConflictServiceException(String.format("Car %s already exist", carDTO.getSerialNumber())));
     }
 
@@ -75,14 +72,10 @@ public class CarControllerImpl implements CarController {
 
     @Override
     @PutMapping("/car")
-        public FullCarDTOResponse updateCar(@RequestParam("serial_number") String serial_number, @RequestBody AddUpdateCarDtoRequest carDTO, Principal principal) {
+    public FullCarDTOResponse updateCar(@RequestParam("serial_number") String serial_number, @RequestBody AddUpdateCarDtoRequest carDTO, Principal principal) {
         //TODO check serial inside dto and serial_number or ->
         carDTO.setSerialNumber(serial_number);
-        try {
-            filterService.addFilter(carDTO);
-        } catch (IllegalAccessException ex) {
-            throw new FilterServiceException("Something go wrong", ex.getCause());
-        }
+        filterService.addFilter(carDTO);
         String userEmail = principal.getName();
         //TODO add correct exception
         return carService.updateCar(carDTO, userEmail).orElseThrow();
