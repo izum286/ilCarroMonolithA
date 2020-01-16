@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService{
             UserEntity entity = userRepository.findById(email)
                     .orElseThrow(()-> new NotFoundServiceException(String.format("User %s not found", email)));
             FullUserDTO userDTO = UserMapper.INSTANCE.map(entity);
-            userDTO.setBookedCars(getUserBookedCarsPeriods(email).orElse(null));
+            userDTO.setBooked_car(getUserBookedCarsPeriods(email).orElse(new ArrayList<>()));
             return Optional.of(userDTO);
         } catch (Throwable t) {
             throw new ServiceException(t.getMessage(), t.getCause());
