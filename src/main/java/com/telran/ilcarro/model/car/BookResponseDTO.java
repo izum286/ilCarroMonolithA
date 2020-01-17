@@ -16,8 +16,8 @@ import lombok.*;
 @Builder
 @ApiModel(value = "Reservation success response",description = "Reservation success response")
 public class BookResponseDTO {
-    private String orderNumber;
+    private String order_number;
     private float amount;
     @JsonFormat(pattern = "dd/MM/yyyy hh:mm")
-    private String bookingDate;
+    private String booking_date;
 }
