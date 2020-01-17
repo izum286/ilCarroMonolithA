@@ -28,10 +28,11 @@ public interface CarMapperAddCar {
     @Mapping(target = "bookedPeriods",expression = "java(new ArrayList<BookedPeriodEntity>())")
     @Mapping(target = "statistics",expression = "java(new CarStatEntity())")
     @Mapping(target = "pricePerDay.value", source = "pricePerDay")
-    @Mapping(target = "pricePerDay.currency", defaultValue = "ILS")
+    @Mapping(target = "pricePerDay.currency", constant = "ILS")
     FullCarEntity map(AddUpdateCarDtoRequest dto);
 
     @Mapping(target = "bookedPeriodDto",source = "bookedPeriods")
     @Mapping(target = "statisticsDto",source = "statistics")
     FullCarDTOResponse map(FullCarEntity entity);
+
 }
