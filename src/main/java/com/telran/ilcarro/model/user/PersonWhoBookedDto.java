@@ -16,7 +16,7 @@ import lombok.*;
 
 public class PersonWhoBookedDto {
     private String email;
-    private String firstName;
-    private String lastName;
+    private String first_name;
+    private String second_name;
     private String phone;
 }

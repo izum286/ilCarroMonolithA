@@ -19,9 +19,9 @@ import java.time.LocalDateTime;
 @Builder
 @ApiModel(value = "Make a reservation",description = "Dto request for book a car")
 public class BookRequestDTO {
-    @JsonFormat(pattern = "dd/MM/yyyy hh:mm")
-    private LocalDateTime startDateTime;
-    @JsonFormat(pattern = "dd/MM/yyyy hh:mm")
-    private LocalDateTime endDateTime;
-    PersonWhoBookedDto personWhoBookedDto;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime start_date_time;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime end_date_time;
+    PersonWhoBookedDto person_who_booked;
 }

@@ -130,7 +130,7 @@ public class CarControllerImpl implements CarController {
     }
     )
 
-    @GetMapping("/users/cars/car?serial_number")
+    @GetMapping("/users/cars/car")
     @Override
     public FullCarDTOResponse getCarByIdForOwner(@RequestParam(name = "serial_number") String carId,
                                                  Principal principal) {
@@ -172,7 +172,7 @@ public class CarControllerImpl implements CarController {
     )
 
     @Override
-    @GetMapping("/user/cars/car?serial_number")
+    @GetMapping("/user/cars/car")
     public FullCarDTOResponse ownerGetCarById(@RequestParam(name = "serial_number") String carId) {
         return carService.getCarByIdForUsers(carId).orElseThrow();
     }
@@ -191,7 +191,7 @@ public class CarControllerImpl implements CarController {
     )
 
     @Override
-    @GetMapping("/user/cars/periods?serial_number")
+    @GetMapping("/user/cars/periods")
     public List<BookedPeriodDto> ownerGetBookedPeriodsByCarId(@RequestParam(name = "serial_number") String carId,
                                                               Principal principal) {
         String userEmail = principal.getName();
@@ -199,7 +199,7 @@ public class CarControllerImpl implements CarController {
     }
 
     @Override
-    @PostMapping("/car/reservation?serial_number")
+    @PostMapping("/car/reservation")
     public BookResponseDTO makeReservation(@RequestParam(name = "serial_number") String carId,
                                            @RequestBody BookRequestDTO dto, Principal principal) {
         String userEmail = principal.getName();
