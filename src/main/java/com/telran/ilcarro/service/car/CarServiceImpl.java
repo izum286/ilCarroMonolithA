@@ -263,8 +263,8 @@ public class CarServiceImpl implements CarService {
                     userWhoBooked.getHistory() == null ? new ArrayList<>() : userWhoBooked.getHistory();
 
             BookedPeriodEntity newPeriod = BookedPeriodMapper.INSTANCE.map(dto);
-            //TODO check amount logic
-            newPeriod.setAmount(Float.parseFloat(carToBookEntity.getPricePerDaySimple()));
+            //TODO check amount logic, PricePErDaySimpl - null
+            newPeriod.setAmount(carToBookEntity.getPricePerDay().getValue());
             carListBookedPeriodEntity.add(newPeriod);
             carToBookEntity.setBookedPeriods(carListBookedPeriodEntity);
             userHistoryBookedEntity.add(newPeriod);

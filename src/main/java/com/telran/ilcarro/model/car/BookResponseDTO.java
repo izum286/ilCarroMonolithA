@@ -18,6 +18,6 @@ import lombok.*;
 public class BookResponseDTO {
     private String order_number;
     private float amount;
-    @JsonFormat(pattern = "dd/MM/yyyy hh:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private String booking_date;
 }
