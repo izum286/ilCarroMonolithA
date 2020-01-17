@@ -42,13 +42,13 @@ public interface BookedPeriodMapper {
 
     BookedPeriodDto map(BookedPeriodEntity entity);
 
-    @Mapping(target = "personWhoBooked", ignore = true)
-    BookedPeriodDto mapForUserHistory(BookedPeriodEntity entity);
+//    @Mapping(target = "personWhoBooked", ignore = true)
+//    BookedPeriodDto mapForUserHistory(BookedPeriodEntity entity);
 
     /**
      * used for Get car by id for users - providing only start & and dates
      */
-    @Mapping(target = "personWhoBooked", ignore = true)
+    @Mapping(target = "personWhoBookedDto", ignore = true)
     @Mapping(target = "orderId", ignore = true)
     @Mapping(target = "paid", ignore = true)
     @Mapping(target = "amount", ignore = true)
