@@ -1,9 +1,6 @@
 package com.telran.ilcarro.repository.entity;
 
-import com.telran.ilcarro.model.user.PersonWhoBookedDto;
 import lombok.*;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
