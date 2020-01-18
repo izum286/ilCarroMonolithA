@@ -61,6 +61,12 @@ public class AuthServiceTests {
         assertNotNull(authService.updatePassword("junittester@mail.com",null));
     }
 
+    //Need check
+    @Test
+    public void testAuthUpdatePasswordWithAllNullParams(){
+        assertNotNull(authService.updatePassword(null,null));
+    }
+
     @Test
     public void testAuthRegistrationWithNullToken(){
         assertNotNull(authService.registration(null));
