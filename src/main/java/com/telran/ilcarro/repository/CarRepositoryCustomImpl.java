@@ -19,6 +19,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,8 +45,14 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
         criteria.add(Criteria.where("city").is(city));
         criteria.add(Criteria.where("pricePerDaySimple").gte(priceFrom));
         criteria.add(Criteria.where("pricePerDaySimple").lte(priceTo));
-        criteria.add(Criteria.where("bookedPeriods.startDateTime").gte(end));
-        criteria.add(Criteria.where("bookedPeriods.endDateTime").lte(start));
+
+        criteria.add(
+                Criteria.where("bookedPeriods")
+                .elemMatch(
+                        Criteria.where("startDateTime").gt(end).and("endDateTime").lt(start)
+                ).orOperator(Criteria.where("bookedPeriods").size(0))
+        );
+
         query.addCriteria(new Criteria().andOperator(criteria.toArray(new Criteria[criteria.size()])));
         try {
             List<FullCarEntity> list = mongoTemplate.find(query, FullCarEntity.class);
@@ -131,8 +138,12 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
         }
         criteria.add(Criteria.where("pricePerDaySimple").gte(minPrice));
         criteria.add(Criteria.where("pricePerDaySimple").lte(maxPrice));
-        criteria.add(Criteria.where("bookedPeriods.startDateTime").gte(dateTo));
-        criteria.add(Criteria.where("bookedPeriods.endDateTime").lte(dateFrom));
+        criteria.add(
+                Criteria.where("bookedPeriods")
+                        .elemMatch(
+                                Criteria.where("startDateTime").gt(dateTo).and("endDateTime").lt(dateFrom)
+                        ).orOperator(Criteria.where("bookedPeriods").size(0))
+        );
 
         if(filter.getMake()!=null){
             criteria.add(Criteria.where("make").is(filter.getMake()));
