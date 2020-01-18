@@ -21,7 +21,4 @@ public interface CarRepository extends MongoRepository<FullCarEntity, String>, C
      */
     Page<FullCarEntity> findAllByPickUpPlaceWithin(Circle circle, Pageable pageable);
 
-    Optional<FullCarEntity> getFullCarEntityBySerialNumber(String serialNumber);
-
-
 }

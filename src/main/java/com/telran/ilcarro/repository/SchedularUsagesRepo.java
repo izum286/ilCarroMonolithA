@@ -8,6 +8,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
+@Deprecated
 public class SchedularUsagesRepo {
     /**
      * car Id as a key

@@ -16,16 +16,16 @@ import lombok.*;
 @Builder
 public class FilterDTO {
     private String make;
-    private String models;
-    private String years;
-    private String engines;
+    private String model;
+    private Integer year;
+    private String engine;
     private String fuel;
-    private String transmissions;
-    private String wd;
-    private String horsepower;
-    private String torque;
-    private String doors;
-    private String seats;
-    private String classs;
-    private String fuelConsumption;
+    private String transmission;
+    private String wheels_drive;
+    private Double horsepower;
+    private Double torque;
+    private Integer doors;
+    private Integer seats;
+    private String car_class;
+    private String fuel_consumption;
 }
