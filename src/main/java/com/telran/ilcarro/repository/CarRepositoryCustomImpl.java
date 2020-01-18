@@ -45,7 +45,7 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
         criteria.add(Criteria.where("city").is(city));
         criteria.add(Criteria.where("pricePerDaySimple").gte(priceFrom));
         criteria.add(Criteria.where("pricePerDaySimple").lte(priceTo));
-
+        //TODO need to test it!!
         criteria.add(
                 Criteria.where("bookedPeriods")
                 .elemMatch(
@@ -138,6 +138,7 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
         }
         criteria.add(Criteria.where("pricePerDaySimple").gte(minPrice));
         criteria.add(Criteria.where("pricePerDaySimple").lte(maxPrice));
+        //TODO need to test it!!
         criteria.add(
                 Criteria.where("bookedPeriods")
                         .elemMatch(
