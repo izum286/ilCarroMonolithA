@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestsConfig.class})
@@ -52,6 +49,21 @@ public class AuthServiceTests {
     @Test
     public void testAuthUpdatePassword(){
         assertEquals(authService.updatePassword("junittester@mail.com","notjunittester"),"junittester@mail.com");
+    }
+
+    @Test
+    public void testAuthUpdatePasswordWithEmailNullParam(){
+        assertNotNull(authService.updatePassword(null,"notjunittester"));
+    }
+
+    @Test
+    public void testAuthUpdatePasswordWithPasswordNullParam(){
+        assertNotNull(authService.updatePassword("junittester@mail.com",null));
+    }
+
+    @Test
+    public void testAuthRegistrationWithNullToken(){
+        assertNotNull(authService.registration(null));
     }
 
 }
