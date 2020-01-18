@@ -36,14 +36,8 @@ public class FullCarEntity {
     private List<String> imageUrl;
     private boolean isDeleted; //TODO check logic
     private String pricePerDaySimple;
-
-
     private OwnerEntity owner;
-
-
     private List<BookedPeriodEntity> bookedPeriods;
-
-
     private CarStatEntity statistics;
     private int trips;
 

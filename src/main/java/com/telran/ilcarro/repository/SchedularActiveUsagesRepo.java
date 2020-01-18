@@ -10,6 +10,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
+@Deprecated
 public class SchedularActiveUsagesRepo {
     Map<UUID, SchedularUsageDTO> repo = new ConcurrentHashMap<>();
 
