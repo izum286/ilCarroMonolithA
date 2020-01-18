@@ -45,12 +45,14 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
         criteria.add(Criteria.where("city").is(city));
         criteria.add(Criteria.where("pricePerDaySimple").gte(priceFrom));
         criteria.add(Criteria.where("pricePerDaySimple").lte(priceTo));
-        //TODO need to test it!!
+
         criteria.add(
-                Criteria.where("bookedPeriods")
-                .elemMatch(
-                        Criteria.where("startDateTime").gt(end).and("endDateTime").lt(start)
-                ).orOperator(Criteria.where("bookedPeriods").size(0))
+                new Criteria()
+                        .orOperator(Criteria.where("bookedPeriods").size(0),
+                                Criteria.where("bookedPeriods").elemMatch(
+                                        Criteria.where("startDateTime").gt(end).and("endDateTime").lt(start)
+                                )
+                        )
         );
 
         query.addCriteria(new Criteria().andOperator(criteria.toArray(new Criteria[criteria.size()])));
@@ -138,12 +140,13 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
         }
         criteria.add(Criteria.where("pricePerDaySimple").gte(minPrice));
         criteria.add(Criteria.where("pricePerDaySimple").lte(maxPrice));
-        //TODO need to test it!!
         criteria.add(
-                Criteria.where("bookedPeriods")
-                        .elemMatch(
-                                Criteria.where("startDateTime").gt(dateTo).and("endDateTime").lt(dateFrom)
-                        ).orOperator(Criteria.where("bookedPeriods").size(0))
+                new Criteria()
+                        .orOperator(Criteria.where("bookedPeriods").size(0),
+                                Criteria.where("bookedPeriods").elemMatch(
+                                        Criteria.where("startDateTime").gt(dateTo).and("endDateTime").lt(dateFrom)
+                                )
+                        )
         );
 
         if(filter.getMake()!=null){
