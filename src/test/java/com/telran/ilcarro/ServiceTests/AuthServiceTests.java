@@ -2,6 +2,7 @@ package com.telran.ilcarro.ServiceTests;
 
 import com.telran.ilcarro.config.TestsConfig;
 import com.telran.ilcarro.service.auth.AuthService;
+import com.telran.ilcarro.service.exceptions.ServiceException;
 import com.telran.ilcarro.service.user.UserService;
 import org.junit.After;
 import org.junit.Before;
@@ -29,19 +30,18 @@ public class AuthServiceTests {
 
     @Before
     public void setUp(){
-//        if(userService.getUser("junittester@mail.com").isPresent()){
-//            userService.deleteUser("junittester@mail.com");
-//        }
+        try {
+            userService.deleteUser("junittester@mail.com");
+        }catch (ServiceException ex){
+            System.out.println(ex.getMessage());
+        }
     }
 
     @After
     public void afterTest(){
-//        if(userService.getUser("junittester@mail.com").isPresent()){
-//            userService.deleteUser("junittester@mail.com");
-//        }
     }
 
-    @Test
+    @Test/*(expected = ServiceException.class)*/
     public void testAuthRegistration(){
         assertEquals(authService.registration("anVuaXR0ZXN0ZXJAbWFpbC5jb206anVuaXR0ZXN0ZXI="),"junittester@mail.com");
     }
@@ -51,9 +51,9 @@ public class AuthServiceTests {
         assertEquals(authService.updatePassword("junittester@mail.com","notjunittester"),"junittester@mail.com");
     }
 
-    @Test
+    @Test(expected = ServiceException.class)
     public void testAuthUpdatePasswordWithEmailNullParam(){
-        assertNotNull(authService.updatePassword(null,"notjunittester"));
+        authService.updatePassword(null, "notjunittester");
     }
 
     @Test
@@ -61,15 +61,15 @@ public class AuthServiceTests {
         assertNotNull(authService.updatePassword("junittester@mail.com",null));
     }
 
-    //Need check
-    @Test
-    public void testAuthUpdatePasswordWithAllNullParams(){
-        assertNotNull(authService.updatePassword(null,null));
-    }
+//    //Need check
+//    @Test(expected = ServiceException.class)
+//    public void testAuthUpdatePasswordWithAllNullParams(){
+//        assertNotNull(authService.updatePassword(null,null));
+//    }
 
-    @Test
+    @Test(expected = ServiceException.class)
     public void testAuthRegistrationWithNullToken(){
-        assertNotNull(authService.registration(null));
+        authService.registration(null);
     }
 
 }
