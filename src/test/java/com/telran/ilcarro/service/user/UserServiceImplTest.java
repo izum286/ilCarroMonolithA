@@ -1,36 +1,27 @@
-package com.telran.ilcarro.ServiceTests;
+package com.telran.ilcarro.service.user;
 
-import com.telran.ilcarro.config.TestsConfig;
 import com.telran.ilcarro.model.user.FullUserDTO;
 import com.telran.ilcarro.model.user.RegUserDTO;
 import com.telran.ilcarro.model.user.UpdUserDTO;
-import com.telran.ilcarro.service.user.UserService;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
-import org.junit.rules.ErrorCollector;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Optional;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-import static org.junit.Assert.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestsConfig.class})
-public class UserServiceTests {
+@RunWith(SpringRunner.class)
+@SpringBootTest
+class UserServiceImplTest {
 
-    //UserEmail: junittester@mail.com
-    //Password: junittester
-    //Token Base64: anVuaXR0ZXN0ZXJAbWFpbC5jb206anVuaXR0ZXN0ZXI=
-
-    //New user mail: vasyapupkin1234@mail.com
-    //New user name: Vasya
-    //New user lastName: Pupkin
-
-    @Autowired
+    @MockBean
     UserService userService;
 
     RegUserDTO regUserDTO;
@@ -49,17 +40,13 @@ public class UserServiceTests {
                 .build();
     }
 
-    @After
-    public void afterTest(){
-    }
-
     @Test
-    public void testUserAddNewUser(){
+    void addUser() {
         assertTrue(userService.addUser("vasyapupkin1234@mail.com",regUserDTO).isPresent());
     }
 
     @Test
-    public void testUserGetUser(){
+    void getUser() {
         userService.addUser("vasyapupkin1234@mail.com",regUserDTO);
         if(userService.getUser("vasyapupkin1234@mail.com").isPresent()){
             assertEquals(userService.getUser("vasyapupkin1234@mail.com").get().getFirst_name(),regUserDTO.getFirstName());
@@ -67,7 +54,7 @@ public class UserServiceTests {
     }
 
     @Test
-    public void testUserUpdateUser(){
+    void updateUser() {
         userService.addUser("vasyapupkin1234@mail.com",regUserDTO);
         FullUserDTO tmp = userService.getUser("vasyapupkin1234@mail.com").orElseThrow();
         FullUserDTO tmp2 = userService.updateUser("vasyapupkin1234@mail.com",updUserDTO).orElseThrow();
@@ -82,7 +69,7 @@ public class UserServiceTests {
     }
 
     @Test
-    public void testUserDeleteUser(){
+    void deleteUser() {
         userService.addUser("vasyapupkin1234@mail.com",regUserDTO);
         assertTrue(userService.deleteUser("vasyapupkin1234@mail.com"));
         userService.addUser("vasyapupkin1234@mail.com",regUserDTO);
@@ -91,9 +78,19 @@ public class UserServiceTests {
         assertTrue(userService.deleteUser("vasyapupkin1234@mail.com"));
     }
 
+    @Test
+    void addUserCar() {
+    }
 
-//    deleteUser
-//    addUserCar
-//    ifUserCarsExist
-//    addBookedPeriodToUserHistory
+    @Test
+    void ifUserCarsExist() {
+    }
+
+    @Test
+    void getUserBookedCarsPeriods() {
+    }
+
+    @Test
+    void addBookedPeriodToUserHistory() {
+    }
 }
