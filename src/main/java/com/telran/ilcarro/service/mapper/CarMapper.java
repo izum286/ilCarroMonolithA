@@ -30,7 +30,7 @@ public interface CarMapper {
      */
     @Named("mapWithoutOwnerFullBookedPeriods")
     @Mapping(target = "owner", ignore = true)
-    @Mapping(target = "bookedPeriodDto", source = "bookedPeriods", qualifiedByName = "BookedPeriodGeneralMapper")
+    @Mapping(target = "bookedPeriodDto", source = "bookedPeriods", qualifiedByName = "BookedPeriodFullMapper")
     FullCarDTOResponse mapWithoutOwnerFullBookedPeriods(FullCarEntity entity);
 
     void updCar(@MappingTarget FullCarEntity carToUpd, FullCarEntity carFromUpd);
