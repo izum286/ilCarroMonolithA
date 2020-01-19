@@ -10,7 +10,7 @@ import com.telran.ilcarro.repository.entity.FullCarEntity;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(uses = CommentMapper.class,
+@Mapper(uses = {CommentMapper.class, BookedPeriodMapper.class},
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface CarMapper {
 
@@ -23,12 +23,14 @@ public interface CarMapper {
     FullCarDTOResponse map(FullCarEntity entity);
 
     /**
+     * FullCarEntity -> FullCarDTOResponse
      * used for ownerGetCarById - not providing owner in response
      * @param entity
      * @return
      */
     @Named("mapWithoutOwnerFullBookedPeriods")
     @Mapping(target = "owner", ignore = true)
+    @Mapping(target = "bookedPeriodDto", source = "bookedPeriods", qualifiedByName = "BookedPeriodGeneralMapper")
     FullCarDTOResponse mapWithoutOwnerFullBookedPeriods(FullCarEntity entity);
 
     void updCar(@MappingTarget FullCarEntity carToUpd, FullCarEntity carFromUpd);
