@@ -62,12 +62,16 @@ public class UserServiceImpl implements UserService {
         try {
             UserEntity entity = userRepository.findById(email)
                     .orElseThrow(() -> new NotFoundServiceException(String.format("User %s not found", email)));
-            FullUserDTO userDTO = UserMapper.INSTANCE.map(entity);
-            userDTO.setBooked_car(getUserBookedCarsPeriods(email).orElse(new ArrayList<>()));
-            userDTO.setOwn_cars(carService.ownerGetCars(email));
+            //TODO how to set blank array with MapStruct
             if (entity.getHistory() == null) {
                 entity.setHistory(new ArrayList<>());
             }
+            if (entity.getComments() == null) {
+                entity.setComments(new ArrayList<>());
+            }
+            FullUserDTO userDTO = UserMapper.INSTANCE.map(entity);
+            userDTO.setBooked_car(getUserBookedCarsPeriods(email).orElse(new ArrayList<>()));
+            userDTO.setOwn_cars(carService.ownerGetCars(email));
             userDTO.setHistory(entity.getHistory().stream()
                     .map(BookedPeriodMapper.INSTANCE::mapBookedPeriodToBookedCarDto)
                     .collect(Collectors.toList()));
