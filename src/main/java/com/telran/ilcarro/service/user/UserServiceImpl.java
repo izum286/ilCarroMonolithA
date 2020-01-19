@@ -1,6 +1,7 @@
 package com.telran.ilcarro.service.user;
 
 
+import com.telran.ilcarro.model.car.BookedCarDto;
 import com.telran.ilcarro.model.car.BookedPeriodDto;
 import com.telran.ilcarro.model.user.FullUserDTO;
 import com.telran.ilcarro.model.user.RegUserDTO;
@@ -16,6 +17,7 @@ import com.telran.ilcarro.service.exceptions.ConflictServiceException;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.exceptions.ServiceException;
 import com.telran.ilcarro.service.mapper.BookedPeriodMapper;
+import com.telran.ilcarro.service.mapper.CarMapper;
 import com.telran.ilcarro.service.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,7 +69,7 @@ public class UserServiceImpl implements UserService {
                 entity.setHistory(new ArrayList<>());
             }
             userDTO.setHistory(entity.getHistory().stream()
-                    .map(BookedPeriodMapper.INSTANCE::map)
+                    .map(BookedPeriodMapper.INSTANCE::mapBookedPeriodToBookedCarDto)
                     .collect(Collectors.toList()));
             return Optional.of(userDTO);
         } catch (Throwable t) {
@@ -146,16 +148,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<List<BookedPeriodDto>> getUserBookedCarsPeriods(String userID) {
+    public Optional<List<BookedCarDto>> getUserBookedCarsPeriods(String userID) {
         try {
             UserEntity entity = userRepository.findById(userID)
                     .orElseThrow(() -> new NotFoundServiceException(String.format("User profile %s not found", userID)));
-            List<String> bookedCarsSerialNumbers = entity.getOwnCars();
-            if (bookedCarsSerialNumbers == null || bookedCarsSerialNumbers.isEmpty()) {
-                return Optional.empty();
+            List<BookedPeriodEntity> bookedCars = entity.getBookedCars();
+            if (bookedCars == null) {
+                return Optional.of(new ArrayList<>());
             }
-            List<BookedPeriodDto> bookedCarsPeriods = bookedCarsSerialNumbers.stream()
-                    .flatMap(sn -> carService.getBookedPeriodsByCarId(sn, userID).stream())
+            List<BookedCarDto> bookedCarsPeriods = bookedCars.stream()
+                    .map(bookedCarsEntity -> BookedPeriodMapper.INSTANCE.mapBookedPeriodToBookedCarDto(bookedCarsEntity))
                     .collect(Collectors.toList());
             return Optional.of(bookedCarsPeriods);
         } catch (Throwable t) {
