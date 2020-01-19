@@ -61,12 +61,12 @@ public class FullCarDTOResponse {
     private String about;
     @JsonProperty("pick_up_place")
     PickUpPlaceDto pickUpPlace;
-
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     OwnerDtoResponse owner;
     @JsonProperty("booked_periods")
     List<BookedPeriodDto> bookedPeriodDto;
     @JsonProperty("statistics")
-    private CarStatDto statisticsDto;
+    private CarStatDto statistics;
 
 
 }
