@@ -36,7 +36,7 @@ public interface CarMapperAddCar {
     FullCarEntity map(AddUpdateCarDtoRequest dto);
 
     @Mapping(target = "bookedPeriodDto",source = "bookedPeriods")
-    @Mapping(target = "statisticsDto",source = "statistics")
+    @Mapping(target = "statistics",source = "statistics")
     FullCarDTOResponse map(FullCarEntity entity);
 
 }
