@@ -20,7 +20,11 @@ import org.mapstruct.factory.Mappers;
 import java.util.ArrayList;
 
 
-@Mapper(componentModel = "spring",imports = {BookedPeriodEntity.class, ArrayList.class, CarStatEntity.class, CommentEntity.class},
+@Mapper(componentModel = "spring",imports = {BookedPeriodEntity.class,
+        ArrayList.class,
+        CarStatEntity.class,
+        CommentEntity.class,
+        PickUpPlaceMapper.class},
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_DEFAULT)
 public interface CarMapperAddCar {
 
