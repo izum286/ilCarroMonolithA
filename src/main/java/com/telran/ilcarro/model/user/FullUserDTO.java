@@ -1,6 +1,7 @@
 package com.telran.ilcarro.model.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.telran.ilcarro.model.car.BookedCarDto;
 import com.telran.ilcarro.model.car.BookedPeriodDto;
 import com.telran.ilcarro.model.car.FullCarDTOResponse;
 import com.telran.ilcarro.model.comment.FullCommentDTO;
@@ -36,6 +37,6 @@ public class FullUserDTO {
     private List<FullCommentDTO> comments;
     private String photo;
     private List<FullCarDTOResponse> own_cars;
-    private List<BookedPeriodDto> booked_car;
-    private List<BookedPeriodDto> history;
+    private List<BookedCarDto> booked_car;
+    private List<BookedCarDto> history;
 }

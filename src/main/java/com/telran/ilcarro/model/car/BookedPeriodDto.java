@@ -21,16 +21,16 @@ import java.time.LocalDateTime;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BookedPeriodDto {
-    private String orderId;
+    private String order_id;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
-    private LocalDateTime startDateTime;
+    private LocalDateTime start_date_time;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
-    private LocalDateTime endDateTime;
+    private LocalDateTime end_date_time;
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     private boolean paid;
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     private float amount;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
-    private String bookingDate;
-    PersonWhoBookedDto personWhoBookedDto;
+    private String booking_date;
+    PersonWhoBookedDto person_who_booked;
 }
