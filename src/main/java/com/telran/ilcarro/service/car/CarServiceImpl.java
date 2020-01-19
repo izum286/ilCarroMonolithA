@@ -250,6 +250,7 @@ public class CarServiceImpl implements CarService {
         //TODO save only in carRepository
         //TODO SetTrips value ++
         //TODO CarStatistics ??? To Rodion add to protocol rating
+        //TODO Add Period to booked_cars inside ownerCar entity
         try {
             FullCarEntity carToBookEntity = carRepository.findById(carId).orElseThrow(
                     () -> new NotFoundServiceException(String.format("Car %s not found in carRepo", carId))
@@ -263,6 +264,7 @@ public class CarServiceImpl implements CarService {
                     userWhoBooked.getHistory() == null ? new ArrayList<>() : userWhoBooked.getHistory();
 
             BookedPeriodEntity newPeriod = BookedPeriodMapper.INSTANCE.map(dto);
+            newPeriod.setCarId(carId);
             //TODO check amount logic, PricePErDaySimpl - null
             newPeriod.setAmount(carToBookEntity.getPricePerDay().getValue());
             carListBookedPeriodEntity.add(newPeriod);
