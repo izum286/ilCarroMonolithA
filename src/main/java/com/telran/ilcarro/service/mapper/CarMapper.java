@@ -34,6 +34,14 @@ public interface CarMapper {
     @Mapping(target = "pickUpPlace", source = "pickUpPlace", defaultExpression = "java(new PickUpPlaceDto(\"none\", -1, -1))")
     FullCarDTOResponse map(FullCarEntity entity);
 
+    @Mapping(target = "pricePerDaySimple", source = "pricePerDay.value", defaultValue = "ILS")
+    @Mapping(target = "statistics", source = "statistics", defaultExpression = "java(new CarStatDto(0, 0))")
+    @Mapping(target = "bookedPeriodDto", source = "bookedPeriods",
+            qualifiedByName = "mapForGetCarByIdForUsers",
+            defaultExpression = "java(new ArrayList<BookedPeriodDto>())")
+    @Mapping(target = "pickUpPlace", source = "pickUpPlace", defaultExpression = "java(new PickUpPlaceDto(\"none\", -1, -1))")
+    FullCarDTOResponse mapForGetCarByIdForUsers(FullCarEntity entity);
+
     /**
      * FullCarEntity -> FullCarDTOResponse
      * used for ownerGetCarById - not providing owner in response

@@ -132,17 +132,19 @@ public class CarServiceImpl implements CarService {
     public Optional<FullCarDTOResponse> getCarByIdForUsers(String carId) {
         try {
             List<BookedPeriodDto> shortPeriods = new CopyOnWriteArrayList<>();
-            //TODO EXCEPTION
-            FullCarEntity entity = carRepository.findById(carId).orElseThrow();
-            FullCarDTOResponse toProvide = CarMapper.INSTANCE.map(entity);
-            if (!entity.getBookedPeriods().isEmpty()) {
-                shortPeriods = entity.getBookedPeriods()
-                        .stream().map(bp -> BookedPeriodMapper.INSTANCE.mapForGetCarByIdForUsers(bp))
-                        .collect(Collectors.toList());
-                toProvide.setBookedPeriodDto(shortPeriods);
-                return Optional.of(toProvide);
-            }
-            toProvide.setBookedPeriodDto(shortPeriods);
+            FullCarEntity entity = carRepository.findById(carId).orElseThrow(
+                    () -> new NotFoundServiceException(String.format("Car with id %s not found in carRepository", carId))
+            );
+            FullCarDTOResponse toProvide = CarMapper.INSTANCE.mapForGetCarByIdForUsers(entity);
+
+//            if (!entity.getBookedPeriods().isEmpty()) {
+//                shortPeriods = entity.getBookedPeriods()
+//                        .stream().map(bp -> BookedPeriodMapper.INSTANCE.mapForGetCarByIdForUsers(bp))
+//                        .collect(Collectors.toList());
+//                toProvide.setBookedPeriodDto(shortPeriods);
+//                return Optional.of(toProvide);
+//            }
+//            toProvide.setBookedPeriodDto(shortPeriods);
             return Optional.of(toProvide);
         } catch (RepositoryException ex) {
             throw new NotFoundServiceException(ex.getMessage(), ex.getCause());

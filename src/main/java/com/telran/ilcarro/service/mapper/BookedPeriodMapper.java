@@ -67,6 +67,8 @@ public interface BookedPeriodMapper {
     @Mapping(target = "paid", ignore = true)
     @Mapping(target = "amount", ignore = true)
     @Mapping(target = "booking_date", ignore = true)
+    @Mapping(target = "start_date_time", source = "startDateTime")
+    @Mapping(target = "end_date_time", source = "endDateTime")
     BookedPeriodDto mapForGetCarByIdForUsers(BookedPeriodEntity entity);
 
 
