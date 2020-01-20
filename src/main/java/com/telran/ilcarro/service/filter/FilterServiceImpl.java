@@ -38,7 +38,7 @@ public class FilterServiceImpl implements FilterService {
     /**
      * Method return json string of all filters
      *
-     * @return
+     * @return String
      * @author izum286
      */
     @Override
@@ -61,7 +61,7 @@ public class FilterServiceImpl implements FilterService {
      * in /upload page
      * addFilter->(called by)->addNode->(call) ->dtoToNode()+mergeNodes()
      *
-     * @param filterDTO
+     * @param filterDTO filter
      * @author izum286
      */
     @Override
@@ -113,7 +113,7 @@ public class FilterServiceImpl implements FilterService {
             if(exist.getChilds().stream().
                     anyMatch(n->n.getValue().equals(toMerge.getValue()))){
                 int indx = findNextIndx(exist, toMerge);
-                /**
+                /*
                  * alternative way to find index
                  * AtomicInteger i = new AtomicInteger(); // any mutable integer wrapper
                  * int index = fromList.getChilds().stream()
@@ -133,9 +133,9 @@ public class FilterServiceImpl implements FilterService {
     /**
      * Method to find index of correspondent node in list of childs
      *
-     * @param exist
-     * @param toMerge
-     * @return
+     * @param exist FilterNodeEntity
+     * @param toMerge FilterNodeEntity
+     * @return int
      * @author izum286
      */
     @Override
@@ -156,7 +156,7 @@ public class FilterServiceImpl implements FilterService {
      * mapping method from FilterDto to FilterNode
      * participated in invoke chain internal methods of FilterService
      *
-     * @param toAdd
+     * @param toAdd FilterDTO
      * @return new FilterNode
      * @author izum286
      */
@@ -186,7 +186,7 @@ public class FilterServiceImpl implements FilterService {
      * mapping method from FullCarDto to FilterDto
      * participated in invoke chain of /upload->save page
      *
-     * @param from
+     * @param from AddUpdateCarDtoRequest
      * @return new FilterDto
      * @author izum286
      */
@@ -195,15 +195,15 @@ public class FilterServiceImpl implements FilterService {
         return FilterDTO.builder()
                 .make(from.getMake())
                 .model(from.getModel())
-                .year(Integer.parseInt(from.getYear()))
+                .year(from.getYear())
                 .engine(from.getEngine())
                 .fuel(from.getFuel())
                 .transmission(from.getGear())
                 .wheels_drive(from.getWheelsDrive())
-                .horsepower((double) from.getHorsePower())
-                .torque((double) from.getTorque())
-                .doors(from.getDoors())
-                .seats(from.getSeats())
+                .horsepower(String.valueOf(from.getHorsePower()))
+                .torque(String.valueOf(from.getTorque()))
+                .doors(String.valueOf(from.getDoors()))
+                .seats(String.valueOf(from.getSeats()))
                 .car_class(from.getCarClass())
                 .fuel_consumption(String.valueOf(from.getFuelConsumption()))
                 .build();

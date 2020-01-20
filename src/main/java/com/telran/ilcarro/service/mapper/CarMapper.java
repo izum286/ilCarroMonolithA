@@ -30,6 +30,8 @@ public interface CarMapper {
 
     @Mapping(target = "pricePerDay.currency", source = "pricePerDay.currency", defaultValue = "ILS")
     @Mapping(target = "statistics", source = "statistics", defaultExpression = "java(new CarStatDto(0, 0))")
+    @Mapping(target = "bookedPeriodDto", source = "bookedPeriods", defaultExpression = "java(new ArrayList<BookedPeriodDto>())")
+    @Mapping(target = "pickUpPlace", source = "pickUpPlace", defaultExpression = "java(new PickUpPlaceDto(\"none\", -1, -1))")
     FullCarDTOResponse map(FullCarEntity entity);
 
     /**

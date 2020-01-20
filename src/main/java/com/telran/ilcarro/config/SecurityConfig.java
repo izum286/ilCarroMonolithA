@@ -60,6 +60,7 @@ public class SecurityConfig {
                     .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     .antMatchers(HttpMethod.GET, "/comments").permitAll()
                     .antMatchers(HttpMethod.GET, "/filters").permitAll()
+                    .antMatchers("/car/best").permitAll()
                     .antMatchers("/user/**").authenticated()
                     .antMatchers("/comment/**").authenticated()
                     .antMatchers("/car/**").authenticated()
