@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,6 +31,17 @@ public class FilterControllerImpl implements FilterController {
     @GetMapping("filters")
     @Override
     public String getFilters(){
+        return filterService.provideFilter();
+    }
+
+    /**
+     * deleting all filters from db
+     * use CAREFULLY!!!!!!
+     * @return
+     */
+    @DeleteMapping("filters")
+    public String deleteAll() {
+        filterService.deleteFilters();
         return filterService.provideFilter();
     }
 }

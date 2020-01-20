@@ -150,6 +150,15 @@ public class FilterServiceImpl implements FilterService {
         return count;
     }
 
+    /**
+     * deleting all filters from db
+     * use CAREFULLY!!!!!!
+     * @return
+     */
+    @Override
+    public void deleteFilters() {
+        filterRepository.deleteAll();
+    }
 
 
     /**
@@ -208,5 +217,6 @@ public class FilterServiceImpl implements FilterService {
                 .fuel_consumption(String.valueOf(from.getFuelConsumption()))
                 .build();
     }
+
 
 }
