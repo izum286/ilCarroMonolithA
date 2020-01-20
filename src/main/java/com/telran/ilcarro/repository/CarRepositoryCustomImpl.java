@@ -24,6 +24,7 @@ import java.util.List;
 /**
  * @author izum286
  */
+//
 @Repository
 public class CarRepositoryCustomImpl implements CarRepositoryCustom{
     private final MongoTemplate mongoTemplate;
