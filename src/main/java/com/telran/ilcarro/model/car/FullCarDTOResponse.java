@@ -39,7 +39,7 @@ public class FullCarDTOResponse {
     private String gear;
     @JsonProperty("wheels_drive")
     private String wheelsDrive;
-    @JsonProperty("horse_power")
+    @JsonProperty("horsepower")
     private float horsePower;
     private float torque;
     private int doors;
