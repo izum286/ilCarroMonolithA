@@ -19,7 +19,6 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -83,8 +82,8 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
         if(filter.getFuel()!=null){
             criteria.add(Criteria.where("fuel").is(filter.getFuel()));
         }
-        if(filter.getTransmission()!=null){
-            criteria.add(Criteria.where("gear").is(filter.getTransmission()));
+        if(filter.getGear()!=null){
+            criteria.add(Criteria.where("gear").is(filter.getGear()));
         }
         if(filter.getWheels_drive()!=null){
             criteria.add(Criteria.where("wheelsDrive").is(filter.getWheels_drive()));
@@ -164,8 +163,8 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
         if(filter.getFuel()!=null){
             criteria.add(Criteria.where("fuel").is(filter.getFuel()));
         }
-        if(filter.getTransmission()!=null){
-            criteria.add(Criteria.where("gear").is(filter.getTransmission()));
+        if(filter.getGear()!=null){
+            criteria.add(Criteria.where("gear").is(filter.getGear()));
         }
         if(filter.getWheels_drive()!=null){
             criteria.add(Criteria.where("wheelsDrive").is(filter.getWheels_drive()));

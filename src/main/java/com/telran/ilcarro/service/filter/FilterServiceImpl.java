@@ -198,7 +198,7 @@ public class FilterServiceImpl implements FilterService {
                 .year(from.getYear())
                 .engine(from.getEngine())
                 .fuel(from.getFuel())
-                .transmission(from.getGear())
+                .gear(from.getGear())
                 .wheels_drive(from.getWheelsDrive())
                 .horsepower(String.valueOf(from.getHorsePower()))
                 .torque(String.valueOf(from.getTorque()))

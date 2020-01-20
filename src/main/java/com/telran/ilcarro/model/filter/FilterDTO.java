@@ -20,7 +20,7 @@ public class FilterDTO {
     private String year;
     private String engine;
     private String fuel;
-    private String transmission;
+    private String gear;
     private String wheels_drive;
     private String horsepower;
     private String torque;
