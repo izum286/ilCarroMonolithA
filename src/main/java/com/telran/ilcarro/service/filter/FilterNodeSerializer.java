@@ -59,7 +59,7 @@ public class FilterNodeSerializer extends JsonSerializer<FilterNodeEntity> {
     @Override
     public void serialize(FilterNodeEntity filterNodeEntity, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         jgen.writeStartObject(); //<---start object
-        jgen.writeStringField("key: ", filterNodeEntity.getValue());
+        jgen.writeStringField("key", filterNodeEntity.getValue());
         if(!filterNodeEntity.getChilds().isEmpty()){
             for(FilterNodeEntity node : filterNodeEntity.getChilds()) {
                 jgen.writeArrayFieldStart(node.getType()); //<-- start NewJsonArray

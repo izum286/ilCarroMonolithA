@@ -49,7 +49,7 @@ public class FilterServiceImpl implements FilterService {
                     Version.unknownVersion());
             module.addSerializer(FilterNodeEntity.class, new FilterNodeSerializer());
             mapper.registerModule(module);
-            FilterNodeEntity res = filterRepository.findById("root").orElseGet(()->new FilterNodeEntity("root", "allCars"));
+            FilterNodeEntity res = filterRepository.findById("root").orElseGet(()->new FilterNodeEntity("root", "root"));
             return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(res);
         } catch (Throwable e) {
             throw new ServiceException(e.getMessage(), e.getCause());
@@ -69,7 +69,7 @@ public class FilterServiceImpl implements FilterService {
         try {
             FilterNodeEntity toRawAdd = map(filterDTO);
             if(filterRepository.findById("root").isEmpty()){
-                FilterNodeEntity root = new FilterNodeEntity("root", "allCars");
+                FilterNodeEntity root = new FilterNodeEntity("root", "root");
                 root.getChilds().add(toRawAdd);
                 filterRepository.save(root);
             }else {
