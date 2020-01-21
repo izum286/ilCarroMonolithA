@@ -26,10 +26,8 @@ public class BookedPeriodDto {
     private LocalDateTime start_date_time;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime end_date_time;
-    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-    private boolean paid;
-    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-    private float amount;
+    private Boolean paid;
+    private Float amount;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private String booking_date;
     PersonWhoBookedDto person_who_booked;

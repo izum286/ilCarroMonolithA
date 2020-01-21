@@ -2,11 +2,8 @@ package com.telran.ilcarro.controller;
 
 import com.telran.ilcarro.controller.interfaces.CarController;
 import com.telran.ilcarro.model.car.*;
-import com.telran.ilcarro.model.car.probably_unused.ShortCarDTO;
 import com.telran.ilcarro.service.car.CarService;
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
-import com.telran.ilcarro.service.exceptions.FilterServiceException;
-import com.telran.ilcarro.service.exceptions.ServiceException;
 import com.telran.ilcarro.service.filter.FilterService;
 import com.telran.ilcarro.service.user.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -116,8 +113,6 @@ public class CarControllerImpl implements CarController {
     @Override
     @GetMapping("/car")
     public FullCarDTOResponse getCarByIdForUsers(@RequestParam(name = "serial_number") String carId) {
-        //TODO Exception
-        //Check bookedPeriod to NULL
         return carService.getCarByIdForUsers(carId).orElseThrow();
     }
 

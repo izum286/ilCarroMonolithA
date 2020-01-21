@@ -1,8 +1,8 @@
 package com.telran.ilcarro.model.car;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.telran.ilcarro.model.user.OwnerDtoResponse;
-import com.telran.ilcarro.repository.entity.PricePerDayEntity;
 import io.swagger.annotations.ApiModel;
 import lombok.*;
 

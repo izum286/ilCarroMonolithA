@@ -5,7 +5,6 @@ import com.telran.ilcarro.repository.BookedPeriodsRepository;
 import com.telran.ilcarro.repository.CarRepository;
 import com.telran.ilcarro.repository.UserEntityRepository;
 import com.telran.ilcarro.repository.entity.*;
-import com.telran.ilcarro.repository.exception.RepositoryException;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.mapper.BookedPeriodMapper;
 import com.telran.ilcarro.service.mapper.CarMapper;
@@ -71,7 +70,7 @@ public class CarServiceImpl implements CarService {
         if (!userRepository.findById(userEmail)
                 .orElseThrow(() -> new NotFoundServiceException(String.format("User profile %s not found", userEmail))).getOwnCars()
                 .contains(carToUpdate.getSerialNumber())) {
-            throw new RepositoryException("no such car owned by user");
+            throw new NotFoundServiceException("no such car owned by user");
         }
         FullCarEntity entity = carRepository.findById(carToUpdate.getSerialNumber()).orElseThrow(
                 () -> new NotFoundServiceException(String.format("Car with id %s not found in carRepository", carToUpdate.getSerialNumber()))
@@ -94,7 +93,7 @@ public class CarServiceImpl implements CarService {
                 () -> new NotFoundServiceException(String.format("User profile %s not found", userEmail))
         ).getOwnCars()
                 .contains(carId)) {
-            throw new RepositoryException("no such car owned by user");
+            throw new NotFoundServiceException("no such car owned by user");
         }
 
         FullCarEntity carEntity = carRepository.findById(carId).orElseThrow(
@@ -166,7 +165,7 @@ public class CarServiceImpl implements CarService {
      * status - ready
      * code cleanup by izum286
      *
-     * @return true\false
+     * @return List<BookedPeriodDto>
      */
     @Override
     public List<BookedPeriodDto> getBookedPeriodsByCarId(String carId, String userEmail) {

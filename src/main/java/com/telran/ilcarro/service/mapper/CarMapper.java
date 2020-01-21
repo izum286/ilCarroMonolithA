@@ -1,8 +1,5 @@
 package com.telran.ilcarro.service.mapper;
-/**
- * @author Aleks Gor
- * car mapper for update & get car
- */
+
 
 import com.telran.ilcarro.model.car.AddUpdateCarDtoRequest;
 import com.telran.ilcarro.model.car.CarStatDto;
@@ -13,11 +10,17 @@ import com.telran.ilcarro.repository.entity.FullCarEntity;
 import com.telran.ilcarro.repository.entity.PickUpPlaceEntity;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
+/**
+ * @author Aleks Gor
+ * @author Konkin Anton (refactoring)
+ * car mapper for update & get car
+ */
 
 @Mapper(uses = {CommentMapper.class,
         BookedPeriodMapper.class,
         PricePerDayMapper.class},
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_DEFAULT)
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_DEFAULT
+)
 public interface CarMapper {
 
     CarMapper INSTANCE = Mappers.getMapper(CarMapper.class);
@@ -28,7 +31,6 @@ public interface CarMapper {
     @Mapping(target = "pickUpPlace", source = "pickUpPlaceDto")
     FullCarEntity map(AddUpdateCarDtoRequest dto);
 
-//    @Mapping(target = "pricePerDay.currency", source = "pricePerDay.currency", defaultValue = "ILS")
     @Mapping(target = "pricePerDay", source = "pricePerDay")
     @Mapping(target = "statistics", source = "statistics", defaultExpression = "java(new CarStatDto(0, 0))")
     @Mapping(target = "bookedPeriodDto", source = "bookedPeriods", defaultExpression = "java(new ArrayList<BookedPeriodDto>())")
@@ -39,20 +41,21 @@ public interface CarMapper {
     @Mapping(target = "statistics", source = "statistics", defaultExpression = "java(new CarStatDto(0, 0))")
     @Mapping(target = "bookedPeriodDto", source = "bookedPeriods",
             qualifiedByName = "mapForGetCarByIdForUsers",
-            defaultExpression = "java(new ArrayList<BookedPeriodDto>())")
+            defaultExpression = "java(new ArrayList<BookedPeriodDto>())"
+    )
     @Mapping(target = "pickUpPlace", source = "pickUpPlace", defaultExpression = "java(new PickUpPlaceDto(\"none\", -1, -1))")
+
     FullCarDTOResponse mapForGetCarByIdForUsers(FullCarEntity entity);
 
     /**
      * FullCarEntity -> FullCarDTOResponse
      * used for ownerGetCarById - not providing owner in response
-     * @param entity
-     * @return
+     * @param entity FullCarEntity
+     * @return FullCarDTOResponse
      */
     @Named("mapWithoutOwnerFullBookedPeriods")
     @Mapping(target = "owner", ignore = true)
     @Mapping(target = "bookedPeriodDto", source = "bookedPeriods", qualifiedByName = "BookedPeriodFullMapper")
-//    @Mapping(target = "pricePerDay.currency", source = "pricePerDay.currency", defaultValue = "ILS")
     @Mapping(target = "pricePerDay", source = "pricePerDay")
     @Mapping(target = "pickUpPlace", source = "pickUpPlace", defaultExpression = "java(new PickUpPlaceDto(\"none\", -1, -1))")
     FullCarDTOResponse mapWithoutOwnerFullBookedPeriods(FullCarEntity entity);

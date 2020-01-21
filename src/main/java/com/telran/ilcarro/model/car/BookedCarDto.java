@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @ToString
 @Builder
-/**
+/*
  * Used inside FullUserDto for booked_cars and history
  */
 public class BookedCarDto {

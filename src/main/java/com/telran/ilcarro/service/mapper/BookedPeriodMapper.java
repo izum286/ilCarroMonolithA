@@ -7,19 +7,17 @@ import com.telran.ilcarro.model.car.BookedPeriodDto;
 import com.telran.ilcarro.model.user.PersonWhoBookedDto;
 import com.telran.ilcarro.repository.entity.BookedPeriodEntity;
 import com.telran.ilcarro.repository.entity.PersonWhoBooked;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 /**
- * AleksGor
- * AntonKonkin
+ * @author  AleksGor
+ * @author  Anton Konkin (refactoring)
  * izum286
  */
-@Mapper(uses = CommentMapper.class, imports = {BookedPeriodEntity.class},
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(uses = CommentMapper.class, imports = {BookedPeriodEntity.class}
+        ,nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL
+)
 public interface BookedPeriodMapper {
 
     BookedPeriodMapper INSTANCE = Mappers.getMapper(BookedPeriodMapper.class);
@@ -53,19 +51,14 @@ public interface BookedPeriodMapper {
     @Mapping(target = "person_who_booked", source = "personWhoBooked")
     BookedPeriodDto map(BookedPeriodEntity entity);
 
-
-
-//    @Mapping(target = "personWhoBooked", ignore = true)
-//    BookedPeriodDto mapForUserHistory(BookedPeriodEntity entity);
-
     /**
      * used for Get car by id for users - providing only start & and dates
      */
     @Named("mapForGetCarByIdForUsers")
-    @Mapping(target = "person_who_booked", ignore = true)
-    @Mapping(target = "order_id", ignore = true)
     @Mapping(target = "paid", ignore = true)
     @Mapping(target = "amount", ignore = true)
+    @Mapping(target = "person_who_booked", ignore = true)
+    @Mapping(target = "order_id", ignore = true)
     @Mapping(target = "booking_date", ignore = true)
     @Mapping(target = "start_date_time", source = "startDateTime")
     @Mapping(target = "end_date_time", source = "endDateTime")
