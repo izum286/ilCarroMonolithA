@@ -26,7 +26,7 @@ public interface SearchService {
                               int currentPage);
 
      SearchResponse searchAllSortByPrice (int itemsOnPage, int currentPage, FilterDTO filter, String latt, String longt,  String radius,
-                                                String city, LocalDateTime dateFrom,
+                                                 LocalDateTime dateFrom,
                                           LocalDateTime dateTo, double minPrice, double maxPrice, boolean sort
     );
 }

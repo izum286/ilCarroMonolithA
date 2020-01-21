@@ -121,7 +121,6 @@ public class SearchControllerImpl implements SearchController {
                                                @RequestParam (name = "latitude") String latt,
                                                @RequestParam (name = "longitude")String longt,
                                                @RequestParam (name = "radius")String radius,
-                                               @RequestParam (name = "city")String city,
                                                @RequestParam (name = "start_date")
                                                    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                                            LocalDateTime dateFrom,
@@ -134,7 +133,7 @@ public class SearchControllerImpl implements SearchController {
 
     ){
         return searchService.searchAllSortByPrice(itemsOnPage, currentPage, filter, latt,
-                longt, radius, city, dateFrom, dateTo, minPrice, maxPrice, sort);
+                longt, radius,  dateFrom, dateTo, minPrice, maxPrice, sort);
 
     }
 }

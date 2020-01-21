@@ -108,7 +108,7 @@ public class SearchServiceImpl implements  SearchService{
 
     @Override
     public SearchResponse searchAllSortByPrice(int itemsOnPage, int currentPage, FilterDTO filter,
-                                               String latt, String longt, String radius, String city,
+                                               String latt, String longt, String radius,
                                                LocalDateTime dateFrom, LocalDateTime dateTo,
                                                double minPrice, double maxPrice, boolean sort) {
         try {
@@ -117,7 +117,7 @@ public class SearchServiceImpl implements  SearchService{
             Page<FullCarEntity> cars = new PageImpl<>(new ArrayList<>(), Pageable.unpaged(),0);
             while (cars.getTotalElements()==0 && rad<=rad+1500) {
                 cars = carRepository
-                            .searchAllSortByPrice(itemsOnPage, currentPage, filter, latt, longt, rad.toString(), city, dateFrom, dateTo, minPrice, maxPrice,
+                            .searchAllSortByPrice(itemsOnPage, currentPage, filter, latt, longt, rad.toString(),  dateFrom, dateTo, minPrice, maxPrice,
                                     PageRequest.of(currentPage, itemsOnPage), sort);
                 rad+=500;
             }

@@ -24,7 +24,7 @@ public interface SearchController {
 
 
      SearchResponse searchAllSortByPrice(int itemsOnPage, int currentPage, FilterDTO filter, String latt,
-                                               String longt, String radius, String city, LocalDateTime dateFrom,
+                                               String longt, String radius,  LocalDateTime dateFrom,
                                                LocalDateTime dateTo, double minPrice, double maxPrice,
                                                boolean sort);
 }

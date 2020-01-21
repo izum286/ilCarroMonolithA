@@ -106,7 +106,7 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
 
     @Override
     public Page<FullCarEntity> searchAllSortByPrice(int itemsOnPage, int currentPage, FilterDTO filter,
-                                                    String latt, String longt, String radius, String city,
+                                                    String latt, String longt, String radius,
                                                     LocalDateTime dateFrom, LocalDateTime dateTo,
                                                     double minPrice, double maxPrice, Pageable pageable, boolean sort) {
         Query query = new Query().with(pageable);
@@ -123,9 +123,7 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
             Criteria geoCriteria = Criteria.where("pickUpPlace").withinSphere(circle);
             query.addCriteria(geoCriteria);
         }
-        if(city!=null){
-            criteria.add(Criteria.where("city").is(city));
-        }
+
         criteria.add(Criteria.where("pricePerDaySimple").gte(minPrice));
         criteria.add(Criteria.where("pricePerDaySimple").lte(maxPrice));
         criteria.add(
