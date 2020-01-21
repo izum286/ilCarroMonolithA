@@ -50,12 +50,8 @@ public class FullCarDTOResponse {
     @JsonProperty("car_class")
     private String carClass;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-//    private PricePerDayDto pricePerDay;
-//    @JsonIgnore
     @JsonProperty("price_per_day")
     private Object pricePerDay;
-//    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-//    private float pricePerDaySimple;
     @JsonProperty("image_url")
     List<String> imageUrl;
     @JsonProperty("distance_included")
@@ -69,15 +65,5 @@ public class FullCarDTOResponse {
     List<BookedPeriodDto> bookedPeriodDto;
     @JsonProperty("statistics")
     private CarStatDto statistics;
-
-//    @JsonAnySetter
-//    public void setpricePerDay(Object value) {
-//        if (value instanceof Float) {
-//            pricePerDay = (Float) value;
-//        }
-//        if (value instanceof PricePerDayEntity) {
-//            pricePerDay = new PricePerDayDto(((PricePerDayEntity) value).getCurrency(), ((PricePerDayEntity) value).getValue());
-//        }
-//    }
 
 }
