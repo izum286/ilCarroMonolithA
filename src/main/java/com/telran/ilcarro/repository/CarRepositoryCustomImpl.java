@@ -20,6 +20,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author izum286
@@ -35,14 +36,16 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
     }
 
     @Override
-    public Page<FullCarEntity> cityDatesPriceSortByPrice(String city, LocalDateTime start, LocalDateTime end,
+    public Page<FullCarEntity> cityDatesPriceSortByPrice(String latitude, String longitude, LocalDateTime start, LocalDateTime end,
                                                          double priceFrom, double priceTo, Pageable pageable, boolean sort){
         Query query = new Query().with(pageable);
         List<Criteria> criteria = new ArrayList<>();
+
+
         if(sort){
             query.with(Sort.by(Sort.Direction.ASC, "pricePerDaySimple"));
         }
-        criteria.add(Criteria.where("city").is(city));
+
         criteria.add(Criteria.where("pricePerDaySimple").gte(priceFrom));
         criteria.add(Criteria.where("pricePerDaySimple").lte(priceTo));
 
@@ -55,9 +58,22 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
                         )
         );
 
-        query.addCriteria(new Criteria().andOperator(criteria.toArray(new Criteria[criteria.size()])));
+
         try {
-            List<FullCarEntity> list = mongoTemplate.find(query, FullCarEntity.class);
+            List<FullCarEntity> list = new CopyOnWriteArrayList<>();
+            Double radius = 0.5;
+            while (list.isEmpty() && radius<=2){
+                if(latitude!=null && longitude!=null){
+                    Point point = new Point(Double.parseDouble(latitude), Double.parseDouble(longitude));
+                    Distance distance = new Distance(radius, Metrics.KILOMETERS);
+                    Circle circle = new Circle(point, distance);
+                    Criteria geoCriteria = Criteria.where("pickUpPlace").withinSphere(circle);
+                    query.addCriteria(geoCriteria);
+                }
+                query.addCriteria(new Criteria().andOperator(criteria.toArray(new Criteria[criteria.size()])));
+                list = mongoTemplate.find(query, FullCarEntity.class);
+                radius+=0.5;
+            }
             return PageableExecutionUtils.getPage(list, pageable, () -> mongoTemplate.count(query, FullCarEntity.class));
         } catch (Exception e) {
             throw new RepositoryException("something went wrong in repository");
@@ -106,7 +122,7 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
 
     @Override
     public Page<FullCarEntity> searchAllSortByPrice(int itemsOnPage, int currentPage, FilterDTO filter,
-                                                    String latt, String longt, String radius, String city,
+                                                    String latt, String longt, String radius,
                                                     LocalDateTime dateFrom, LocalDateTime dateTo,
                                                     double minPrice, double maxPrice, Pageable pageable, boolean sort) {
         Query query = new Query().with(pageable);
@@ -123,9 +139,7 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
             Criteria geoCriteria = Criteria.where("pickUpPlace").withinSphere(circle);
             query.addCriteria(geoCriteria);
         }
-        if(city!=null){
-            criteria.add(Criteria.where("city").is(city));
-        }
+
         criteria.add(Criteria.where("pricePerDaySimple").gte(minPrice));
         criteria.add(Criteria.where("pricePerDaySimple").lte(maxPrice));
         criteria.add(
