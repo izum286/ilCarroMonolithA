@@ -6,15 +6,19 @@ import com.telran.ilcarro.model.filter.FilterDTO;
 import com.telran.ilcarro.repository.CarRepository;
 import com.telran.ilcarro.repository.entity.FullCarEntity;
 import com.telran.ilcarro.repository.exception.RepositoryException;
+import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.filter.FilterService;
 import com.telran.ilcarro.service.mapper.CarMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.geo.Circle;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,12 +64,16 @@ public class SearchServiceImpl implements  SearchService{
     public SearchResponse geoAndRadius(String latitude, String longitude, String radius, int itemsOnPage, int currentPage) {
         try {
             SearchResponse res = new SearchResponse();
-            Page<FullCarEntity> cars  = carRepository
+            Double rad = Double.valueOf(radius);
+            Page<FullCarEntity> cars = new PageImpl<>(new ArrayList<>(), Pageable.unpaged(),0);
+            while (cars.getTotalElements()==0 && rad<=rad+1500) {
+                cars = carRepository
                         .findAllByPickUpPlaceWithin(
-                                new Circle(Double.parseDouble(latitude), Double.parseDouble(longitude), Double.parseDouble(radius)),
+                                new Circle(Double.parseDouble(latitude), Double.parseDouble(longitude), rad),
                                 PageRequest.of(currentPage, itemsOnPage));
-
-            if (cars == null) throw new RepositoryException("No such Cars according to search request");
+                rad+=500;
+            }
+            if (cars.getTotalElements() == 0) throw new NotFoundServiceException("No such Cars according to search request");
             List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> CarMapper.INSTANCE.map(e)).collect(Collectors.toList());
             res.setCars(carDTOResponses);
             res.setCurrentPage(currentPage);
@@ -105,11 +113,17 @@ public class SearchServiceImpl implements  SearchService{
                                                double minPrice, double maxPrice, boolean sort) {
         try {
             SearchResponse res = new SearchResponse();
-            Page<FullCarEntity> cars = carRepository
-                        .searchAllSortByPrice(itemsOnPage, currentPage, filter, latt, longt, radius, city, dateFrom, dateTo, minPrice, maxPrice,
-                                PageRequest.of(currentPage, itemsOnPage), sort);
+            Double rad = Double.valueOf(radius);
+            Page<FullCarEntity> cars = new PageImpl<>(new ArrayList<>(), Pageable.unpaged(),0);
+            while (cars.getTotalElements()==0 && rad<=rad+1500) {
+                cars = carRepository
+                            .searchAllSortByPrice(itemsOnPage, currentPage, filter, latt, longt, rad.toString(), city, dateFrom, dateTo, minPrice, maxPrice,
+                                    PageRequest.of(currentPage, itemsOnPage), sort);
+                rad+=500;
+            }
+            if (cars.getTotalElements() == 0)
+                throw new NotFoundServiceException("No such Cars according to search request");
 
-            if (cars == null) throw new RepositoryException("No such Cars according to search request");
             List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> CarMapper.INSTANCE.map(e)).collect(Collectors.toList());
             res.setCars(carDTOResponses);
             res.setCurrentPage(currentPage);
