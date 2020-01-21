@@ -3,6 +3,7 @@ package com.telran.ilcarro.service.user;
 import com.telran.ilcarro.model.user.FullUserDTO;
 import com.telran.ilcarro.model.user.RegUserDTO;
 import com.telran.ilcarro.model.user.UpdUserDTO;
+import com.telran.ilcarro.repository.UserDetailsRepository;
 import com.telran.ilcarro.repository.UserEntityRepository;
 import com.telran.ilcarro.repository.entity.LocationEntity;
 import com.telran.ilcarro.repository.entity.UserEntity;
@@ -24,8 +25,8 @@ import java.util.Optional;
 
 import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -39,12 +40,15 @@ class UserServiceImplTest {
     UserService userService;
     @MockBean
     UserEntityRepository userRepository;
+    @MockBean
+    UserDetailsRepository userDetailsRepository;
 
     private RegUserDTO regUserDTO;
     private UpdUserDTO updUserDTO;
     private FullUserDTO fullUserDTO;
     private FullUserDTO updatedFullUserDTO;
     private UserEntity userEntity;
+    private UserEntity updatedUserEntity;
 
     @Before
     public void init(){
@@ -84,6 +88,29 @@ class UserServiceImplTest {
                 .history(emptyList())
                 .lastName("Pupkin")
                 .photo("https://someurl.com/image.jpeg")
+                .registrationDate(fullUserDTO.getRegistration_date())
+                .driverLicense("5r1325136135")
+                .isDeleted(false)
+                .location(LocationEntity.builder()
+                        .zip(12124)
+                        .street("strit")
+                        .state("staaate")
+                        .lon("4323.564345")
+                        .lat("5345.323423")
+                        .isVehicle(false)
+                        .country("cauntri")
+                        .city("ceeety")
+                        .build())
+                .ownCars(emptyList())
+                .phone("452346236235")
+                .build();
+        updatedUserEntity = UserEntity.builder()
+                .email("vasyapupkin1234@mail.com")
+                .comments(emptyList())
+                .firstName("Sofa")
+                .history(emptyList())
+                .lastName("Beller")
+                .photo("http://someurl.com")
                 .registrationDate(fullUserDTO.getRegistration_date())
                 .driverLicense("5r1325136135")
                 .isDeleted(false)
@@ -170,7 +197,40 @@ class UserServiceImplTest {
     @Test
     void updateUser() {
         init();
+        doReturn(true).when(userDetailsRepository).existsById(anyString());
+        doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
+        doReturn(updatedUserEntity).when(userRepository).save(any());
+        Optional<FullUserDTO> updatedDto = userService.updateUser("vasyapupkin1234@mail.com",updUserDTO);
+        updatedDto.ifPresent(dto -> {
+            assertNotNull(dto.getRegistration_date());
+            assertNotEquals(fullUserDTO.getFirst_name(),dto.getFirst_name());
+            assertNotEquals(fullUserDTO.getSecond_name(),dto.getSecond_name());
+            assertNotEquals(fullUserDTO.getPhoto(),dto.getPhoto());
+        });
+        verify(userRepository,times(4)).findById("vasyapupkin1234@mail.com");
+        verify(userDetailsRepository,times(1)).existsById("vasyapupkin1234@mail.com");
+    }
 
+    @Test
+    void updateUserIfNotExists(){
+        init();
+        doReturn(false).when(userDetailsRepository).existsById(anyString());
+        //срабатывает эксэпшн нот фаунд сервис эксэпшн, но метод не тормозит на нём и идёт далее в сервис эксепшн.
+        assertThrows(NotFoundServiceException.class,()->userService.updateUser("jigurda@mail.com",updUserDTO));
+    }
+
+    @Test
+    void updateUserIfEmailNull(){
+        init();
+        assertThrows(ServiceException.class,()->userService.updateUser(null,updUserDTO));
+    }
+
+    @Test
+    void updateUserIfUpdUserDtoNull(){
+        init();
+        doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
+        doReturn(true).when(userDetailsRepository).existsById("vasyapupkin1234@mail.com");
+        assertDoesNotThrow(()->userService.updateUser("vasyapupkin1234@mail.com",null));
     }
 
     @Test
