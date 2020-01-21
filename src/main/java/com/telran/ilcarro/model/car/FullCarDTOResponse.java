@@ -1,8 +1,8 @@
 package com.telran.ilcarro.model.car;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import com.telran.ilcarro.model.user.OwnerDtoResponse;
+import com.telran.ilcarro.repository.entity.PricePerDayEntity;
 import io.swagger.annotations.ApiModel;
 import lombok.*;
 
@@ -50,10 +50,12 @@ public class FullCarDTOResponse {
     @JsonProperty("car_class")
     private String carClass;
     @JsonInclude(JsonInclude.Include.NON_NULL)
+//    private PricePerDayDto pricePerDay;
+//    @JsonIgnore
     @JsonProperty("price_per_day")
-    private PricePerDayDto pricePerDay;
-    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-    private float pricePerDaySimple;
+    private Object pricePerDay;
+//    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+//    private float pricePerDaySimple;
     @JsonProperty("image_url")
     List<String> imageUrl;
     @JsonProperty("distance_included")
@@ -68,5 +70,14 @@ public class FullCarDTOResponse {
     @JsonProperty("statistics")
     private CarStatDto statistics;
 
+//    @JsonAnySetter
+//    public void setpricePerDay(Object value) {
+//        if (value instanceof Float) {
+//            pricePerDay = (Float) value;
+//        }
+//        if (value instanceof PricePerDayEntity) {
+//            pricePerDay = new PricePerDayDto(((PricePerDayEntity) value).getCurrency(), ((PricePerDayEntity) value).getValue());
+//        }
+//    }
 
 }
