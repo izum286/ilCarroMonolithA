@@ -54,6 +54,7 @@ public interface CarMapper {
     @Mapping(target = "bookedPeriodDto", source = "bookedPeriods", qualifiedByName = "BookedPeriodFullMapper")
 //    @Mapping(target = "pricePerDay.currency", source = "pricePerDay.currency", defaultValue = "ILS")
     @Mapping(target = "pricePerDay", source = "pricePerDay")
+    @Mapping(target = "pickUpPlace", source = "pickUpPlace", defaultExpression = "java(new PickUpPlaceDto(\"none\", -1, -1))")
     FullCarDTOResponse mapWithoutOwnerFullBookedPeriods(FullCarEntity entity);
 
     void updCar(@MappingTarget FullCarEntity carToUpd, FullCarEntity carFromUpd);

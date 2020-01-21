@@ -178,14 +178,12 @@ public class CarServiceImpl implements CarService {
             if (ownerCars == null || ownerCars.isEmpty()) {
                 return Collections.emptyList();
             }
-            List<FullCarEntity> cars = ownerCars.stream()
-                    .map(carId -> carRepository.findById(carId).orElseThrow()).collect(Collectors.toList());
-            return cars.stream()
+            List<FullCarEntity> cars = carRepository.findAllByOwnerEmail(userEmail).stream()
                     .filter(car -> !car.isDeleted())
+                    .collect(Collectors.toList());
+            return cars.stream()
                     .map(CarMapper.INSTANCE::mapWithoutOwnerFullBookedPeriods)
                     .collect(Collectors.toList());
-        } catch (NotFoundRepositoryException ex) {
-            throw new NotFoundServiceException(ex.getMessage(), ex.getCause());
         } catch (Throwable t) {
             throw new ServiceException(t.getMessage(), t.getCause());
         }
