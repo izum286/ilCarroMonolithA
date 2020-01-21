@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public interface SearchController {
 
 
-     SearchResponse cityDatesPriceSortByPrice(String city, LocalDateTime dateFrom, LocalDateTime dateTo, double minPrice, double maxPrice,
+     SearchResponse cityDatesPriceSortByPrice(String latitude, String longitude, LocalDateTime dateFrom, LocalDateTime dateTo, double minPrice, double maxPrice,
                                               boolean sort, int itemsOnPage, int currentPage);
 
 

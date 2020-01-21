@@ -6,7 +6,7 @@ import com.telran.ilcarro.model.filter.FilterDTO;
 import java.time.LocalDateTime;
 
 public interface SearchService {
-     SearchResponse cityDatesPriceSortByPrice(String city,
+     SearchResponse cityDatesPriceSortByPrice(String latitude, String longitude,
                                                     LocalDateTime dateFrom,
                                                     LocalDateTime dateTo,
                                                     double minPrice,

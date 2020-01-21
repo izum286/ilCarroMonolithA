@@ -38,16 +38,16 @@ public class SearchServiceImpl implements  SearchService{
 
 
     @Override
-    public SearchResponse cityDatesPriceSortByPrice(String city, LocalDateTime dateFrom, LocalDateTime dateTo,
+    public SearchResponse cityDatesPriceSortByPrice(String latitude, String longitude, LocalDateTime dateFrom, LocalDateTime dateTo,
                                                     double minPrice, double maxPrice, boolean sort,
                                                     int itemsOnPage, int currentPage) {
         try {
             SearchResponse res = new SearchResponse();
             Page<FullCarEntity>
                 cars = carRepository
-                        .cityDatesPriceSortByPrice(city, dateFrom, dateTo, minPrice, maxPrice,
+                        .cityDatesPriceSortByPrice(latitude, longitude, dateFrom, dateTo, minPrice, maxPrice,
                                 PageRequest.of(currentPage, itemsOnPage), sort);
-            if (cars == null) throw new RepositoryException("No such Cars according to search request");
+            if (cars.getTotalElements() == 0) throw new NotFoundServiceException("No such Cars according to search request");
             List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> CarMapper.INSTANCE.map(e)).collect(Collectors.toList());
             res.setCars(carDTOResponses);
             res.setCurrentPage(currentPage);

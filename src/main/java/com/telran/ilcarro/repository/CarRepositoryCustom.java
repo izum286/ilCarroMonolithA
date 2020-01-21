@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * @author izum286
  */
 public interface CarRepositoryCustom {
-    Page<FullCarEntity> cityDatesPriceSortByPrice (String city, LocalDateTime start, LocalDateTime end,
+    Page<FullCarEntity> cityDatesPriceSortByPrice (String latitude, String longitude, LocalDateTime start, LocalDateTime end,
                                                    double priceFrom, double priceTo, Pageable pageable, boolean sort);
 
     Page<FullCarEntity> byFilter(FilterDTO filter, Pageable pageable);
