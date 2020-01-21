@@ -92,18 +92,6 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
         if(filter.getHorsepower()!=null){
             criteria.add(Criteria.where("horsePower").is(filter.getHorsepower()));
         }
-        if(filter.getTorque()!=null){
-            criteria.add(Criteria.where("torque").is(filter.getTorque()));
-        }
-        if(filter.getDoors()!=null){
-            criteria.add(Criteria.where("doors").is(filter.getDoors()));
-        }
-        if(filter.getSeats()!=null){
-            criteria.add(Criteria.where("seats").is(filter.getSeats()));
-        }
-        if(filter.getCar_class()!=null){
-            criteria.add(Criteria.where("carClass").is(filter.getCar_class()));
-        }
         if(filter.getFuel_consumption()!=null){
             criteria.add(Criteria.where("fuelConsumption").is(filter.getFuel_consumption()));
         }
@@ -172,18 +160,6 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
         }
         if(filter.getHorsepower()!=null){
             criteria.add(Criteria.where("horsePower").is(filter.getHorsepower()));
-        }
-        if(filter.getTorque()!=null){
-            criteria.add(Criteria.where("torque").is(filter.getTorque()));
-        }
-        if(filter.getDoors()!=null){
-            criteria.add(Criteria.where("doors").is(filter.getDoors()));
-        }
-        if(filter.getSeats()!=null){
-            criteria.add(Criteria.where("seats").is(filter.getSeats()));
-        }
-        if(filter.getCar_class()!=null){
-            criteria.add(Criteria.where("carClass").is(filter.getCar_class()));
         }
         if(filter.getFuel_consumption()!=null){
             criteria.add(Criteria.where("fuelConsumption").is(filter.getFuel_consumption()));
