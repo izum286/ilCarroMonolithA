@@ -11,32 +11,23 @@ import com.telran.ilcarro.repository.exception.NotFoundRepositoryException;
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.exceptions.ServiceException;
-import com.telran.ilcarro.service.mapper.UserMapper;
 import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatcher;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.event.annotation.BeforeTestMethod;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.Optional;
 
-import static java.util.Collections.*;
+import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 
@@ -115,11 +106,11 @@ class UserServiceImplTest {
     void addUser() {
         //Annotation @Before not worked. Used method init for initialization of all entities and dtos, because we dont use DB
         init();
-        doReturn(userEntity).when(userRepository).save(ArgumentMatchers.any());
-        doReturn(Optional.of(userEntity)).when(userRepository).findById(ArgumentMatchers.anyString());
+        doReturn(userEntity).when(userRepository).save(any());
+        doReturn(Optional.of(userEntity)).when(userRepository).findById(anyString());
         Optional<FullUserDTO> check = userService.addUser("vasyapupkin1234@mail.com",regUserDTO);
         check.ifPresent(userDTO -> assertNotNull(userDTO.getRegistration_date()));
-        verify(userRepository, times(1)).save(ArgumentMatchers.any(UserEntity.class));
+        verify(userRepository, times(1)).save(any(UserEntity.class));
         verify(userRepository, times(3)).findById("vasyapupkin1234@mail.com");
     }
 
@@ -127,37 +118,37 @@ class UserServiceImplTest {
     void addUserWithNullEmail() {
         init();
         assertThrows(ServiceException.class,()->userService.addUser(null,regUserDTO));
-        verify(userRepository, times(1)).save(ArgumentMatchers.any());
-        verify(userRepository, times(0)).findById(ArgumentMatchers.any());
+        verify(userRepository, times(1)).save(any());
+        verify(userRepository, times(0)).findById(any());
     }
 
     @Test
     void addUserWithNullRegUserDTO() {
         init();
         assertThrows(ServiceException.class,()->userService.addUser("vasyapupkin1234@mail.com",null));
-        verify(userRepository, times(1)).save(ArgumentMatchers.any());
-        verify(userRepository, times(0)).findById(ArgumentMatchers.any());
+        verify(userRepository, times(1)).save(any());
+        verify(userRepository, times(0)).findById(any());
     }
     @Test
     void addUserWithNullAllArgs() {
         init();
         assertThrows(ServiceException.class,()->userService.addUser(null,null));
-        verify(userRepository, times(1)).save(ArgumentMatchers.any());
-        verify(userRepository, times(0)).findById(ArgumentMatchers.any());
+        verify(userRepository, times(1)).save(any());
+        verify(userRepository, times(0)).findById(any());
     }
 
     @Test
     void addUserIfExists(){
         init();
-        doThrow(ConflictRepositoryException.class).when(userRepository).save(ArgumentMatchers.any());
+        doThrow(ConflictRepositoryException.class).when(userRepository).save(any());
         assertThrows(ConflictServiceException.class,()->userService.addUser("vasyapupkin1234@mail.com",regUserDTO));
-        verify(userRepository, times(1)).save(ArgumentMatchers.any());
+        verify(userRepository, times(1)).save(any());
     }
 
     @Test
     void getUser() {
         init();
-        doReturn(Optional.of(userEntity)).when(userRepository).findById(ArgumentMatchers.anyString());
+        doReturn(Optional.of(userEntity)).when(userRepository).findById(anyString());
         Optional<FullUserDTO> check = userService.getUser("vasyapupkin1234@mail.com");
         check.ifPresent((dto)->assertEquals(dto.getRegistration_date(),userEntity.getRegistrationDate()));
         verify(userRepository, times(3)).findById("vasyapupkin1234@mail.com");
@@ -166,12 +157,14 @@ class UserServiceImplTest {
     @Test
     void getUserWithNullEmail(){
         assertThrows(ServiceException.class,()->userService.getUser(null));
+        verify(userRepository,times(1)).findById(null);
     }
 
     @Test
     void getUserIfNotExists(){
-        doThrow(NotFoundRepositoryException.class).when(userRepository).findById(ArgumentMatchers.anyString());
+        doThrow(NotFoundRepositoryException.class).when(userRepository).findById(anyString());
         assertThrows(NotFoundServiceException.class,()->userService.getUser("djigurda@mail.com"));
+        verify(userRepository,times(1)).findById(anyString());
     }
 
     @Test
