@@ -6,9 +6,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author izum286
@@ -26,7 +25,9 @@ public class FilterControllerImpl implements FilterController {
             @ApiResponse(code = 404, message = "There is no filters yet"),
     }
     )
-    @GetMapping("filters")
+
+    @RequestMapping(value = "/filters", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @Override
     public String getFilters(){
         return filterService.provideFilter();
