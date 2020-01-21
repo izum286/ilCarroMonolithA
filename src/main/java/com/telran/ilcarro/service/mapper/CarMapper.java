@@ -28,11 +28,20 @@ public interface CarMapper {
     @Mapping(target = "pickUpPlace", source = "pickUpPlaceDto")
     FullCarEntity map(AddUpdateCarDtoRequest dto);
 
-    @Mapping(target = "pricePerDay.currency", source = "pricePerDay.currency", defaultValue = "ILS")
+//    @Mapping(target = "pricePerDay.currency", source = "pricePerDay.currency", defaultValue = "ILS")
+    @Mapping(target = "pricePerDay", source = "pricePerDay")
     @Mapping(target = "statistics", source = "statistics", defaultExpression = "java(new CarStatDto(0, 0))")
     @Mapping(target = "bookedPeriodDto", source = "bookedPeriods", defaultExpression = "java(new ArrayList<BookedPeriodDto>())")
     @Mapping(target = "pickUpPlace", source = "pickUpPlace", defaultExpression = "java(new PickUpPlaceDto(\"none\", -1, -1))")
     FullCarDTOResponse map(FullCarEntity entity);
+
+    @Mapping(target = "pricePerDay", source = "pricePerDay.value")
+    @Mapping(target = "statistics", source = "statistics", defaultExpression = "java(new CarStatDto(0, 0))")
+    @Mapping(target = "bookedPeriodDto", source = "bookedPeriods",
+            qualifiedByName = "mapForGetCarByIdForUsers",
+            defaultExpression = "java(new ArrayList<BookedPeriodDto>())")
+    @Mapping(target = "pickUpPlace", source = "pickUpPlace", defaultExpression = "java(new PickUpPlaceDto(\"none\", -1, -1))")
+    FullCarDTOResponse mapForGetCarByIdForUsers(FullCarEntity entity);
 
     /**
      * FullCarEntity -> FullCarDTOResponse
@@ -43,7 +52,8 @@ public interface CarMapper {
     @Named("mapWithoutOwnerFullBookedPeriods")
     @Mapping(target = "owner", ignore = true)
     @Mapping(target = "bookedPeriodDto", source = "bookedPeriods", qualifiedByName = "BookedPeriodFullMapper")
-    @Mapping(target = "pricePerDay.currency", source = "pricePerDay.currency", defaultValue = "ILS")
+//    @Mapping(target = "pricePerDay.currency", source = "pricePerDay.currency", defaultValue = "ILS")
+    @Mapping(target = "pricePerDay", source = "pricePerDay")
     FullCarDTOResponse mapWithoutOwnerFullBookedPeriods(FullCarEntity entity);
 
     void updCar(@MappingTarget FullCarEntity carToUpd, FullCarEntity carFromUpd);
