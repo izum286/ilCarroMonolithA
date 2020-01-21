@@ -23,9 +23,5 @@ public class FilterDTO {
     private String gear;
     private String wheels_drive;
     private String horsepower;
-    private String torque;
-    private String doors;
-    private String seats;
-    private String car_class;
     private String fuel_consumption;
 }

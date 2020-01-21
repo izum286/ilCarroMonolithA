@@ -211,10 +211,6 @@ public class FilterServiceImpl implements FilterService {
                 .gear(from.getGear())
                 .wheels_drive(from.getWheelsDrive())
                 .horsepower(String.valueOf(from.getHorsePower()))
-                .torque(String.valueOf(from.getTorque()))
-                .doors(String.valueOf(from.getDoors()))
-                .seats(String.valueOf(from.getSeats()))
-                .car_class(from.getCarClass())
                 .fuel_consumption(String.valueOf(from.getFuelConsumption()))
                 .build();
     }
