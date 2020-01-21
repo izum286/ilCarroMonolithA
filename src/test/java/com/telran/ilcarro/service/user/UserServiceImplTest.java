@@ -7,6 +7,7 @@ import com.telran.ilcarro.repository.UserEntityRepository;
 import com.telran.ilcarro.repository.entity.LocationEntity;
 import com.telran.ilcarro.repository.entity.UserEntity;
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
+import com.telran.ilcarro.service.exceptions.ServiceException;
 import com.telran.ilcarro.service.mapper.UserMapper;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -121,7 +122,24 @@ class UserServiceImplTest {
     @Test
     void addUserWithNullEmail() {
         init();
+        assertThrows(ServiceException.class,()->userService.addUser(null,regUserDTO));
+        Mockito.verify(userRepository,Mockito.times(1)).save(ArgumentMatchers.any());
+        Mockito.verify(userRepository,Mockito.times(0)).findById(ArgumentMatchers.any());
+    }
 
+    @Test
+    void addUserWithNullRegUserDTO() {
+        init();
+        assertThrows(ServiceException.class,()->userService.addUser("vasyapupkin1234@mail.com",null));
+        Mockito.verify(userRepository,Mockito.times(1)).save(ArgumentMatchers.any());
+        Mockito.verify(userRepository,Mockito.times(0)).findById(ArgumentMatchers.any());
+    }
+    @Test
+    void addUserWithNullAllArhs() {
+        init();
+        assertThrows(ServiceException.class,()->userService.addUser(null,null));
+        Mockito.verify(userRepository,Mockito.times(1)).save(ArgumentMatchers.any());
+        Mockito.verify(userRepository,Mockito.times(0)).findById(ArgumentMatchers.any());
     }
 
     @Test
