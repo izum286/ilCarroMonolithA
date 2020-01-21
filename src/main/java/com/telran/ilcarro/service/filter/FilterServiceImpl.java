@@ -50,7 +50,8 @@ public class FilterServiceImpl implements FilterService {
             module.addSerializer(FilterNodeEntity.class, new FilterNodeSerializer());
             mapper.registerModule(module);
             FilterNodeEntity res = filterRepository.findById("root").orElseGet(()->new FilterNodeEntity("root", "root"));
-            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(res);
+            //return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(res);
+            return mapper.writeValueAsString(res);
         } catch (Throwable e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }
