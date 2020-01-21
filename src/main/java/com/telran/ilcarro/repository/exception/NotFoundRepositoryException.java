@@ -1,5 +1,6 @@
 package com.telran.ilcarro.repository.exception;
 
+@Deprecated
 public class NotFoundRepositoryException extends RepositoryException {
 
     public NotFoundRepositoryException(String message) {

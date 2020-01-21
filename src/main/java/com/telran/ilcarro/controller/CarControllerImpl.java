@@ -121,24 +121,6 @@ public class CarControllerImpl implements CarController {
         return carService.getCarByIdForUsers(carId).orElseThrow();
     }
 
-
-    @ApiOperation(value = "Get car by id for users", response = FullCarDTOResponse.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = ""),
-            @ApiResponse(code = 401, message = "Unauthorized. Please login"),
-            @ApiResponse(code = 404, message = "Car with id: {id} not found")
-    }
-    )
-
-    @GetMapping("/users/cars/car")
-    @Override
-    public FullCarDTOResponse getCarByIdForOwner(@RequestParam(name = "serial_number") String carId,
-                                                 Principal principal) {
-        String userEmail = principal.getName();
-        return carService.getCarByIdForOwner(carId, userEmail).orElseThrow();
-    }
-
-
     //**********************************************************************************
 
 
@@ -156,6 +138,26 @@ public class CarControllerImpl implements CarController {
     public List<FullCarDTOResponse> ownerGetCars(Principal principal) {
         String userEmail = principal.getName();
         return carService.ownerGetCars(userEmail);
+    }
+
+
+    //**********************************************************************************
+
+
+    @ApiOperation(value = "Owner get car by id ", response = FullCarDTOResponse.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 401, message = "Unauthorized. Please login"),
+            @ApiResponse(code = 404, message = "Car with id: {id} not found")
+    }
+    )
+
+    @GetMapping("/users/cars/car")
+    @Override
+    public FullCarDTOResponse getCarByIdForOwner(@RequestParam(name = "serial_number") String carId,
+                                                 Principal principal) {
+        String userEmail = principal.getName();
+        return carService.getCarByIdForOwner(carId, userEmail).orElseThrow();
     }
 
 

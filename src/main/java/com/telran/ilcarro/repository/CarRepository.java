@@ -7,7 +7,6 @@ import org.springframework.data.geo.Circle;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author izum286
