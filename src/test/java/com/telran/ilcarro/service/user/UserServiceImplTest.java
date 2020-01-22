@@ -1,11 +1,15 @@
 package com.telran.ilcarro.service.user;
 
+import com.telran.ilcarro.model.car.BookedCarDto;
+import com.telran.ilcarro.model.car.BookedPeriodDto;
 import com.telran.ilcarro.model.user.FullUserDTO;
 import com.telran.ilcarro.model.user.RegUserDTO;
 import com.telran.ilcarro.model.user.UpdUserDTO;
 import com.telran.ilcarro.repository.UserDetailsRepository;
 import com.telran.ilcarro.repository.UserEntityRepository;
+import com.telran.ilcarro.repository.entity.BookedPeriodEntity;
 import com.telran.ilcarro.repository.entity.LocationEntity;
+import com.telran.ilcarro.repository.entity.PersonWhoBooked;
 import com.telran.ilcarro.repository.entity.UserEntity;
 import com.telran.ilcarro.repository.exception.ConflictRepositoryException;
 import com.telran.ilcarro.repository.exception.NotFoundRepositoryException;
@@ -21,6 +25,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static java.util.Collections.emptyList;
@@ -50,9 +56,29 @@ class UserServiceImplTest {
     private UserEntity userEntity;
     private UserEntity updatedUserEntity;
     private UserEntity userEntityDeleted;
+    private BookedPeriodEntity newBookedPeriodEntity;
 
     @Before
-    public void init(){
+    public void init() {
+        List<String> carSerialLiesList = new ArrayList<>();
+        carSerialLiesList.add("32-222-23");
+        List<BookedPeriodEntity> bookedPeriodLieList = new ArrayList<>();
+        bookedPeriodLieList.add(BookedPeriodEntity.builder()
+                .paid(true)
+                .active(true)
+                .amount(23423)
+                .bookingDate(LocalDateTime.now().minusDays(3))
+                .endDateTime(LocalDateTime.now().plusHours(23))
+                .orderId("12345")
+                .personWhoBooked(PersonWhoBooked.builder()
+                        .email("vasyapupkin1234@mail.com")
+                        .first_name("Vasya")
+                        .phone("1234567899")
+                        .second_name("Pupkin")
+                        .build())
+                .startDateTime(LocalDateTime.now().minusDays(2))
+                .carId("32-222-23")
+                .build());
         regUserDTO = RegUserDTO.builder()
                 .firstName("Vasya")
                 .lastName("Pupkin")
@@ -86,7 +112,7 @@ class UserServiceImplTest {
                 .email("vasyapupkin1234@mail.com")
                 .comments(emptyList())
                 .firstName("Vasya")
-                .history(emptyList())
+                .history(null)
                 .lastName("Pupkin")
                 .photo("https://someurl.com/image.jpeg")
                 .registrationDate(fullUserDTO.getRegistration_date())
@@ -102,8 +128,9 @@ class UserServiceImplTest {
                         .country("cauntri")
                         .city("ceeety")
                         .build())
-                .ownCars(emptyList())
+                .ownCars(carSerialLiesList)
                 .phone("452346236235")
+                .bookedCars(bookedPeriodLieList)
                 .build();
         updatedUserEntity = UserEntity.builder()
                 .email("vasyapupkin1234@mail.com")
@@ -151,6 +178,22 @@ class UserServiceImplTest {
                 .ownCars(emptyList())
                 .phone("452346236235")
                 .build();
+        newBookedPeriodEntity = BookedPeriodEntity.builder()
+                .carId("32-333-23")
+                .startDateTime(LocalDateTime.now())
+                .personWhoBooked(PersonWhoBooked.builder()
+                        .email("vasyapupkin1234@mail.com")
+                        .first_name("Vasya")
+                        .phone("1234567899")
+                        .second_name("Pupkin")
+                        .build())
+                .orderId("12346")
+                .endDateTime(LocalDateTime.now().plusHours(23))
+                .bookingDate(LocalDateTime.now().minusDays(1))
+                .amount(1234)
+                .active(true)
+                .paid(false)
+                .build();
     }
 
     @Test
@@ -159,7 +202,7 @@ class UserServiceImplTest {
         init();
         doReturn(userEntity).when(userRepository).save(any());
         doReturn(Optional.of(userEntity)).when(userRepository).findById(anyString());
-        Optional<FullUserDTO> check = userService.addUser("vasyapupkin1234@mail.com",regUserDTO);
+        Optional<FullUserDTO> check = userService.addUser("vasyapupkin1234@mail.com", regUserDTO);
         check.ifPresent(userDTO -> assertNotNull(userDTO.getRegistration_date()));
         verify(userRepository, times(1)).save(any(UserEntity.class));
         verify(userRepository, times(3)).findById("vasyapupkin1234@mail.com");
@@ -168,7 +211,7 @@ class UserServiceImplTest {
     @Test
     void addUserWithNullEmail() {
         init();
-        assertThrows(ServiceException.class,()->userService.addUser(null,regUserDTO));
+        assertThrows(ServiceException.class, () -> userService.addUser(null, regUserDTO));
         verify(userRepository, times(1)).save(any());
         verify(userRepository, times(0)).findById(any());
     }
@@ -176,23 +219,24 @@ class UserServiceImplTest {
     @Test
     void addUserWithNullRegUserDTO() {
         init();
-        assertThrows(ServiceException.class,()->userService.addUser("vasyapupkin1234@mail.com",null));
-        verify(userRepository, times(1)).save(any());
-        verify(userRepository, times(0)).findById(any());
-    }
-    @Test
-    void addUserWithNullAllArgs() {
-        init();
-        assertThrows(ServiceException.class,()->userService.addUser(null,null));
+        assertThrows(ServiceException.class, () -> userService.addUser("vasyapupkin1234@mail.com", null));
         verify(userRepository, times(1)).save(any());
         verify(userRepository, times(0)).findById(any());
     }
 
     @Test
-    void addUserIfExists(){
+    void addUserWithNullAllArgs() {
         init();
-        doThrow(ConflictRepositoryException.class).when(userRepository).save(any());
-        assertThrows(ConflictServiceException.class,()->userService.addUser("vasyapupkin1234@mail.com",regUserDTO));
+        assertThrows(ServiceException.class, () -> userService.addUser(null, null));
+        verify(userRepository, times(1)).save(any());
+        verify(userRepository, times(0)).findById(any());
+    }
+
+    @Test
+    void addUserIfExists() {
+        init();
+        doThrow(ConflictServiceException.class).when(userRepository).save(any());
+        assertThrows(ConflictServiceException.class, () -> userService.addUser("vasyapupkin1234@mail.com", regUserDTO));
         verify(userRepository, times(1)).save(any());
     }
 
@@ -201,21 +245,21 @@ class UserServiceImplTest {
         init();
         doReturn(Optional.of(userEntity)).when(userRepository).findById(anyString());
         Optional<FullUserDTO> check = userService.getUser("vasyapupkin1234@mail.com");
-        check.ifPresent((dto)->assertEquals(dto.getRegistration_date(),userEntity.getRegistrationDate()));
+        check.ifPresent((dto) -> assertEquals(dto.getRegistration_date(), userEntity.getRegistrationDate()));
         verify(userRepository, times(3)).findById("vasyapupkin1234@mail.com");
     }
 
     @Test
-    void getUserWithNullEmail(){
-        assertThrows(ServiceException.class,()->userService.getUser(null));
-        verify(userRepository,times(1)).findById(null);
+    void getUserWithNullEmail() {
+        assertThrows(ServiceException.class, () -> userService.getUser(null));
+        verify(userRepository, times(1)).findById(null);
     }
 
     @Test
-    void getUserIfNotExists(){
-        doThrow(NotFoundRepositoryException.class).when(userRepository).findById(anyString());
-        assertThrows(NotFoundServiceException.class,()->userService.getUser("djigurda@mail.com"));
-        verify(userRepository,times(1)).findById(anyString());
+    void getUserIfNotExists() {
+        doThrow(ServiceException.class).when(userRepository).findById(anyString());
+        assertThrows(ServiceException.class, () -> userService.getUser("djigurda@mail.com"));
+        verify(userRepository, times(1)).findById(anyString());
     }
 
     @Test
@@ -224,40 +268,39 @@ class UserServiceImplTest {
         doReturn(true).when(userDetailsRepository).existsById(anyString());
         doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
         doReturn(updatedUserEntity).when(userRepository).save(any());
-        Optional<FullUserDTO> updatedDto = userService.updateUser("vasyapupkin1234@mail.com",updUserDTO);
+        Optional<FullUserDTO> updatedDto = userService.updateUser("vasyapupkin1234@mail.com", updUserDTO);
         updatedDto.ifPresent(dto -> {
             assertNotNull(dto.getRegistration_date());
-            assertNotEquals(fullUserDTO.getFirst_name(),dto.getFirst_name());
-            assertNotEquals(fullUserDTO.getSecond_name(),dto.getSecond_name());
-            assertNotEquals(fullUserDTO.getPhoto(),dto.getPhoto());
+            assertNotEquals(fullUserDTO.getFirst_name(), dto.getFirst_name());
+            assertNotEquals(fullUserDTO.getSecond_name(), dto.getSecond_name());
+            assertNotEquals(fullUserDTO.getPhoto(), dto.getPhoto());
         });
-        verify(userRepository,times(4)).findById("vasyapupkin1234@mail.com");
-        verify(userDetailsRepository,times(1)).existsById("vasyapupkin1234@mail.com");
+        verify(userRepository, times(4)).findById("vasyapupkin1234@mail.com");
+        verify(userDetailsRepository, times(1)).existsById("vasyapupkin1234@mail.com");
     }
 
     @Test
-    void updateUserIfNotExists(){
+    void updateUserIfNotExists() {
         init();
         doReturn(false).when(userDetailsRepository).existsById(anyString());
-        //срабатывает эксэпшн нот фаунд сервис эксэпшн, но метод не тормозит на нём и идёт далее в сервис эксепшн.
-        assertThrows(NotFoundServiceException.class,()->userService.updateUser("jigurda@mail.com",updUserDTO));
+        assertThrows(ServiceException.class, () -> userService.updateUser("jigurda@mail.com", updUserDTO));
     }
 
     @Test
-    void updateUserIfEmailNull(){
+    void updateUserIfEmailNull() {
         init();
-        assertThrows(ServiceException.class,()->userService.updateUser(null,updUserDTO));
-        verify(userDetailsRepository,times(1)).existsById(any());
+        assertThrows(ServiceException.class, () -> userService.updateUser(null, updUserDTO));
+        verify(userDetailsRepository, times(1)).existsById(any());
     }
 
     @Test
-    void updateUserIfUpdUserDtoNull(){
+    void updateUserIfUpdUserDtoNull() {
         init();
         doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
         doReturn(true).when(userDetailsRepository).existsById("vasyapupkin1234@mail.com");
-        assertDoesNotThrow(()->userService.updateUser("vasyapupkin1234@mail.com",null));
-        verify(userDetailsRepository,times(1)).existsById(anyString());
-        verify(userRepository,times(4)).findById(anyString());
+        assertDoesNotThrow(() -> userService.updateUser("vasyapupkin1234@mail.com", null));
+        verify(userDetailsRepository, times(1)).existsById(anyString());
+        verify(userRepository, times(4)).findById(anyString());
     }
 
     @Test
@@ -265,42 +308,109 @@ class UserServiceImplTest {
         init();
         doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
         doReturn(userEntityDeleted).when(userRepository).save(any());
-        assertTrue(()->userService.deleteUser("vasyapupkin1234@mail.com"));
+        assertTrue(() -> userService.deleteUser("vasyapupkin1234@mail.com"));
         Optional<UserEntity> check = userRepository.findById("vasyapupkin1234@mail.com");
-        check.ifPresent((e)->assertTrue(e.isDeleted()));
-        verify(userRepository,times(2)).findById(anyString());
-        verify(userRepository,times(1)).save(any());
+        check.ifPresent((e) -> assertTrue(e.isDeleted()));
+        verify(userRepository, times(2)).findById(anyString());
+        verify(userRepository, times(1)).save(any());
     }
 
     @Test
-    void deleteUserIfNoExists(){
-        doThrow(NotFoundRepositoryException.class).when(userRepository).findById(anyString());
-        assertThrows(NotFoundServiceException.class,()->userService.deleteUser("jigurda@mail.com"));
-        verify(userRepository,times(1)).findById(anyString());
+    void deleteUserIfNotExists() {
+        doThrow(NotFoundServiceException.class).when(userRepository).findById(anyString());
+        assertThrows(NotFoundServiceException.class, () -> userService.deleteUser("jigurda@mail.com"));
+        verify(userRepository, times(1)).findById(anyString());
     }
 
     @Test
-    void deleteUserIfEmailNull(){
-        assertThrows(ServiceException.class,()->userService.deleteUser(null));
+    void deleteUserIfEmailNull() {
+        assertThrows(ServiceException.class, () -> userService.deleteUser(null));
     }
 
     @Test
     void addUserCar() {
         init();
+        doReturn(Optional.of(userEntity)).when(userRepository).findById(anyString());
+        assertTrue(userService.addUserCar("vasyapupkin1234@mail.com", "23-333-54"));
+        Optional<FullUserDTO> check = userService.getUser("vasyapupkin1234@mail.com");
+        verify(userRepository, times(5)).findById(anyString());
+        verify(userRepository, times(1)).save(any());
     }
 
     @Test
-    void ifUserCarsExist() {
+    void addUserCarIfUserCarExists() {
         init();
+        doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
+        assertThrows(ConflictServiceException.class, () -> userService.addUserCar("vasyapupkin1234@mail.com", "32-222-23"));
+        verify(userRepository, times(1)).findById("vasyapupkin1234@mail.com");
+    }
+
+    @Test
+    void addUserCarIfCarSerialNull() {
+        assertThrows(ServiceException.class, () -> userService.addUserCar("vasyapupkin1234@mail.com", null));
+    }
+
+    @Test
+    void addUserCarIfUserNotExists() {
+        doThrow(NotFoundServiceException.class).when(userRepository).findById("jigurda@mail.com");
+        assertThrows(NotFoundServiceException.class, () -> userService.addUserCar("jigurda@mail.com", "ja-jaj-ja"));
+        verify(userRepository, times(1)).findById("jigurda@mail.com");
+    }
+
+    @Test
+    void ifUserCarsExistMethodOnlyTest() {
+        init();
+        doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
+        assertThrows(ConflictServiceException.class, () -> userService.addUserCar("vasyapupkin1234@mail.com", "32-222-23"));
     }
 
     @Test
     void getUserBookedCarsPeriods() {
         init();
+        doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
+        Optional<List<BookedCarDto>> check = userService.getUserBookedCarsPeriods("vasyapupkin1234@mail.com");
+        check.ifPresent((e) -> assertEquals("32-222-23", e.get(0).getSerial_number()));
+        verify(userRepository, times(1)).findById("vasyapupkin1234@mail.com");
+    }
+
+    @Test
+    void getUserBookedCarsPeriodsIfUserNotExists() {
+        init();
+        doThrow(NotFoundServiceException.class).when(userRepository).findById("jigurda@mail.com");
+        assertThrows(NotFoundServiceException.class, () -> userService.getUserBookedCarsPeriods("jigurda@mail.com"));
+    }
+
+    @Test
+    void getUserBookedCarsPeriodIfEmailNull() {
+        assertThrows(ServiceException.class, () -> userService.getUserBookedCarsPeriods(null));
     }
 
     @Test
     void addBookedPeriodToUserHistory() {
         init();
+        doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
+        assertTrue(userService.addBookedPeriodToUserHistory("vasyapupkin1234@mail.com", newBookedPeriodEntity));
+        List<BookedPeriodEntity> check = userEntity.getHistory();
+        if (check != null){
+            assertEquals("23-222-23", check.get(0).getCarId());
+            assertEquals("23-333-23", check.get(1).getCarId());
+        }
+        verify(userRepository, times(1)).findById("vasyapupkin1234@mail.com");
+        verify(userRepository, times(1)).save(any());
+    }
+
+    @Test
+    void addBookedPeriodToUserHistoryIfEmailNull(){
+       assertThrows(ServiceException.class,()->userService.addBookedPeriodToUserHistory(null,newBookedPeriodEntity));
+    }
+
+    @Test
+    void addBookedPeriodToUserHistoryIfSecondArgNull(){
+        assertThrows(ServiceException.class,()->userService.addBookedPeriodToUserHistory("vasyapupkin1234@mail.com",null));
+    }
+
+    @Test
+    void addBookedPeriodToUserHistoryIfAllArgsNull(){
+        assertThrows(ServiceException.class,()->userService.addBookedPeriodToUserHistory(null,null));
     }
 }
