@@ -1,5 +1,6 @@
 package com.telran.ilcarro.service.user;
 
+import com.telran.ilcarro.model.car.BookedCarDto;
 import com.telran.ilcarro.model.car.BookedPeriodDto;
 import com.telran.ilcarro.model.user.FullUserDTO;
 import com.telran.ilcarro.model.user.RegUserDTO;
@@ -32,7 +33,7 @@ public interface UserService {
      */
     boolean addUserCar(String userID, String carID) throws NotFoundServiceException, ConflictServiceException;
     boolean ifUserCarsExist(String userID, String carID) throws NotFoundServiceException;
-    Optional<List<BookedPeriodDto>> getUserBookedCarsPeriods(String userID) throws NotFoundServiceException;
+    Optional<List<BookedCarDto>> getUserBookedCarsPeriods(String userID) throws NotFoundServiceException;
 
     /**
      * Method add bookedPeriods to user history

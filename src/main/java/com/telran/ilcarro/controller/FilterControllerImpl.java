@@ -1,15 +1,13 @@
 package com.telran.ilcarro.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.telran.ilcarro.controller.interfaces.FilterController;
 import com.telran.ilcarro.service.filter.FilterService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author izum286
@@ -27,9 +25,22 @@ public class FilterControllerImpl implements FilterController {
             @ApiResponse(code = 404, message = "There is no filters yet"),
     }
     )
-    @GetMapping("filters")
+
+    @RequestMapping(value = "/filters", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @Override
     public String getFilters(){
+        return filterService.provideFilter();
+    }
+
+    /**
+     * deleting all filters from db
+     * use CAREFULLY!!!!!!
+     * @return String
+     */
+    @DeleteMapping("filters")
+    public String deleteAll() {
+        filterService.deleteFilters();
         return filterService.provideFilter();
     }
 }

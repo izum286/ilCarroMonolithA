@@ -2,11 +2,8 @@ package com.telran.ilcarro.controller;
 
 import com.telran.ilcarro.controller.interfaces.CarController;
 import com.telran.ilcarro.model.car.*;
-import com.telran.ilcarro.model.car.probably_unused.ShortCarDTO;
 import com.telran.ilcarro.service.car.CarService;
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
-import com.telran.ilcarro.service.exceptions.FilterServiceException;
-import com.telran.ilcarro.service.exceptions.ServiceException;
 import com.telran.ilcarro.service.filter.FilterService;
 import com.telran.ilcarro.service.user.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -116,28 +113,8 @@ public class CarControllerImpl implements CarController {
     @Override
     @GetMapping("/car")
     public FullCarDTOResponse getCarByIdForUsers(@RequestParam(name = "serial_number") String carId) {
-        //TODO Exception
-        //Check bookedPeriod to NULL
         return carService.getCarByIdForUsers(carId).orElseThrow();
     }
-
-
-    @ApiOperation(value = "Get car by id for users", response = FullCarDTOResponse.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = ""),
-            @ApiResponse(code = 401, message = "Unauthorized. Please login"),
-            @ApiResponse(code = 404, message = "Car with id: {id} not found")
-    }
-    )
-
-    @GetMapping("/users/cars/car")
-    @Override
-    public FullCarDTOResponse getCarByIdForOwner(@RequestParam(name = "serial_number") String carId,
-                                                 Principal principal) {
-        String userEmail = principal.getName();
-        return carService.getCarByIdForOwner(carId, userEmail).orElseThrow();
-    }
-
 
     //**********************************************************************************
 
@@ -156,6 +133,26 @@ public class CarControllerImpl implements CarController {
     public List<FullCarDTOResponse> ownerGetCars(Principal principal) {
         String userEmail = principal.getName();
         return carService.ownerGetCars(userEmail);
+    }
+
+
+    //**********************************************************************************
+
+
+    @ApiOperation(value = "Owner get car by id ", response = FullCarDTOResponse.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 401, message = "Unauthorized. Please login"),
+            @ApiResponse(code = 404, message = "Car with id: {id} not found")
+    }
+    )
+
+    @GetMapping("/users/cars/car")
+    @Override
+    public FullCarDTOResponse getCarByIdForOwner(@RequestParam(name = "serial_number") String carId,
+                                                 Principal principal) {
+        String userEmail = principal.getName();
+        return carService.getCarByIdForOwner(carId, userEmail).orElseThrow();
     }
 
 

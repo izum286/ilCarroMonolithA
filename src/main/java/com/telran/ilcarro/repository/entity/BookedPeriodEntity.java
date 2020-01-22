@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 public class BookedPeriodEntity {
     private String orderId;
+    private String carId;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
     private boolean paid;

@@ -39,7 +39,7 @@ public class FullCarDTOResponse {
     private String gear;
     @JsonProperty("wheels_drive")
     private String wheelsDrive;
-    @JsonProperty("horse_power")
+    @JsonProperty("horsepower")
     private float horsePower;
     private float torque;
     private int doors;
@@ -51,9 +51,7 @@ public class FullCarDTOResponse {
     private String carClass;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("price_per_day")
-    private PricePerDayDto pricePerDay;
-    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-    private float pricePerDaySimple;
+    private Object pricePerDay;
     @JsonProperty("image_url")
     List<String> imageUrl;
     @JsonProperty("distance_included")
@@ -61,12 +59,11 @@ public class FullCarDTOResponse {
     private String about;
     @JsonProperty("pick_up_place")
     PickUpPlaceDto pickUpPlace;
-
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     OwnerDtoResponse owner;
     @JsonProperty("booked_periods")
     List<BookedPeriodDto> bookedPeriodDto;
     @JsonProperty("statistics")
-    private CarStatDto statisticsDto;
-
+    private CarStatDto statistics;
 
 }

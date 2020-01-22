@@ -75,7 +75,7 @@ public class UserControllerImpl  implements UserController {
     @PutMapping("user")
     @Override
     public FullUserDTO updateUser(@RequestBody UpdUserDTO updUser,
-                                  @RequestHeader("X-New-Password") String newPassword,
+                                  @RequestHeader(value = "X-New-Password", required = false) String newPassword,
                                   Principal principal
     ) {
         String userEmail = authService.updatePassword(principal.getName(), newPassword);

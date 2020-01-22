@@ -12,7 +12,7 @@ import lombok.*;
 @Builder
 @ToString
 public class OwnerEntity {
-
+    private String email;
     private String firstName;
     private String lastName;
     private String registrationDate;

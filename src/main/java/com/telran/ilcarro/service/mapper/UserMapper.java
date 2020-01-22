@@ -11,8 +11,10 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
 
+import java.util.ArrayList;
+
 @Mapper(uses = {CommentMapper.class, BookedPeriodMapper.class}
-        ,nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_DEFAULT
+        ,nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
 )
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
@@ -35,9 +37,12 @@ public interface UserMapper {
     @Mapping(source = "firstName", target = "first_name")
     @Mapping(source = "lastName", target = "second_name")
     @Mapping(source = "registrationDate", target = "registration_date")
-    @Mapping(target = "own_cars",  expression = "java(new ArrayList<>())")
-    @Mapping(target = "booked_car", expression = "java(new ArrayList<>())")
-    @Mapping(target = "history", expression = "java(new ArrayList<>())")
+//    @Mapping(target = "own_cars",  source = "ownCars")
+    @Mapping(target = "booked_car", source = "bookedCars")
+    @Mapping(target = "history", source = "history")
+//    @Mapping(target = "own_cars",  expression = "java(new ArrayList<>())")
+//    @Mapping(target = "booked_car", expression = "java(new ArrayList<>())")
+//    @Mapping(target = "history", expression = "java(new ArrayList<>())")
     @Mapping(target = "photo", source = "photo", defaultValue = "https://a.d-cd.net/4e0c9b9s-1920.jpg")
     FullUserDTO map(UserEntity userEntity);
 }

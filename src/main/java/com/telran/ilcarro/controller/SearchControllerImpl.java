@@ -39,7 +39,8 @@ public class SearchControllerImpl implements SearchController {
     )
     @GetMapping("/search")
     @Override
-    public SearchResponse cityDatesPriceSortByPrice(@RequestParam(name = "city") String city,
+    public SearchResponse cityDatesPriceSortByPrice(@RequestParam(name = "latitude") String latitude,
+                                                    @RequestParam(name = "longitude") String longitude,
                                                     @RequestParam (name = "start_date")
                                                         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                                                 LocalDateTime dateFrom,
@@ -53,7 +54,7 @@ public class SearchControllerImpl implements SearchController {
                                                     @RequestParam (name = "current_page")int currentPage){
         return searchService
                 .cityDatesPriceSortByPrice
-                        (city, dateFrom, dateTo, minPrice, maxPrice, sort, itemsOnPage, currentPage);
+                        (latitude,  longitude, dateFrom, dateTo, minPrice, maxPrice, sort, itemsOnPage, currentPage);
 
     }
 
@@ -121,7 +122,6 @@ public class SearchControllerImpl implements SearchController {
                                                @RequestParam (name = "latitude") String latt,
                                                @RequestParam (name = "longitude")String longt,
                                                @RequestParam (name = "radius")String radius,
-                                               @RequestParam (name = "city")String city,
                                                @RequestParam (name = "start_date")
                                                    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                                            LocalDateTime dateFrom,
@@ -134,7 +134,7 @@ public class SearchControllerImpl implements SearchController {
 
     ){
         return searchService.searchAllSortByPrice(itemsOnPage, currentPage, filter, latt,
-                longt, radius, city, dateFrom, dateTo, minPrice, maxPrice, sort);
+                longt, radius,  dateFrom, dateTo, minPrice, maxPrice, sort);
 
     }
 }

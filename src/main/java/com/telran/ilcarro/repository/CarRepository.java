@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.geo.Circle;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import java.util.Optional;
+import java.util.List;
 
 /**
  * @author izum286
@@ -14,11 +14,13 @@ import java.util.Optional;
 public interface CarRepository extends MongoRepository<FullCarEntity, String>, CarRepositoryCustom {
     /**
      * @author izum286
-     * @param circle
-     * @param pageable
+     * @param circle circle for search
+     * @param pageable pageable param
      * @return Page<FullCarEntity>
      * status READY
      */
     Page<FullCarEntity> findAllByPickUpPlaceWithin(Circle circle, Pageable pageable);
+
+    List<FullCarEntity> findAllByOwnerEmail(String ownerEmail);
 
 }

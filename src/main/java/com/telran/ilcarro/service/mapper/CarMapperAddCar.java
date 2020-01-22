@@ -20,7 +20,11 @@ import org.mapstruct.factory.Mappers;
 import java.util.ArrayList;
 
 
-@Mapper(componentModel = "spring",imports = {BookedPeriodEntity.class, ArrayList.class, CarStatEntity.class, CommentEntity.class},
+@Mapper(componentModel = "spring",imports = {BookedPeriodEntity.class,
+        ArrayList.class,
+        CarStatEntity.class,
+        CommentEntity.class,
+        PickUpPlaceMapper.class},
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_DEFAULT)
 public interface CarMapperAddCar {
 
@@ -32,7 +36,7 @@ public interface CarMapperAddCar {
     FullCarEntity map(AddUpdateCarDtoRequest dto);
 
     @Mapping(target = "bookedPeriodDto",source = "bookedPeriods")
-    @Mapping(target = "statisticsDto",source = "statistics")
+    @Mapping(target = "statistics",source = "statistics")
     FullCarDTOResponse map(FullCarEntity entity);
 
 }

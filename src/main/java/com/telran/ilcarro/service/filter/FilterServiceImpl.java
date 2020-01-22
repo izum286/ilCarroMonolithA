@@ -38,7 +38,7 @@ public class FilterServiceImpl implements FilterService {
     /**
      * Method return json string of all filters
      *
-     * @return
+     * @return String
      * @author izum286
      */
     @Override
@@ -49,8 +49,9 @@ public class FilterServiceImpl implements FilterService {
                     Version.unknownVersion());
             module.addSerializer(FilterNodeEntity.class, new FilterNodeSerializer());
             mapper.registerModule(module);
-            FilterNodeEntity res = filterRepository.findById("root").orElseGet(()->new FilterNodeEntity("root", "allCars"));
-            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(res);
+            FilterNodeEntity res = filterRepository.findById("root").orElseGet(()->new FilterNodeEntity("root", "root"));
+            //return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(res);
+            return mapper.writeValueAsString(res);
         } catch (Throwable e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }
@@ -61,7 +62,7 @@ public class FilterServiceImpl implements FilterService {
      * in /upload page
      * addFilter->(called by)->addNode->(call) ->dtoToNode()+mergeNodes()
      *
-     * @param filterDTO
+     * @param filterDTO filter
      * @author izum286
      */
     @Override
@@ -69,7 +70,7 @@ public class FilterServiceImpl implements FilterService {
         try {
             FilterNodeEntity toRawAdd = map(filterDTO);
             if(filterRepository.findById("root").isEmpty()){
-                FilterNodeEntity root = new FilterNodeEntity("root", "allCars");
+                FilterNodeEntity root = new FilterNodeEntity("root", "root");
                 root.getChilds().add(toRawAdd);
                 filterRepository.save(root);
             }else {
@@ -113,7 +114,7 @@ public class FilterServiceImpl implements FilterService {
             if(exist.getChilds().stream().
                     anyMatch(n->n.getValue().equals(toMerge.getValue()))){
                 int indx = findNextIndx(exist, toMerge);
-                /**
+                /*
                  * alternative way to find index
                  * AtomicInteger i = new AtomicInteger(); // any mutable integer wrapper
                  * int index = fromList.getChilds().stream()
@@ -133,9 +134,9 @@ public class FilterServiceImpl implements FilterService {
     /**
      * Method to find index of correspondent node in list of childs
      *
-     * @param exist
-     * @param toMerge
-     * @return
+     * @param exist FilterNodeEntity
+     * @param toMerge FilterNodeEntity
+     * @return int
      * @author izum286
      */
     @Override
@@ -150,13 +151,22 @@ public class FilterServiceImpl implements FilterService {
         return count;
     }
 
+    /**
+     * deleting all filters from db
+     * use CAREFULLY!!!!!!
+     * @return
+     */
+    @Override
+    public void deleteFilters() {
+        filterRepository.deleteAll();
+    }
 
 
     /**
      * mapping method from FilterDto to FilterNode
      * participated in invoke chain internal methods of FilterService
      *
-     * @param toAdd
+     * @param toAdd FilterDTO
      * @return new FilterNode
      * @author izum286
      */
@@ -186,7 +196,7 @@ public class FilterServiceImpl implements FilterService {
      * mapping method from FullCarDto to FilterDto
      * participated in invoke chain of /upload->save page
      *
-     * @param from
+     * @param from AddUpdateCarDtoRequest
      * @return new FilterDto
      * @author izum286
      */
@@ -195,18 +205,15 @@ public class FilterServiceImpl implements FilterService {
         return FilterDTO.builder()
                 .make(from.getMake())
                 .model(from.getModel())
-                .year(Integer.parseInt(from.getYear()))
+                .year(from.getYear())
                 .engine(from.getEngine())
                 .fuel(from.getFuel())
-                .transmission(from.getGear())
+                .gear(from.getGear())
                 .wheels_drive(from.getWheelsDrive())
-                .horsepower((double) from.getHorsePower())
-                .torque((double) from.getTorque())
-                .doors(from.getDoors())
-                .seats(from.getSeats())
-                .car_class(from.getCarClass())
+                .horsepower(String.valueOf(from.getHorsePower()))
                 .fuel_consumption(String.valueOf(from.getFuelConsumption()))
                 .build();
     }
+
 
 }

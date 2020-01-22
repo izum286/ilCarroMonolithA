@@ -47,4 +47,7 @@ public interface FilterService {
      * @author izum286
      */
     int findNextIndx(FilterNodeEntity where, FilterNodeEntity from);
+
+
+    void deleteFilters();
 }

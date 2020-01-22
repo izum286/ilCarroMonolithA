@@ -36,6 +36,7 @@ public class UserEntity {
     private List<CommentEntity> comments;
     private List<String> ownCars;
     private List<BookedPeriodEntity> history;
+    private List<BookedPeriodEntity> bookedCars;
 
 }
 
