@@ -1,7 +1,6 @@
 package com.telran.ilcarro.service.user;
 
 import com.telran.ilcarro.model.car.BookedCarDto;
-import com.telran.ilcarro.model.car.BookedPeriodDto;
 import com.telran.ilcarro.model.user.FullUserDTO;
 import com.telran.ilcarro.model.user.RegUserDTO;
 import com.telran.ilcarro.model.user.UpdUserDTO;
@@ -11,8 +10,6 @@ import com.telran.ilcarro.repository.entity.BookedPeriodEntity;
 import com.telran.ilcarro.repository.entity.LocationEntity;
 import com.telran.ilcarro.repository.entity.PersonWhoBooked;
 import com.telran.ilcarro.repository.entity.UserEntity;
-import com.telran.ilcarro.repository.exception.ConflictRepositoryException;
-import com.telran.ilcarro.repository.exception.NotFoundRepositoryException;
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.exceptions.ServiceException;
@@ -59,6 +56,7 @@ class UserServiceImplTest {
     private BookedPeriodEntity newBookedPeriodEntity;
 
     @Before
+    //Annotation @Before not worked. Used method init for initialization of all entities and dtos, because we dont use DB
     public void init() {
         List<String> carSerialLiesList = new ArrayList<>();
         carSerialLiesList.add("32-222-23");
@@ -198,7 +196,6 @@ class UserServiceImplTest {
 
     @Test
     void addUser() {
-        //Annotation @Before not worked. Used method init for initialization of all entities and dtos, because we dont use DB
         init();
         doReturn(userEntity).when(userRepository).save(any());
         doReturn(Optional.of(userEntity)).when(userRepository).findById(anyString());
