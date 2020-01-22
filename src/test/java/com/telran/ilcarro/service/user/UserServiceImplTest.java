@@ -51,7 +51,6 @@ class UserServiceImplTest {
     private FullUserDTO fullUserDTO;
     private FullUserDTO updatedFullUserDTO;
     private UserEntity userEntity;
-    private UserEntity updatedUserEntity;
     private UserEntity userEntityDeleted;
     private BookedPeriodEntity newBookedPeriodEntity;
 
@@ -129,29 +128,6 @@ class UserServiceImplTest {
                 .ownCars(carSerialLiesList)
                 .phone("452346236235")
                 .bookedCars(bookedPeriodLieList)
-                .build();
-        updatedUserEntity = UserEntity.builder()
-                .email("vasyapupkin1234@mail.com")
-                .comments(emptyList())
-                .firstName("Sofa")
-                .history(emptyList())
-                .lastName("Beller")
-                .photo("http://someurl.com")
-                .registrationDate(fullUserDTO.getRegistration_date())
-                .driverLicense("5r1325136135")
-                .isDeleted(false)
-                .location(LocationEntity.builder()
-                        .zip(12124)
-                        .street("strit")
-                        .state("staaate")
-                        .lon("4323.564345")
-                        .lat("5345.323423")
-                        .isVehicle(false)
-                        .country("cauntri")
-                        .city("ceeety")
-                        .build())
-                .ownCars(emptyList())
-                .phone("452346236235")
                 .build();
         userEntityDeleted = UserEntity.builder()
                 .email("vasyapupkin1234@mail.com")
@@ -264,7 +240,7 @@ class UserServiceImplTest {
         init();
         doReturn(true).when(userDetailsRepository).existsById(anyString());
         doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
-        doReturn(updatedUserEntity).when(userRepository).save(any());
+        doReturn(userEntity).when(userRepository).save(any());
         Optional<FullUserDTO> updatedDto = userService.updateUser("vasyapupkin1234@mail.com", updUserDTO);
         updatedDto.ifPresent(dto -> {
             assertNotNull(dto.getRegistration_date());
