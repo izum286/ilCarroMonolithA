@@ -49,6 +49,7 @@ class UserServiceImplTest {
     private FullUserDTO updatedFullUserDTO;
     private UserEntity userEntity;
     private UserEntity updatedUserEntity;
+    private UserEntity userEntityDeleted;
 
     @Before
     public void init(){
@@ -114,6 +115,29 @@ class UserServiceImplTest {
                 .registrationDate(fullUserDTO.getRegistration_date())
                 .driverLicense("5r1325136135")
                 .isDeleted(false)
+                .location(LocationEntity.builder()
+                        .zip(12124)
+                        .street("strit")
+                        .state("staaate")
+                        .lon("4323.564345")
+                        .lat("5345.323423")
+                        .isVehicle(false)
+                        .country("cauntri")
+                        .city("ceeety")
+                        .build())
+                .ownCars(emptyList())
+                .phone("452346236235")
+                .build();
+        userEntityDeleted = UserEntity.builder()
+                .email("vasyapupkin1234@mail.com")
+                .comments(emptyList())
+                .firstName("Vasya")
+                .history(emptyList())
+                .lastName("Pupkin")
+                .photo("https://someurl.com/image.jpeg")
+                .registrationDate(fullUserDTO.getRegistration_date())
+                .driverLicense("5r1325136135")
+                .isDeleted(true)
                 .location(LocationEntity.builder()
                         .zip(12124)
                         .street("strit")
@@ -223,6 +247,7 @@ class UserServiceImplTest {
     void updateUserIfEmailNull(){
         init();
         assertThrows(ServiceException.class,()->userService.updateUser(null,updUserDTO));
+        verify(userDetailsRepository,times(1)).existsById(any());
     }
 
     @Test
@@ -231,12 +256,32 @@ class UserServiceImplTest {
         doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
         doReturn(true).when(userDetailsRepository).existsById("vasyapupkin1234@mail.com");
         assertDoesNotThrow(()->userService.updateUser("vasyapupkin1234@mail.com",null));
+        verify(userDetailsRepository,times(1)).existsById(anyString());
+        verify(userRepository,times(4)).findById(anyString());
     }
 
     @Test
     void deleteUser() {
         init();
+        doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
+        doReturn(userEntityDeleted).when(userRepository).save(any());
+        assertTrue(()->userService.deleteUser("vasyapupkin1234@mail.com"));
+        Optional<UserEntity> check = userRepository.findById("vasyapupkin1234@mail.com");
+        check.ifPresent((e)->assertTrue(e.isDeleted()));
+        verify(userRepository,times(2)).findById(anyString());
+        verify(userRepository,times(1)).save(any());
+    }
 
+    @Test
+    void deleteUserIfNoExists(){
+        doThrow(NotFoundRepositoryException.class).when(userRepository).findById(anyString());
+        assertThrows(NotFoundServiceException.class,()->userService.deleteUser("jigurda@mail.com"));
+        verify(userRepository,times(1)).findById(anyString());
+    }
+
+    @Test
+    void deleteUserIfEmailNull(){
+        assertThrows(ServiceException.class,()->userService.deleteUser(null));
     }
 
     @Test
