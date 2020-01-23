@@ -1,9 +1,6 @@
 package com.telran.ilcarro.service.car;
 
-import com.telran.ilcarro.model.car.BookedPeriodDto;
-import com.telran.ilcarro.model.car.FeatureDto;
-import com.telran.ilcarro.model.car.FullCarDTOResponse;
-import com.telran.ilcarro.model.car.PickUpPlaceDto;
+import com.telran.ilcarro.model.car.*;
 import com.telran.ilcarro.model.user.OwnerDtoResponse;
 import com.telran.ilcarro.model.user.PersonWhoBookedDto;
 import com.telran.ilcarro.repository.BookedPeriodsRepository;
@@ -54,6 +51,7 @@ class CarServiceImplTest {
     private FullCarDTOResponse fullCarDTOResponse;
     private FullCarEntity fullCarEntity;
     private OwnerEntity ownerEntity;
+    private AddUpdateCarDtoRequest addUpdateCarDtoRequest;
 
 
     @Test
@@ -97,7 +95,7 @@ class CarServiceImplTest {
     }
 
     @Before
-    void init(){
+    void init() {
         List<String> carSerialLiesList = new ArrayList<>();
         List<BookedPeriodEntity> bookedPeriodLieList = new ArrayList<>();
         bookedPeriodLieList.add(BookedPeriodEntity.builder()
@@ -143,19 +141,42 @@ class CarServiceImplTest {
 
         List<BookedPeriodDto> bookedPeriodDtos = new ArrayList<>();
         bookedPeriodDtos.add(BookedPeriodDto.builder()
-                        .paid(true)
-                        .amount(31244f)
-                        .booking_date(LocalDateTime.now().minusDays(2).toString())
-                        .end_date_time(LocalDateTime.now().plusHours(23))
-                        .order_id("12345")
-                        .person_who_booked(PersonWhoBookedDto.builder()
-                                .email("vasyapupkin1234@mail.com")
-                                .first_name("Vasya")
-                                .phone("1234567899")
-                                .second_name("Pupkin")
-                                .build())
-                        .start_date_time(LocalDateTime.now().minusDays(2))
-                        .build());
+                .paid(true)
+                .amount(31244f)
+                .booking_date(LocalDateTime.now().minusDays(2).toString())
+                .end_date_time(LocalDateTime.now().plusHours(23))
+                .order_id("12345")
+                .person_who_booked(PersonWhoBookedDto.builder()
+                        .email("vasyapupkin1234@mail.com")
+                        .first_name("Vasya")
+                        .phone("1234567899")
+                        .second_name("Pupkin")
+                        .build())
+                .start_date_time(LocalDateTime.now().minusDays(2))
+                .build());
+
+        addUpdateCarDtoRequest = AddUpdateCarDtoRequest.builder()
+                .about(fullCarDTOResponse.getAbout())
+                .carClass(fullCarDTOResponse.getCarClass())
+                .distanceIncluded(fullCarDTOResponse.getDistanceIncluded())
+                .doors(fullCarDTOResponse.getDoors())
+                .engine(fullCarDTOResponse.getEngine())
+                .features(fullCarDTOResponse.getFeatures())
+                .fuel(fullCarDTOResponse.getFuel())
+                .fuelConsumption(fullCarDTOResponse.getFuelConsumption())
+                .gear(fullCarDTOResponse.getGear())
+                .horsePower(fullCarDTOResponse.getHorsePower())
+                .imageUrl(fullCarDTOResponse.getImageUrl())
+                .make(fullCarDTOResponse.getMake())
+                .model(fullCarDTOResponse.getModel())
+                .pickUpPlaceDto(fullCarDTOResponse.getPickUpPlace())
+                .pricePerDay(fullCarDTOResponse.getDistanceIncluded())
+                .seats(fullCarDTOResponse.getSeats())
+                .serialNumber(fullCarDTOResponse.getSerialNumber())
+                .torque(fullCarDTOResponse.getTorque())
+                .wheelsDrive(fullCarDTOResponse.getWheelsDrive())
+                .year(fullCarDTOResponse.getYear())
+                .build();
 
         fullCarDTOResponse = FullCarDTOResponse.builder()
                 .serialNumber("32-222-23")
