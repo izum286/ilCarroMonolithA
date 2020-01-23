@@ -94,6 +94,17 @@ class CarServiceImplTest {
     }
 
     @Test
+    void addCarIfCarWithSerialAlreadyExists(){
+        init();
+        AddUpdateCarDtoRequest tmp = addUpdateCarDtoRequest;
+        UserEntity userTmp = userEntity;
+        userEntity.setEmail("jigurda@mail.com");
+        doReturn(Optional.of(userTmp)).when(userRepository).findById("jigurda@mail.com");
+        doReturn(Optional.of(fullCarEntity)).when(carRepository).findById(fullCarEntity.getSerialNumber());
+        assertThrows(ServiceException.class,()->carService.addCar(tmp,"jigurda@mail.com"));
+    }
+
+    @Test
     void updateCar() {
     }
 
