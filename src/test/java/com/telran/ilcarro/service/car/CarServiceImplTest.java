@@ -7,9 +7,10 @@ import com.telran.ilcarro.repository.BookedPeriodsRepository;
 import com.telran.ilcarro.repository.CarRepository;
 import com.telran.ilcarro.repository.UserEntityRepository;
 import com.telran.ilcarro.repository.entity.*;
+import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
+import com.telran.ilcarro.service.exceptions.ServiceException;
 import com.telran.ilcarro.service.mapper.BookedPeriodMapper;
 import com.telran.ilcarro.service.mapper.FeatureMapper;
-import com.telran.ilcarro.service.mapper.PickUpPlaceMapper;
 import com.telran.ilcarro.service.user.UserService;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
@@ -22,11 +23,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.util.Collections.emptyList;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -56,6 +60,37 @@ class CarServiceImplTest {
 
     @Test
     void addCar() {
+        init();
+        doReturn(Optional.of(userEntity)).when(userRepository).findById(anyString());
+        doReturn(fullCarEntity).when(carRepository).save(any());
+        carService.addCar(addUpdateCarDtoRequest,"vasyapupkin1234@mail.com");
+        verify(userRepository,times(3)).findById(anyString());
+        verify(carRepository,times(1)).save(any());
+        verify(userRepository,times(1)).save(any());
+    }
+
+    @Test
+    void addCarIfUserNotExists(){
+        init();
+        doThrow(NotFoundServiceException.class).when(userRepository).findById(anyString());
+        assertThrows(NotFoundServiceException.class,()->carService.addCar(addUpdateCarDtoRequest,"jigurda@mail.com"));
+    }
+
+    @Test
+    void addCarIfCarArgIsNull(){
+        assertThrows(ServiceException.class,()->carService.addCar(null,"vasyapupkin1234@gmail.com"));
+    }
+
+    @Test
+    void addCarIfAllArgsNull(){
+        assertThrows(ServiceException.class,()->carService.addCar(null,null));
+    }
+
+    @Test
+    void addCarIfSerialNumberOfCarIsNull(){
+        init();
+        addUpdateCarDtoRequest.setSerialNumber(null);
+        assertThrows(ServiceException.class,()->carService.addCar(addUpdateCarDtoRequest,"vasyapupkin1234@mail.com"));
     }
 
     @Test
@@ -95,7 +130,7 @@ class CarServiceImplTest {
     }
 
     @Before
-    void init() {
+    public void init() {
         List<String> carSerialLiesList = new ArrayList<>();
         List<BookedPeriodEntity> bookedPeriodLieList = new ArrayList<>();
         bookedPeriodLieList.add(BookedPeriodEntity.builder()
@@ -155,29 +190,6 @@ class CarServiceImplTest {
                 .start_date_time(LocalDateTime.now().minusDays(2))
                 .build());
 
-        addUpdateCarDtoRequest = AddUpdateCarDtoRequest.builder()
-                .about(fullCarDTOResponse.getAbout())
-                .carClass(fullCarDTOResponse.getCarClass())
-                .distanceIncluded(fullCarDTOResponse.getDistanceIncluded())
-                .doors(fullCarDTOResponse.getDoors())
-                .engine(fullCarDTOResponse.getEngine())
-                .features(fullCarDTOResponse.getFeatures())
-                .fuel(fullCarDTOResponse.getFuel())
-                .fuelConsumption(fullCarDTOResponse.getFuelConsumption())
-                .gear(fullCarDTOResponse.getGear())
-                .horsePower(fullCarDTOResponse.getHorsePower())
-                .imageUrl(fullCarDTOResponse.getImageUrl())
-                .make(fullCarDTOResponse.getMake())
-                .model(fullCarDTOResponse.getModel())
-                .pickUpPlaceDto(fullCarDTOResponse.getPickUpPlace())
-                .pricePerDay(fullCarDTOResponse.getDistanceIncluded())
-                .seats(fullCarDTOResponse.getSeats())
-                .serialNumber(fullCarDTOResponse.getSerialNumber())
-                .torque(fullCarDTOResponse.getTorque())
-                .wheelsDrive(fullCarDTOResponse.getWheelsDrive())
-                .year(fullCarDTOResponse.getYear())
-                .build();
-
         fullCarDTOResponse = FullCarDTOResponse.builder()
                 .serialNumber("32-222-23")
                 .bookedPeriodDto(bookedPeriodDtos)
@@ -214,6 +226,29 @@ class CarServiceImplTest {
                 .pricePerDay(100)
                 .build();
 
+        addUpdateCarDtoRequest = AddUpdateCarDtoRequest.builder()
+                .about(fullCarDTOResponse.getAbout())
+                .carClass(fullCarDTOResponse.getCarClass())
+                .distanceIncluded(fullCarDTOResponse.getDistanceIncluded())
+                .doors(fullCarDTOResponse.getDoors())
+                .engine(fullCarDTOResponse.getEngine())
+                .features(fullCarDTOResponse.getFeatures())
+                .fuel(fullCarDTOResponse.getFuel())
+                .fuelConsumption(fullCarDTOResponse.getFuelConsumption())
+                .gear(fullCarDTOResponse.getGear())
+                .horsePower(fullCarDTOResponse.getHorsePower())
+                .imageUrl(fullCarDTOResponse.getImageUrl())
+                .make(fullCarDTOResponse.getMake())
+                .model(fullCarDTOResponse.getModel())
+                .pickUpPlaceDto(fullCarDTOResponse.getPickUpPlace())
+                .pricePerDay(fullCarDTOResponse.getDistanceIncluded())
+                .seats(fullCarDTOResponse.getSeats())
+                .serialNumber(fullCarDTOResponse.getSerialNumber())
+                .torque(fullCarDTOResponse.getTorque())
+                .wheelsDrive(fullCarDTOResponse.getWheelsDrive())
+                .year(fullCarDTOResponse.getYear())
+                .build();
+
         List<FeatureEntity> featureEntityList = fullCarDTOResponse.getFeatures()
                 .stream()
                 .map(FeatureMapper.INSTANCE::map)
@@ -223,6 +258,14 @@ class CarServiceImplTest {
                 .stream()
                 .map(BookedPeriodMapper.INSTANCE::map)
                 .collect(Collectors.toList());
+
+        CarStatEntity carStatEntity = CarStatEntity.builder().rating(45.233f).trips(1).build();
+
+        PickUpPlaceEntity pickUpPlaceEntity = PickUpPlaceEntity.builder()
+                .latitude(fullCarDTOResponse.getPickUpPlace().getLatitude())
+                .longitude(fullCarDTOResponse.getPickUpPlace().getLongitude())
+                .place_id(fullCarDTOResponse.getPickUpPlace().getPlace_id())
+                .build();
 
         fullCarEntity = FullCarEntity.builder()
                 .year("2010")
@@ -246,8 +289,8 @@ class CarServiceImplTest {
                 .imageUrl(fullCarDTOResponse.getImageUrl())
                 .make("Mazda")
                 .pricePerDay(PricePerDayEntity.builder().currency("usd").value(100).build())
-                .statistics(CarStatEntity.builder().rating(45.233f).trips(1).build())
-                .pickUpPlace(PickUpPlaceMapper.INSTANCE.map(fullCarDTOResponse.getPickUpPlace()))
+                .statistics(carStatEntity)
+                .pickUpPlace(pickUpPlaceEntity)
                 .isDeleted(false)
                 .owner(ownerEntity)
                 .pricePerDaySimple("100$")
