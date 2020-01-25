@@ -42,10 +42,10 @@ public class SearchControllerImpl implements SearchController {
     public SearchResponse cityDatesPriceSortByPrice(@RequestParam(name = "latitude") String latitude,
                                                     @RequestParam(name = "longitude") String longitude,
                                                     @RequestParam (name = "start_date")
-                                                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                        @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
                                                                 LocalDateTime dateFrom,
                                                     @RequestParam (name = "end_date")
-                                                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                        @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
                                                                 LocalDateTime dateTo,
                                                     @RequestParam (name = "min_amount") double minPrice,
                                                     @RequestParam (name = "max_amount") double maxPrice,
@@ -123,10 +123,10 @@ public class SearchControllerImpl implements SearchController {
                                                @RequestParam (name = "longitude")String longt,
                                                @RequestParam (name = "radius")String radius,
                                                @RequestParam (name = "start_date")
-                                                   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
                                                            LocalDateTime dateFrom,
                                                @RequestParam (name = "end_date")
-                                                   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
                                                            LocalDateTime dateTo,
                                                @RequestParam (name = "min_amount")double minPrice,
                                                @RequestParam (name = "max_amount")double maxPrice,
