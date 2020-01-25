@@ -7,6 +7,7 @@ import com.telran.ilcarro.repository.BookedPeriodsRepository;
 import com.telran.ilcarro.repository.CarRepository;
 import com.telran.ilcarro.repository.UserEntityRepository;
 import com.telran.ilcarro.repository.entity.*;
+import com.telran.ilcarro.service.exceptions.ConflictServiceException;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.exceptions.ServiceException;
 import com.telran.ilcarro.service.mapper.BookedPeriodMapper;
@@ -99,9 +100,12 @@ class CarServiceImplTest {
         AddUpdateCarDtoRequest tmp = addUpdateCarDtoRequest;
         UserEntity userTmp = userEntity;
         userEntity.setEmail("jigurda@mail.com");
-        doReturn(Optional.of(userTmp)).when(userRepository).findById("jigurda@mail.com");
-        doReturn(Optional.of(fullCarEntity)).when(carRepository).findById(fullCarEntity.getSerialNumber());
-        assertThrows(ServiceException.class,()->carService.addCar(tmp,"jigurda@mail.com"));
+        userEntity.setOwnCars(List.of(addUpdateCarDtoRequest.getSerialNumber()));
+        doReturn(Optional.of(userTmp)).when(userRepository).findById(anyString());
+        doReturn(userTmp).when(userRepository).save(any());
+        doReturn(Optional.of(fullCarEntity)).when(carRepository).findById(anyString());
+        doReturn(fullCarEntity).when(carRepository).save(any());
+        assertThrows(ConflictServiceException.class,()->carService.addCar(tmp,"jigurda@mail.com"));
     }
 
     @Test
