@@ -143,7 +143,7 @@ class CarServiceImplTest {
     }
 
     @Test
-    void updateCarIfUserHidingHaveCurrCar(){
+    void updateCarIfUserDoesntHaveCurrCar(){
         init();
         doReturn(Optional.of(userEntity)).when(userRepository).findById(anyString());
         doThrow(NotFoundServiceException.class).when(carRepository).findById(anyString());
@@ -352,10 +352,88 @@ class CarServiceImplTest {
 
     @Test
     void getBookedPeriodsByCarId() {
+        init();
+        userEntity.setOwnCars(List.of("32-222-23"));
+        doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
+        doReturn(Optional.of(fullCarEntity)).when(carRepository).findById("32-222-23");
+        List<BookedPeriodDto> check = carService.getBookedPeriodsByCarId("32-222-23","vasyapupkin1234@mail.com");
+        assertDoesNotThrow(()->assertEquals("vasyapupkin1234@mail.com",check.get(0).getPerson_who_booked().getEmail()));
+    }
+
+    @Test
+    void getBookedPeriodsByCarIdIfUserDoesntHaveCars(){
+        init();
+        doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
+        assertThrows(NotFoundServiceException.class,()->carService.getBookedPeriodsByCarId("32-222-23","vasyapupkin1234@mail.com"));
+    }
+
+    @Test
+    void getBookedPeriodsByCarIdIfCarNotExists(){
+        init();
+        doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
+        doThrow(NotFoundServiceException.class).when(carRepository).findById("13-111-11");
+        assertThrows(NotFoundServiceException.class,()->carService.getBookedPeriodsByCarId("13-111-11","vasyapupkin1234@mail.com"));
+    }
+
+    @Test
+    void getBookedPeriodsByCarIdIfSerialArgIsNull(){
+        init();
+        doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
+        assertThrows(ServiceException.class,()->carService.getBookedPeriodsByCarId(null,"vasyapupkin1234@mail.com"));
+    }
+
+    @Test
+    void getBookedPeriodsByCarIdIfEmailArgIsNull(){
+        init();
+        doReturn(Optional.of(fullCarEntity)).when(carRepository).findById("12-345-67");
+        assertThrows(ServiceException.class,()->carService.getBookedPeriodsByCarId("12-345-67",null));
+    }
+
+    @Test
+    void getBookedPeriodsByCarIdIfAllArgsNull(){
+        assertThrows(ServiceException.class,()->carService.getBookedPeriodsByCarId(null,null));
     }
 
     @Test
     void makeReservation() {
+    }
+
+    @Test
+    void makeReservationIfUsrNotExists() {
+    }
+
+    @Test
+    void makeReservationIfCarNotExists() {
+    }
+
+
+
+    @Test
+    void makeReservationIfSerialArgIsNull() {
+    }
+
+    @Test
+    void makeReservationIfEmailArgIsNull() {
+    }
+
+    @Test
+    void makeReservationIfRequestArgIsNull() {
+    }
+
+    @Test
+    void makeReservationIfAllArgsNull() {
+    }
+
+    @Test
+    void makeReservationIfEmailAndSerialArgsNull() {
+    }
+
+    @Test
+    void makeReservationIfEmailAndRequestArgsNull() {
+    }
+
+    @Test
+    void makeReservationIfSerialAndRequestArgsNull() {
     }
 
     @Test
@@ -494,10 +572,25 @@ class CarServiceImplTest {
                 .map(FeatureMapper.INSTANCE::map)
                 .collect(Collectors.toList());
 
-        List<BookedPeriodEntity> bookedPeriodEntities = fullCarDTOResponse.getBookedPeriodDto()
-                .stream()
-                .map(BookedPeriodMapper.INSTANCE::map)
-                .collect(Collectors.toList());
+        List<BookedPeriodEntity> bookedPeriodEntities = new ArrayList<>();
+
+        bookedPeriodEntities.add(BookedPeriodEntity.builder()
+                .paid(true)
+                .bookingDate(LocalDateTime.now().minusDays(2))
+                .amount(31244f)
+                .endDateTime(LocalDateTime.now().plusHours(23))
+                .orderId("12345")
+                .personWhoBooked(PersonWhoBooked.builder()
+                        .second_name("Pupkin")
+                        .phone("1234567899")
+                        .first_name("Vasya")
+                        .email("vasyapupkin1234@mail.com")
+                        .build())
+                .startDateTime(LocalDateTime.now().minusDays(2))
+                .carId("32-222-23")
+                .active(true)
+                .build());
+
 
         CarStatEntity carStatEntity = CarStatEntity.builder().rating(45.233f).trips(1).build();
 
