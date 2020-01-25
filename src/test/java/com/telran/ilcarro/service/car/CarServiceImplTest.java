@@ -10,7 +10,6 @@ import com.telran.ilcarro.repository.entity.*;
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 import com.telran.ilcarro.service.exceptions.ServiceException;
-import com.telran.ilcarro.service.mapper.BookedPeriodMapper;
 import com.telran.ilcarro.service.mapper.FeatureMapper;
 import com.telran.ilcarro.service.user.UserService;
 import org.junit.Before;
@@ -59,6 +58,7 @@ class CarServiceImplTest {
     private FullCarEntity car3;
     private OwnerEntity ownerEntity;
     private AddUpdateCarDtoRequest addUpdateCarDtoRequest;
+    private BookRequestDTO bookRequestDTO;
 
 
     @Test
@@ -396,52 +396,94 @@ class CarServiceImplTest {
 
     @Test
     void makeReservation() {
+        init();
+        fullCarEntity.setBookedPeriods(null);
+        userEntity.setHistory(null);
+        doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
+        doReturn(Optional.of(fullCarEntity)).when(carRepository).findById("32-222-23");
+        Optional<BookResponseDTO> check = assertDoesNotThrow(()->carService.makeReservation("32-222-23",bookRequestDTO,"vasyapupkin1234@mail.com"));
+        check.ifPresent((e)->{
+            assertNotNull(e.getBooking_date());
+            assertNotNull(e.getOrder_number());
+            assertNotEquals(e.getAmount(),0);
+        });
     }
 
     @Test
-    void makeReservationIfUsrNotExists() {
+    void makeReservationIfUserNotExists() {
+        init();
+        doThrow(NotFoundServiceException.class).when(userRepository).findById(anyString());
+        doReturn(Optional.of(fullCarEntity)).when(carRepository).findById("32-222-23");
+        assertThrows(NotFoundServiceException.class,()->carService.makeReservation(
+                "32-222-23",
+                bookRequestDTO,
+                "vasyapupkin1234@mail.com"));
     }
 
     @Test
     void makeReservationIfCarNotExists() {
+        init();
+        doThrow(NotFoundServiceException.class).when(carRepository).findById(anyString());
+        doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
+        assertThrows(NotFoundServiceException.class,()->carService.makeReservation("32-222-23",bookRequestDTO,"vasyapupkin1234@mail.com"));
     }
-
-
 
     @Test
     void makeReservationIfSerialArgIsNull() {
+        init();
+        doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
+        assertThrows(ServiceException.class,()->carService.makeReservation(null,bookRequestDTO,"vasyapupkin1234@mail.com"));
     }
 
     @Test
     void makeReservationIfEmailArgIsNull() {
+        init();
+        doReturn(Optional.of(fullCarEntity)).when(carRepository).findById("32-222-23");
+        assertThrows(ServiceException.class,()->carService.makeReservation("32-222-23",bookRequestDTO,null));
     }
 
     @Test
     void makeReservationIfRequestArgIsNull() {
+        init();
+        doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
+        doReturn(Optional.of(fullCarEntity)).when(carRepository).findById("32-222-23");
+        assertThrows(ServiceException.class,()->carService.makeReservation("32-222-23",null,"vasyapupkin1234@mail.com"));
     }
 
     @Test
     void makeReservationIfAllArgsNull() {
+        init();
+        assertThrows(ServiceException.class,()->carService.makeReservation(null,null,null));
     }
 
     @Test
     void makeReservationIfEmailAndSerialArgsNull() {
+        init();
+        assertThrows(ServiceException.class,()->carService.makeReservation(null,bookRequestDTO,null));
     }
 
     @Test
     void makeReservationIfEmailAndRequestArgsNull() {
+        init();
+        doReturn(Optional.of(fullCarEntity)).when(carRepository).findById("32-222-23");
+        assertThrows(ServiceException.class,()->carService.makeReservation("32-222-23",null,null));
     }
 
     @Test
     void makeReservationIfSerialAndRequestArgsNull() {
+        init();
+        doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
+        assertThrows(ServiceException.class,()->carService.makeReservation(null,null,"vasyapupkin1234@mail.com"));
     }
 
     @Test
     void getThreeBestCars() {
+
     }
 
     @Test
     void getCarStatById() {
+        //Commented in CarServiceImpl
     }
 
     @Before
@@ -692,6 +734,17 @@ class CarServiceImplTest {
                 .lastName(userEntity.getLastName())
                 .firstName(userEntity.getFirstName())
                 .email(userEntity.getEmail())
+                .build();
+
+        bookRequestDTO = BookRequestDTO.builder()
+                .end_date_time(LocalDateTime.now().plusMonths(1))
+                .person_who_booked(PersonWhoBookedDto.builder()
+                        .email("vasyapupkin1234@mail.com")
+                        .first_name("Vasya")
+                        .phone("1234567899")
+                        .second_name("Pupkin")
+                        .build())
+                .start_date_time(LocalDateTime.now().plusMonths(1).minusDays(3))
                 .build();
     }
 }
