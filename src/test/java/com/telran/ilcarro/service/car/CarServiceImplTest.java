@@ -257,7 +257,47 @@ class CarServiceImplTest {
 
     @Test
     void getCarByIdForOwner() {
+        init();
+        doReturn(Optional.of(fullCarEntity)).when(carRepository).findById("23-222-32");
+        assertDoesNotThrow(()->{
+            Optional<FullCarDTOResponse> check = carService.getCarByIdForOwner("23-222-32","vasyapupkin1234@mail.com");
+            assertTrue(check.isPresent());
+        });
     }
+
+    @Test
+    void getCarByIdForOwnerWithNullSerialArg(){
+        assertThrows(ServiceException.class,()->carService.getCarByIdForOwner(null,"vasyapupkin1234@mail.com"));
+    }
+
+    @Test
+    void getCarByIdForOwnerWithNullEmailArg(){
+        init();
+        doReturn(Optional.of(fullCarEntity)).when(carRepository).findById("23-222-32");
+        assertThrows(ServiceException.class,()->carService.getCarByIdForOwner("23-222-23",null));
+    }
+
+    @Test
+    void getCarByIdForOwnerIfAllArgsNull(){
+        assertThrows(ServiceException.class,()->carService.getCarByIdForOwner(null,null));
+    }
+
+    @Test
+    void getCarByIdForOwnerIfCarWasDeleted(){
+        init();
+        fullCarEntity.setDeleted(true);
+        doReturn(Optional.of(fullCarEntity)).when(carRepository).findById("23-222-32");
+        assertThrows(NotFoundServiceException.class,()->carService.getCarByIdForOwner("23-222-32","vasyapupkin1234@mail.com"));
+    }
+    @Test
+    void getCarByIdForOwnerIfCarNotExists(){
+
+    }
+
+//    @Test
+//    void getCarByIdForOwnerIfUserNotExist(){
+//
+//    }
 
     @Test
     void ownerGetCars() {
