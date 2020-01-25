@@ -16,6 +16,7 @@ import com.telran.ilcarro.service.user.UserService;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.internal.matchers.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -291,12 +292,15 @@ class CarServiceImplTest {
     }
     @Test
     void getCarByIdForOwnerIfCarNotExists(){
-
+        doThrow(NotFoundServiceException.class).when(carRepository).findById(anyString());
+        assertThrows(NotFoundServiceException.class,()->carService.getCarByIdForOwner("11-111-11","jigurda@mail.com"));
     }
 
 //    @Test
 //    void getCarByIdForOwnerIfUserNotExist(){
-//
+//        doThrow(NotFoundServiceException.class).when(userRepository).findById(anyString());
+//        doReturn(Optional.of(fullCarEntity)).when(carRepository).findById("23-222-32");
+//        assertThrows(NotFoundServiceException.class,()->carService.getCarByIdForOwner("23-222-32","jigurda@mail.com"));
 //    }
 
     @Test
