@@ -66,7 +66,7 @@ class CarServiceImplTest {
         init();
         doReturn(Optional.of(userEntity)).when(userRepository).findById(anyString());
         doReturn(fullCarEntity).when(carRepository).save(any());
-        carService.addCar(addUpdateCarDtoRequest,"vasyapupkin1234@mail.com");
+        assertDoesNotThrow(()->carService.addCar(addUpdateCarDtoRequest,"vasyapupkin1234@mail.com"));
         verify(userRepository,times(3)).findById(anyString());
         verify(carRepository,times(1)).save(any());
         verify(userRepository,times(1)).save(any());
@@ -132,7 +132,7 @@ class CarServiceImplTest {
         toTest.setEngine("1.6V");
         toTest.setDoors(8);
         toTest.setHorsePower(10000);
-        Optional<FullCarDTOResponse> check = carService.updateCar(toTest,"vasyapupkin1234@mail.com");
+        Optional<FullCarDTOResponse> check = assertDoesNotThrow(()->carService.updateCar(toTest,"vasyapupkin1234@mail.com"));
         check.ifPresent(carDTOResponse -> {
             assertNotEquals("2L", carDTOResponse.getEngine());
             assertNotEquals("5",carDTOResponse.getDoors());
@@ -201,7 +201,7 @@ class CarServiceImplTest {
         userEntity.setOwnCars(List.of("23-222-32"));
         doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
         doReturn(Optional.of(fullCarEntity)).when(carRepository).findById("23-222-32");
-        assertTrue(carService.deleteCar("23-222-32","vasyapupkin1234@mail.com"));
+        assertTrue(assertDoesNotThrow(()->carService.deleteCar("23-222-32","vasyapupkin1234@mail.com")));
         assertTrue(fullCarEntity.isDeleted());
     }
 
@@ -243,7 +243,7 @@ class CarServiceImplTest {
         init();
         doReturn(Optional.of(fullCarEntity)).when(carRepository).findById("23-222-32");
         assertDoesNotThrow(()->{
-            Optional<FullCarDTOResponse> check = carService.getCarByIdForUsers("23-222-32");
+            Optional<FullCarDTOResponse> check = assertDoesNotThrow(()->carService.getCarByIdForUsers("23-222-32"));
             assertTrue(check.isPresent());
         });
     }
@@ -312,7 +312,7 @@ class CarServiceImplTest {
         userEntity.setOwnCars(List.of("32-222-23","11-111-11","25-555-52"));
         doReturn(Optional.of(userEntity)).when(userRepository).findById(anyString());
         doReturn(List.of(fullCarEntity,car2,car3)).when(carRepository).findAllByOwnerEmail("vasyapupkin1234@mail.com");
-        List<FullCarDTOResponse> check = carService.ownerGetCars("vasyapupkin1234@mail.com");
+        List<FullCarDTOResponse> check = assertDoesNotThrow(()->carService.ownerGetCars("vasyapupkin1234@mail.com"));
         assertEquals("32-222-23",check.get(0).getSerialNumber());
         assertEquals("11-111-11",check.get(1).getSerialNumber());
         assertEquals("25-555-52",check.get(2).getSerialNumber());
@@ -338,7 +338,7 @@ class CarServiceImplTest {
         car2.setDeleted(true);
         doReturn(Optional.of(userEntity)).when(userRepository).findById(anyString());
         doReturn(List.of(fullCarEntity,car2,car3)).when(carRepository).findAllByOwnerEmail("vasyapupkin1234@mail.com");
-        List<FullCarDTOResponse> check = carService.ownerGetCars("vasyapupkin1234@mail.com");
+        List<FullCarDTOResponse> check = assertDoesNotThrow(()->carService.ownerGetCars("vasyapupkin1234@mail.com"));
         assertNotEquals("11-111-11",check.get(0).getSerialNumber());
         assertNotEquals("11-111-11",check.get(1).getSerialNumber());
         assertThrows(IndexOutOfBoundsException.class,()->assertNotEquals("11-111-11",check.get(2).getSerialNumber()));
@@ -348,7 +348,7 @@ class CarServiceImplTest {
     void ownerGetCarsIfUserDontHaveCars() {
         init();
         doReturn(Optional.of(userEntity)).when(userRepository).findById(anyString());
-        List<FullCarDTOResponse> check = carService.ownerGetCars("vasyapupkin1234@mail.com");
+        List<FullCarDTOResponse> check = assertDoesNotThrow(()->carService.ownerGetCars("vasyapupkin1234@mail.com"));
         assertTrue(check.isEmpty());
     }
 
@@ -358,7 +358,7 @@ class CarServiceImplTest {
         userEntity.setOwnCars(List.of("32-222-23"));
         doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
         doReturn(Optional.of(fullCarEntity)).when(carRepository).findById("32-222-23");
-        List<BookedPeriodDto> check = carService.getBookedPeriodsByCarId("32-222-23","vasyapupkin1234@mail.com");
+        List<BookedPeriodDto> check = assertDoesNotThrow(()->carService.getBookedPeriodsByCarId("32-222-23","vasyapupkin1234@mail.com"));
         assertDoesNotThrow(()->assertEquals("vasyapupkin1234@mail.com",check.get(0).getPerson_who_booked().getEmail()));
     }
 

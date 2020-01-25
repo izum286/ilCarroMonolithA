@@ -59,7 +59,7 @@ class UserServiceImplTest {
         init();
         doReturn(userEntity).when(userRepository).save(any());
         doReturn(Optional.of(userEntity)).when(userRepository).findById(anyString());
-        Optional<FullUserDTO> check = userService.addUser("vasyapupkin1234@mail.com", regUserDTO);
+        Optional<FullUserDTO> check = assertDoesNotThrow(()->userService.addUser("vasyapupkin1234@mail.com", regUserDTO));
         check.ifPresent(userDTO -> assertNotNull(userDTO.getRegistration_date()));
     }
 
@@ -92,7 +92,7 @@ class UserServiceImplTest {
     void getUser() {
         init();
         doReturn(Optional.of(userEntity)).when(userRepository).findById(anyString());
-        Optional<FullUserDTO> check = userService.getUser("vasyapupkin1234@mail.com");
+        Optional<FullUserDTO> check = assertDoesNotThrow(()->userService.getUser("vasyapupkin1234@mail.com"));
         check.ifPresent((dto) -> assertEquals(dto.getRegistration_date(), userEntity.getRegistrationDate()));
     }
 
@@ -113,7 +113,7 @@ class UserServiceImplTest {
         doReturn(true).when(userDetailsRepository).existsById(anyString());
         doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
         doReturn(userEntity).when(userRepository).save(any());
-        Optional<FullUserDTO> updatedDto = userService.updateUser("vasyapupkin1234@mail.com", updUserDTO);
+        Optional<FullUserDTO> updatedDto = assertDoesNotThrow(()->userService.updateUser("vasyapupkin1234@mail.com", updUserDTO));
         updatedDto.ifPresent(dto -> {
             assertNotNull(dto.getRegistration_date());
             assertNotEquals(fullUserDTO.getFirst_name(), dto.getFirst_name());
@@ -149,7 +149,7 @@ class UserServiceImplTest {
         doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
         doReturn(userEntityDeleted).when(userRepository).save(any());
         assertTrue(() -> userService.deleteUser("vasyapupkin1234@mail.com"));
-        Optional<UserEntity> check = userRepository.findById("vasyapupkin1234@mail.com");
+        Optional<UserEntity> check = assertDoesNotThrow(()->userRepository.findById("vasyapupkin1234@mail.com"));
         check.ifPresent((e) -> assertTrue(e.isDeleted()));
     }
 
@@ -169,7 +169,7 @@ class UserServiceImplTest {
         init();
         doReturn(Optional.of(userEntity)).when(userRepository).findById(anyString());
         assertTrue(userService.addUserCar("vasyapupkin1234@mail.com", "23-333-54"));
-        Optional<FullUserDTO> check = userService.getUser("vasyapupkin1234@mail.com");
+        Optional<FullUserDTO> check = assertDoesNotThrow(()->userService.getUser("vasyapupkin1234@mail.com"));
     }
 
     @Test
@@ -201,7 +201,7 @@ class UserServiceImplTest {
     void getUserBookedCarsPeriods() {
         init();
         doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
-        Optional<List<BookedCarDto>> check = userService.getUserBookedCarsPeriods("vasyapupkin1234@mail.com");
+        Optional<List<BookedCarDto>> check = assertDoesNotThrow(()->userService.getUserBookedCarsPeriods("vasyapupkin1234@mail.com"));
         check.ifPresent((e) -> assertEquals("32-222-23", e.get(0).getSerial_number()));
     }
 
@@ -221,7 +221,7 @@ class UserServiceImplTest {
     void addBookedPeriodToUserHistory() {
         init();
         doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
-        assertTrue(userService.addBookedPeriodToUserHistory("vasyapupkin1234@mail.com", newBookedPeriodEntity));
+        assertDoesNotThrow(()->assertTrue(userService.addBookedPeriodToUserHistory("vasyapupkin1234@mail.com", newBookedPeriodEntity)));
         List<BookedPeriodEntity> check = userEntity.getHistory();
         if (check != null){
             assertEquals("23-222-23", check.get(0).getCarId());
