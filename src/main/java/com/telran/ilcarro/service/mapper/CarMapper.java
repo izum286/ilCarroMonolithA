@@ -29,12 +29,13 @@ public interface CarMapper {
     @Mapping(target = "pricePerDay.value", source = "pricePerDay")
     @Mapping(target = "pricePerDay.currency", constant = "ILS")
     @Mapping(target = "pickUpPlace", expression = "java(new double[]{dto.getPickUpPlaceDto().getLatitude(), dto.getPickUpPlaceDto().getLongitude()} )")
+    @Mapping(target = "placeId", expression = "java(dto.getPickUpPlaceDto().getPlace_id())")
     FullCarEntity map(AddUpdateCarDtoRequest dto);
 
     @Mapping(target = "pricePerDay", source = "pricePerDay")
     @Mapping(target = "statistics", source = "statistics", defaultExpression = "java(new CarStatDto(0, 0))")
     @Mapping(target = "bookedPeriodDto", source = "bookedPeriods", defaultExpression = "java(new ArrayList<BookedPeriodDto>())")
-    @Mapping(target = "pickUpPlace",expression = "java(new PickUpPlaceDto(\"none\", entity.getPickUpPlace()[0], entity.getPickUpPlace()[1]))")
+    @Mapping(target = "pickUpPlace",expression = "java(new PickUpPlaceDto(entity.getPlaceId(), entity.getPickUpPlace()[0], entity.getPickUpPlace()[1]))")
     FullCarDTOResponse map(FullCarEntity entity);
 
     @Mapping(target = "pricePerDay", source = "pricePerDay.value")
@@ -43,8 +44,7 @@ public interface CarMapper {
             qualifiedByName = "mapForGetCarByIdForUsers",
             defaultExpression = "java(new ArrayList<BookedPeriodDto>())"
     )
-    @Mapping(target = "pickUpPlace",expression = "java(new PickUpPlaceDto(\"none\", entity.getPickUpPlace()[0], entity.getPickUpPlace()[1]))")
-
+    @Mapping(target = "pickUpPlace",expression = "java(new PickUpPlaceDto(entity.getPlaceId(), entity.getPickUpPlace()[0], entity.getPickUpPlace()[1]))")
     FullCarDTOResponse mapForGetCarByIdForUsers(FullCarEntity entity);
 
     /**
@@ -57,7 +57,7 @@ public interface CarMapper {
     @Mapping(target = "owner", ignore = true)
     @Mapping(target = "bookedPeriodDto", source = "bookedPeriods", qualifiedByName = "BookedPeriodFullMapper")
     @Mapping(target = "pricePerDay", source = "pricePerDay")
-    @Mapping(target = "pickUpPlace",expression = "java(new PickUpPlaceDto(\"none\", entity.getPickUpPlace()[0], entity.getPickUpPlace()[1]))")
+    @Mapping(target = "pickUpPlace",expression = "java(new PickUpPlaceDto(entity.getPlaceId(), entity.getPickUpPlace()[0], entity.getPickUpPlace()[1]))")
     FullCarDTOResponse mapWithoutOwnerFullBookedPeriods(FullCarEntity entity);
 
     void updCar(@MappingTarget FullCarEntity carToUpd, FullCarEntity carFromUpd);

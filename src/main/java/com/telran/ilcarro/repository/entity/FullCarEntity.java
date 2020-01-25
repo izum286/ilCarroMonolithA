@@ -33,6 +33,7 @@ public class FullCarEntity {
     private int distanceIncluded;
     private String about;
     private double[] pickUpPlace;
+    private String placeId;
     private List<String> imageUrl;
     private boolean isDeleted; //TODO check logic
     private String pricePerDaySimple;

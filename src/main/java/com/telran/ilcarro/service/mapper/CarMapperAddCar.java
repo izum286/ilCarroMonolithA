@@ -35,11 +35,12 @@ public interface CarMapperAddCar {
     @Mapping(target = "pricePerDay.value", source = "pricePerDay")
     @Mapping(target = "pricePerDay.currency", constant = "ILS")
     @Mapping(target = "pickUpPlace", expression = "java(new double[]{dto.getPickUpPlaceDto().getLatitude(), dto.getPickUpPlaceDto().getLongitude()} )")
+    @Mapping(target = "placeId", expression = "java(dto.getPickUpPlaceDto().getPlace_id())")
     FullCarEntity map(AddUpdateCarDtoRequest dto);
 
     @Mapping(target = "bookedPeriodDto",source = "bookedPeriods")
     @Mapping(target = "statistics",source = "statistics")
-    @Mapping(target = "pickUpPlace",expression = "java(new PickUpPlaceDto(\"none\", entity.getPickUpPlace()[0], entity.getPickUpPlace()[1]))")
+    @Mapping(target = "pickUpPlace",expression = "java(new PickUpPlaceDto(entity.getPlaceId(), entity.getPickUpPlace()[0], entity.getPickUpPlace()[1]))")
     FullCarDTOResponse map(FullCarEntity entity);
 
 }
