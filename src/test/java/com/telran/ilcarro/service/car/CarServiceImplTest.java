@@ -175,7 +175,7 @@ class CarServiceImplTest {
     }
 
     @Test
-    void updateCarWithCarSerialIsNull(){
+    void updateCarWithCarSerialNumberIsNull(){
         init();
         userEntity.setOwnCars(List.of("11-111-11"));
         doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
@@ -185,7 +185,53 @@ class CarServiceImplTest {
     }
 
     @Test
+    void updateCarIfCarNotExists(){
+        init();
+        doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
+        doThrow(NotFoundServiceException.class).when(carRepository).findById(anyString());
+        assertThrows(NotFoundServiceException.class,()->carService.updateCar(addUpdateCarDtoRequest,"vasyapupkin1234@mail.com"));
+    }
+
+    @Test
     void deleteCar() {
+        init();
+        userEntity.setOwnCars(List.of("23-222-32"));
+        doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
+        doReturn(Optional.of(fullCarEntity)).when(carRepository).findById("23-222-32");
+        assertTrue(carService.deleteCar("23-222-32","vasyapupkin1234@mail.com"));
+        assertTrue(fullCarEntity.isDeleted());
+    }
+
+    @Test
+    void deleteCarAlreadyDeletedCar(){
+        init();
+        fullCarEntity.setDeleted(true);
+        userEntity.setOwnCars(List.of("23-222-32"));
+        doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
+        doReturn(Optional.of(fullCarEntity)).when(carRepository).findById("23-222-32");
+        assertFalse(carService.deleteCar("23-222-32","vasyapupkin1234@mail.com"));
+    }
+
+    @Test
+    void deleteCarIfSerialArgIsNull(){
+        init();
+        doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
+        assertThrows(ServiceException.class,()->carService.deleteCar(null,"vasyapupkin1234@mail.com"));
+    }
+
+    @Test
+    void deleteCarIfEmailArgIsNull(){
+        init();
+        doReturn(Optional.of(fullCarEntity)).when(carRepository).findById("23-222-32");
+        assertThrows(ServiceException.class,()->carService.deleteCar("23-222-32",null));
+    }
+
+    @Test
+    void deleteCarIfUserNotExists(){
+        init();
+        doThrow(NotFoundServiceException.class).when(userRepository).findById(anyString());
+        doReturn(Optional.of(fullCarEntity)).when(carRepository).findById("23-222-32");
+        assertThrows(NotFoundServiceException.class,()->carService.deleteCar("23-222-32","jigurda@mail.com"));
     }
 
     @Test
