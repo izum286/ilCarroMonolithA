@@ -110,6 +110,7 @@ class CarServiceImplTest {
         assertThrows(ConflictServiceException.class,()->carService.addCar(tmp,"jigurda@mail.com"));
     }
 
+    //TODO Check if we need this test
     @Test
     void addCarIfCarHaveOnlyNullFieldsWithSerialNumber(){
         init();
@@ -204,6 +205,7 @@ class CarServiceImplTest {
         assertTrue(fullCarEntity.isDeleted());
     }
 
+    //TODO Check if need to be false response
     @Test
     void deleteCarAlreadyDeletedCar(){
         init();
@@ -478,12 +480,22 @@ class CarServiceImplTest {
 
     @Test
     void getThreeBestCars() {
+        init();
+        doReturn(List.of(fullCarEntity,car2,car3)).when(carRepository).findAll();
+        List<FullCarDTOResponse> check = assertDoesNotThrow(()->carService.getThreeBestCars());
+        assertNotNull(check.get(0));
+        assertNotNull(check.get(1));
+        assertNotNull(check.get(2));
+        assertThrows(IndexOutOfBoundsException.class,()->assertNotNull(check.get(3)));
+    }
 
+    @Test
+    void getThreeBestCarsIfDBNotHaveCars(){
+        carService.getThreeBestCars();
     }
 
     @Test
     void getCarStatById() {
-        //Commented in CarServiceImpl
     }
 
     @Before
