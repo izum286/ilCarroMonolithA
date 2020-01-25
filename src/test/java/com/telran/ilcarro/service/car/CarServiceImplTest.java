@@ -28,7 +28,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -109,7 +109,79 @@ class CarServiceImplTest {
     }
 
     @Test
+    void addCarIfCarHaveOnlyNullFieldsWithSerialNumber(){
+        init();
+        UserEntity userTmp = userEntity;
+        userEntity.setEmail("jigurda@mail.com");
+        AddUpdateCarDtoRequest tmp = new AddUpdateCarDtoRequest();
+        tmp.setSerialNumber("11-111-11");
+        doReturn(Optional.of(userTmp)).when(userRepository).findById(anyString());
+        assertThrows(ServiceException.class,()->carService.addCar(tmp,"jigurda@mail.com"));
+    }
+
+    @Test
     void updateCar() {
+        init();
+        userEntity.setOwnCars(List.of(fullCarEntity.getSerialNumber()));
+        doReturn(Optional.of(fullCarEntity)).when(carRepository).findById(anyString());
+        doReturn(Optional.of(userEntity)).when(userRepository).findById(anyString());
+        AddUpdateCarDtoRequest toTest = addUpdateCarDtoRequest;
+        toTest.setEngine("1.6V");
+        toTest.setDoors(8);
+        toTest.setHorsePower(10000);
+        Optional<FullCarDTOResponse> check = carService.updateCar(toTest,"vasyapupkin1234@mail.com");
+        check.ifPresent(carDTOResponse -> {
+            assertNotEquals("2L", carDTOResponse.getEngine());
+            assertNotEquals("5",carDTOResponse.getDoors());
+            assertNotEquals("96",carDTOResponse.getHorsePower());
+            assertEquals(fullCarEntity.getEngine(),carDTOResponse.getEngine());
+            assertEquals(fullCarEntity.getHorsePower(),carDTOResponse.getHorsePower());
+            assertEquals(fullCarEntity.getDoors(),carDTOResponse.getDoors());
+        });
+    }
+
+    @Test
+    void updateCarIfUserHidingHaveCurrCar(){
+        init();
+        doReturn(Optional.of(userEntity)).when(userRepository).findById(anyString());
+        doThrow(NotFoundServiceException.class).when(carRepository).findById(anyString());
+        assertThrows(NotFoundServiceException.class,()->carService.updateCar(addUpdateCarDtoRequest,"vasyapupkin1234@mail.com"));
+    }
+
+    @Test
+    void updateCarIfUserNotExists(){
+        init();
+        doThrow(NotFoundServiceException.class).when(userRepository).findById(anyString());
+        assertThrows(NotFoundServiceException.class,()->carService.updateCar(addUpdateCarDtoRequest,"jigurda@mail.com"));
+    }
+
+    @Test
+    void updateCarWithNullArgEmail(){
+        init();
+        assertThrows(ServiceException.class,()->carService.updateCar(addUpdateCarDtoRequest,null));
+    }
+
+    @Test
+    void updateCarWithNullArgCarToUpd(){
+        init();
+        userEntity.setOwnCars(List.of("11-111-11"));
+        doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
+        assertThrows(ServiceException.class,()->carService.updateCar(null,"vasyapupkin1234@mail.com"));
+    }
+
+    @Test
+    void updateCarWithAllArgsNull(){
+        assertThrows(ServiceException.class,()->carService.updateCar(null,null));
+    }
+
+    @Test
+    void updateCarWithCarSerialIsNull(){
+        init();
+        userEntity.setOwnCars(List.of("11-111-11"));
+        doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
+        doReturn(Optional.of(fullCarEntity)).when(carRepository).findById(anyString());
+        addUpdateCarDtoRequest.setSerialNumber(null);
+        assertThrows(ServiceException.class,()->carService.updateCar(addUpdateCarDtoRequest,"vasyapupkin1234@mail.com"));
     }
 
     @Test
@@ -205,6 +277,9 @@ class CarServiceImplTest {
                 .start_date_time(LocalDateTime.now().minusDays(2))
                 .build());
 
+        List<String> imageList = new ArrayList<>();
+        imageList.add("https://someurlwithsomeimage.com/image.jpg");
+
         fullCarDTOResponse = FullCarDTOResponse.builder()
                 .serialNumber("32-222-23")
                 .bookedPeriodDto(bookedPeriodDtos)
@@ -220,7 +295,7 @@ class CarServiceImplTest {
                         .build())
                 .model("3")
                 .make("Mazda")
-                .imageUrl(List.of("https://someurlwithsomeimage.com/image.jpg"))
+                .imageUrl(imageList)
                 .gear("manual")
                 .fuelConsumption(10.0f)
                 .fuel("kerosine")
