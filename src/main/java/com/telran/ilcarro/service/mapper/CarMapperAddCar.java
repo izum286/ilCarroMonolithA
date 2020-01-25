@@ -8,6 +8,7 @@ package com.telran.ilcarro.service.mapper;
 
 import com.telran.ilcarro.model.car.AddUpdateCarDtoRequest;
 import com.telran.ilcarro.model.car.FullCarDTOResponse;
+import com.telran.ilcarro.model.car.PickUpPlaceDto;
 import com.telran.ilcarro.repository.entity.BookedPeriodEntity;
 import com.telran.ilcarro.repository.entity.CarStatEntity;
 import com.telran.ilcarro.repository.entity.CommentEntity;
@@ -20,7 +21,7 @@ import org.mapstruct.factory.Mappers;
 import java.util.ArrayList;
 
 
-@Mapper(componentModel = "spring",imports = {BookedPeriodEntity.class,
+@Mapper(componentModel = "spring",imports = {BookedPeriodEntity.class, PickUpPlaceDto.class,
         ArrayList.class,
         CarStatEntity.class,
         CommentEntity.class,
@@ -33,10 +34,12 @@ public interface CarMapperAddCar {
     @Mapping(target = "statistics",expression = "java(new CarStatEntity())")
     @Mapping(target = "pricePerDay.value", source = "pricePerDay")
     @Mapping(target = "pricePerDay.currency", constant = "ILS")
+    @Mapping(target = "pickUpPlace", expression = "java(new double[]{dto.getPickUpPlaceDto().getLatitude(), dto.getPickUpPlaceDto().getLongitude()} )")
     FullCarEntity map(AddUpdateCarDtoRequest dto);
 
     @Mapping(target = "bookedPeriodDto",source = "bookedPeriods")
     @Mapping(target = "statistics",source = "statistics")
+    @Mapping(target = "pickUpPlace",expression = "java(new PickUpPlaceDto(\"none\", entity.getPickUpPlace()[0], entity.getPickUpPlace()[1]))")
     FullCarDTOResponse map(FullCarEntity entity);
 
 }

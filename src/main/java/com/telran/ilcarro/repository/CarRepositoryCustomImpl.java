@@ -62,7 +62,7 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
         try {
             List<FullCarEntity> list = new CopyOnWriteArrayList<>();
             Double radius = 0.5;
-            while (list.isEmpty() && radius<=2){
+            while (list.isEmpty() & radius<=2){
                 if(latitude!=null && longitude!=null){
                     Point point = new Point(Double.parseDouble(latitude), Double.parseDouble(longitude));
                     Distance distance = new Distance(radius, Metrics.KILOMETERS);

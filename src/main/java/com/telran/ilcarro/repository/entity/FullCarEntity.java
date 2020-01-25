@@ -32,7 +32,7 @@ public class FullCarEntity {
     private PricePerDayEntity pricePerDay;
     private int distanceIncluded;
     private String about;
-    private PickUpPlaceEntity pickUpPlace;
+    private double[] pickUpPlace;
     private List<String> imageUrl;
     private boolean isDeleted; //TODO check logic
     private String pricePerDaySimple;
