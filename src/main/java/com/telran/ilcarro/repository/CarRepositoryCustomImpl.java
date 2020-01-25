@@ -41,7 +41,6 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
         Query query = new Query().with(pageable);
         List<Criteria> criteria = new ArrayList<>();
 
-
         if(sort){
             query.with(Sort.by(Sort.Direction.ASC, "pricePerDaySimple"));
         }

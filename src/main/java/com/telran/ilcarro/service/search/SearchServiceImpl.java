@@ -42,13 +42,17 @@ public class SearchServiceImpl implements  SearchService{
     public SearchResponse cityDatesPriceSortByPrice(String latitude, String longitude, LocalDateTime dateFrom, LocalDateTime dateTo,
                                                     double minPrice, double maxPrice, boolean sort,
                                                     int itemsOnPage, int currentPage) {
-        try {
+
             SearchResponse res = new SearchResponse();
-            Page<FullCarEntity>
-                cars = carRepository
-                        .cityDatesPriceSortByPrice(latitude, longitude, dateFrom, dateTo, minPrice, maxPrice,
-                                PageRequest.of(currentPage, itemsOnPage), sort);
-            if (cars.getTotalElements() == 0) throw new NotFoundServiceException("No such Cars according to search request");
+        Page<FullCarEntity> cars = new PageImpl<>(new ArrayList<>(), Pageable.unpaged(),0);
+        try {
+            cars = carRepository
+                    .cityDatesPriceSortByPrice(latitude, longitude, dateFrom, dateTo, minPrice, maxPrice,
+                            PageRequest.of(currentPage, itemsOnPage), sort);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        if (cars.getTotalElements() == 0) throw new NotFoundServiceException("No such Cars according to search request");
             List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> CarMapper.INSTANCE.map(e)).collect(Collectors.toList());
             res.setCars(carDTOResponses);
             res.setCurrentPage(currentPage);
@@ -56,9 +60,7 @@ public class SearchServiceImpl implements  SearchService{
             res.setItemsTotal(cars.getTotalElements());
             res.setMegaFilter(filterService.provideFilter());
             return res;
-        } catch (Throwable t) {
-            throw new RepositoryException("Something went wrong");
-        }
+
     }
 
     @Override
