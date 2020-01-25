@@ -236,6 +236,23 @@ class CarServiceImplTest {
 
     @Test
     void getCarByIdForUsers() {
+        init();
+        doReturn(Optional.of(fullCarEntity)).when(carRepository).findById("23-222-32");
+        assertDoesNotThrow(()->{
+            Optional<FullCarDTOResponse> check = carService.getCarByIdForUsers("23-222-32");
+            assertTrue(check.isPresent());
+        });
+    }
+
+    @Test
+    void getCarByIdForUsersIfSerialArgIsNull() {
+        assertThrows(ServiceException.class,()->carService.getCarByIdForUsers(null));
+    }
+
+    @Test
+    void getCarByIdForUsersIfCarNotExists(){
+        doThrow(NotFoundServiceException.class).when(carRepository).findById(anyString());
+        assertThrows(NotFoundServiceException.class,()->carService.getCarByIdForUsers("11-111-11"));
     }
 
     @Test
