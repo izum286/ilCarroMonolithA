@@ -16,7 +16,6 @@ import com.telran.ilcarro.service.user.UserService;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.internal.matchers.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -56,6 +55,8 @@ class CarServiceImplTest {
     private UserEntity userEntity;
     private FullCarDTOResponse fullCarDTOResponse;
     private FullCarEntity fullCarEntity;
+    private FullCarEntity car2;
+    private FullCarEntity car3;
     private OwnerEntity ownerEntity;
     private AddUpdateCarDtoRequest addUpdateCarDtoRequest;
 
@@ -305,6 +306,48 @@ class CarServiceImplTest {
 
     @Test
     void ownerGetCars() {
+        init();
+        userEntity.setOwnCars(List.of("32-222-23","11-111-11","25-555-52"));
+        doReturn(Optional.of(userEntity)).when(userRepository).findById(anyString());
+        doReturn(List.of(fullCarEntity,car2,car3)).when(carRepository).findAllByOwnerEmail("vasyapupkin1234@mail.com");
+        List<FullCarDTOResponse> check = carService.ownerGetCars("vasyapupkin1234@mail.com");
+        assertEquals("32-222-23",check.get(0).getSerialNumber());
+        assertEquals("11-111-11",check.get(1).getSerialNumber());
+        assertEquals("25-555-52",check.get(2).getSerialNumber());
+    }
+
+    @Test
+    void ownerGetCarsIfUserNotExist() {
+        init();
+        doThrow(NotFoundServiceException.class).when(userRepository).findById("jigurda@mail.com");
+        doReturn(List.of(fullCarEntity,car2,car3)).when(carRepository).findAllByOwnerEmail("jigurda@mail.com");
+        assertThrows(NotFoundServiceException.class,()->carService.ownerGetCars("jigurda@mail.com"));
+    }
+
+    @Test
+    void ownerGetCarsIfEmailArgIsNull() {
+        assertThrows(ServiceException.class,()->carService.ownerGetCars(null));
+    }
+
+    @Test
+    void ownerGetCarsIfUserHaveDeletedCar() {
+        init();
+        userEntity.setOwnCars(List.of("32-222-23","11-111-11","25-555-52"));
+        car2.setDeleted(true);
+        doReturn(Optional.of(userEntity)).when(userRepository).findById(anyString());
+        doReturn(List.of(fullCarEntity,car2,car3)).when(carRepository).findAllByOwnerEmail("vasyapupkin1234@mail.com");
+        List<FullCarDTOResponse> check = carService.ownerGetCars("vasyapupkin1234@mail.com");
+        assertNotEquals("11-111-11",check.get(0).getSerialNumber());
+        assertNotEquals("11-111-11",check.get(1).getSerialNumber());
+        assertThrows(IndexOutOfBoundsException.class,()->assertNotEquals("11-111-11",check.get(2).getSerialNumber()));
+    }
+
+    @Test
+    void ownerGetCarsIfUserDontHaveCars() {
+        init();
+        doReturn(Optional.of(userEntity)).when(userRepository).findById(anyString());
+        List<FullCarDTOResponse> check = carService.ownerGetCars("vasyapupkin1234@mail.com");
+        assertTrue(check.isEmpty());
     }
 
     @Test
@@ -492,6 +535,65 @@ class CarServiceImplTest {
                 .owner(ownerEntity)
                 .pricePerDaySimple("100$")
                 .build();
+
+        car2 = FullCarEntity.builder()
+                .year("2010")
+                .wheelsDrive("FWD")
+                .trips(1)
+                .torque(87)
+                .serialNumber("11-111-11")
+                .seats(5)
+                .model("3")
+                .horsePower(96)
+                .gear("manual")
+                .fuelConsumption(104.4f)
+                .fuel("kerosine")
+                .engine("2L")
+                .doors(5)
+                .distanceIncluded(100)
+                .carClass("Active")
+                .about(fullCarDTOResponse.getAbout())
+                .features(featureEntityList)
+                .bookedPeriods(bookedPeriodEntities)
+                .imageUrl(fullCarDTOResponse.getImageUrl())
+                .make("Mazda")
+                .pricePerDay(PricePerDayEntity.builder().currency("usd").value(100).build())
+                .statistics(carStatEntity)
+                .pickUpPlace(pickUpPlaceEntity)
+                .isDeleted(false)
+                .owner(ownerEntity)
+                .pricePerDaySimple("100$")
+                .build();
+
+        car3 = FullCarEntity.builder()
+                .year("2010")
+                .wheelsDrive("FWD")
+                .trips(1)
+                .torque(87)
+                .serialNumber("25-555-52")
+                .seats(5)
+                .model("3")
+                .horsePower(96)
+                .gear("manual")
+                .fuelConsumption(104.4f)
+                .fuel("kerosine")
+                .engine("2L")
+                .doors(5)
+                .distanceIncluded(100)
+                .carClass("Active")
+                .about(fullCarDTOResponse.getAbout())
+                .features(featureEntityList)
+                .bookedPeriods(bookedPeriodEntities)
+                .imageUrl(fullCarDTOResponse.getImageUrl())
+                .make("Mazda")
+                .pricePerDay(PricePerDayEntity.builder().currency("usd").value(100).build())
+                .statistics(carStatEntity)
+                .pickUpPlace(pickUpPlaceEntity)
+                .isDeleted(false)
+                .owner(ownerEntity)
+                .pricePerDaySimple("100$")
+                .build();
+
         ownerEntity = OwnerEntity.builder()
                 .registrationDate(userEntity.getRegistrationDate().toString())
                 .lastName(userEntity.getLastName())
