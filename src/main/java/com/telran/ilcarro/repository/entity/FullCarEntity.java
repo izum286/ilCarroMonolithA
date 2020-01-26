@@ -11,6 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@ToString
 @Document(collection = "cars")
 public class FullCarEntity {
     @Id

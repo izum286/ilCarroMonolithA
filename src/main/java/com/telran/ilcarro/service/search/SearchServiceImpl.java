@@ -39,18 +39,23 @@ public class SearchServiceImpl implements  SearchService{
 
 
     @Override
-    public SearchResponse cityDatesPriceSortByPrice(String latitude, String longitude, LocalDateTime dateFrom, LocalDateTime dateTo,
+    public SearchResponse cityDatesPriceSortByPrice(String latitude, String longitude, double radius, LocalDateTime dateFrom, LocalDateTime dateTo,
                                                     double minPrice, double maxPrice, boolean sort,
                                                     int itemsOnPage, int currentPage) {
 
-            SearchResponse res = new SearchResponse();
+        SearchResponse res = new SearchResponse();
+        Double rad = radius;
+        double maxRad = rad+1500;
         Page<FullCarEntity> cars = new PageImpl<>(new ArrayList<>(), Pageable.unpaged(),0);
-        try {
-            cars = carRepository
-                    .cityDatesPriceSortByPrice(latitude, longitude, dateFrom, dateTo, minPrice, maxPrice,
-                            PageRequest.of(currentPage, itemsOnPage), sort);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        while ((cars.getTotalElements() == 0) & (rad<=maxRad)) {
+            try {
+                cars = carRepository
+                        .cityDatesPriceSortByPrice(latitude, longitude, rad, dateFrom, dateTo, minPrice, maxPrice,
+                                PageRequest.of(currentPage, itemsOnPage), sort);
+            } catch (Exception e) {
+                System.out.println("err"+e.getMessage());
+            }
+            rad+=500;
         }
         if (cars.getTotalElements() == 0) throw new NotFoundServiceException("No such Cars according to search request");
             List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> CarMapper.INSTANCE.map(e)).collect(Collectors.toList());

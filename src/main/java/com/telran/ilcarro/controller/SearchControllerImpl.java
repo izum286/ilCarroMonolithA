@@ -3,6 +3,8 @@ package com.telran.ilcarro.controller;
 import com.telran.ilcarro.controller.interfaces.SearchController;
 import com.telran.ilcarro.model.car.SearchResponse;
 import com.telran.ilcarro.model.filter.FilterDTO;
+import com.telran.ilcarro.repository.CarRepository;
+import com.telran.ilcarro.repository.entity.FullCarEntity;
 import com.telran.ilcarro.service.search.SearchService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author izum286
@@ -27,6 +30,13 @@ public class SearchControllerImpl implements SearchController {
     @Autowired
     SearchService searchService;
 
+    @Autowired
+    CarRepository carRepository;
+
+    @GetMapping ("search/admin")
+    public List<FullCarEntity> getalllll(){
+        return carRepository.findAll();
+    }
 
 
     /**
@@ -56,9 +66,10 @@ public class SearchControllerImpl implements SearchController {
                                                     @RequestParam (name = "ascending") boolean sort,
                                                     @RequestParam (name = "items_on_page") int itemsOnPage,
                                                     @RequestParam (name = "current_page")int currentPage){
+        double radius = 0.5;
         return searchService
                 .cityDatesPriceSortByPrice
-                        (latitude,  longitude, dateFrom, dateTo, minPrice, maxPrice, sort, itemsOnPage, currentPage);
+                        (latitude,  longitude,  radius, dateFrom, dateTo, minPrice, maxPrice, sort, itemsOnPage, currentPage);
 
     }
 
