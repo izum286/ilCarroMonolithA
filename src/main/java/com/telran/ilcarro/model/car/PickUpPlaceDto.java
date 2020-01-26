@@ -13,6 +13,6 @@ import lombok.*;
 @Builder
 public class PickUpPlaceDto {
     private String place_id;
-    private float latitude;
-    private float longitude;
+    private double latitude;
+    private double longitude;
 }
