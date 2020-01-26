@@ -20,7 +20,6 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author izum286
@@ -43,11 +42,11 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
 
         if(sort){
             query.with(Sort.by(Sort.Direction.ASC, "pricePerDaySimple"));
-            System.out.println("sort criteria added");
         }
 
-        criteria.add(Criteria.where("pricePerDaySimple").gte(priceFrom));
-        criteria.add(Criteria.where("pricePerDaySimple").lte(priceTo));
+        criteria.add(Criteria.where("pricePerDay.value").gte(priceFrom));
+        criteria.add(Criteria.where("pricePerDay.value").lte(priceTo));
+        //TODO problem with pricePerDaySimple
 
         criteria.add(
                 new Criteria()
@@ -66,10 +65,7 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
                     criteria.add(geoCriteria);
                 }
                 query.addCriteria(new Criteria().andOperator(criteria.toArray(new Criteria[criteria.size()])));
-        System.out.println(query.toString());
                 List<FullCarEntity> list = mongoTemplate.find(query, FullCarEntity.class);
-                System.out.println(list.size());
-        System.out.println(radius);
             return PageableExecutionUtils.getPage(list, pageable, () -> mongoTemplate.count(query, FullCarEntity.class));
     }
 
@@ -133,8 +129,8 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
             criteria.add(geoCriteria);
         }
 
-        criteria.add(Criteria.where("pricePerDaySimple").gte(minPrice));
-        criteria.add(Criteria.where("pricePerDaySimple").lte(maxPrice));
+        criteria.add(Criteria.where("pricePerDay.value").gte(minPrice));
+        criteria.add(Criteria.where("pricePerDay.value").lte(maxPrice));
         criteria.add(
                 new Criteria()
                         .orOperator(Criteria.where("bookedPeriods").size(0),

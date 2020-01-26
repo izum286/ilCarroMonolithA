@@ -30,14 +30,6 @@ public class SearchControllerImpl implements SearchController {
     @Autowired
     SearchService searchService;
 
-    @Autowired
-    CarRepository carRepository;
-
-    @GetMapping ("search/admin")
-    public List<FullCarEntity> getalllll(){
-        return carRepository.findAll();
-    }
-
 
     /**
      *

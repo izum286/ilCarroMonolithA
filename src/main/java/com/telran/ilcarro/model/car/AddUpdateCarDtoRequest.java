@@ -40,7 +40,7 @@ public class AddUpdateCarDtoRequest {
     @JsonProperty("car_class")
     private String carClass;
     @JsonProperty("price_per_day")
-    private float pricePerDay;
+    private double pricePerDay;
     @JsonProperty("distance_included")
     private int distanceIncluded;
     private String about;

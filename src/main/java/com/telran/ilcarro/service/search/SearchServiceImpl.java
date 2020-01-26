@@ -58,14 +58,13 @@ public class SearchServiceImpl implements  SearchService{
             rad+=500;
         }
         if (cars.getTotalElements() == 0) throw new NotFoundServiceException("No such Cars according to search request");
-            List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> CarMapper.INSTANCE.map(e)).collect(Collectors.toList());
+            List<FullCarDTOResponse> carDTOResponses = cars.getContent().stream().map(e -> CarMapper.INSTANCE.map(e)).collect(Collectors.toList());
             res.setCars(carDTOResponses);
-            res.setCurrentPage(currentPage);
-            res.setItemsOnPage(itemsOnPage);
+            res.setCurrentPage(cars.getPageable().getPageNumber());
+            res.setItemsOnPage(cars.getPageable().getPageSize());
             res.setItemsTotal(cars.getTotalElements());
             res.setMegaFilter(filterService.provideFilter());
             return res;
-
     }
 
     @Override
@@ -92,11 +91,10 @@ public class SearchServiceImpl implements  SearchService{
                     .collect(Collectors.toList());
             res.setCars(carDTOResponses);
             res.setCurrentPage(cars.getPageable().getPageNumber());
-            res.setItemsOnPage(cars.getNumberOfElements());
+            res.setItemsOnPage(cars.getPageable().getPageSize());
             res.setItemsTotal(cars.getTotalElements());
             res.setMegaFilter(filterService.provideFilter());
             return res;
-
     }
 
     @Override
@@ -109,8 +107,8 @@ public class SearchServiceImpl implements  SearchService{
             if (cars == null) throw new RepositoryException("No such Cars according to search request");
             List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> CarMapper.INSTANCE.map(e)).collect(Collectors.toList());
             res.setCars(carDTOResponses);
-            res.setCurrentPage(currentPage);
-            res.setItemsOnPage(itemsOnPage);
+            res.setCurrentPage(cars.getPageable().getPageNumber());
+            res.setItemsOnPage(cars.getPageable().getPageSize());
             res.setItemsTotal(cars.getTotalElements());
             res.setMegaFilter(filterService.provideFilter());
             return res;
@@ -147,10 +145,9 @@ public class SearchServiceImpl implements  SearchService{
                     .map(e -> CarMapper.INSTANCE.map(e)).collect(Collectors.toList());
             res.setCars(carDTOResponses);
             res.setCurrentPage(cars.getPageable().getPageNumber());
-            res.setItemsOnPage(cars.getNumberOfElements());
+            res.setItemsOnPage(cars.getPageable().getPageSize());
             res.setItemsTotal(cars.getTotalElements());
             res.setMegaFilter(filterService.provideFilter());
             return res;
-
     }
 }
