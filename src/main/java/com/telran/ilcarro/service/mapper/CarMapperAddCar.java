@@ -28,10 +28,10 @@ import java.util.ArrayList;
         PickUpPlaceMapper.class},
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_DEFAULT)
 public interface CarMapperAddCar {
-
     CarMapperAddCar INSTANCE = Mappers.getMapper(CarMapperAddCar.class);
     @Mapping(target = "bookedPeriods",expression = "java(new ArrayList<BookedPeriodEntity>())")
     @Mapping(target = "statistics",expression = "java(new CarStatEntity())")
+    @Mapping(target = "pricePerDaySimple", source = "pricePerDay")
     @Mapping(target = "pricePerDay.value", source = "pricePerDay")
     @Mapping(target = "pricePerDay.currency", constant = "ILS")
     @Mapping(target = "pickUpPlace", expression = "java(new double[]{dto.getPickUpPlaceDto().getLatitude(), dto.getPickUpPlaceDto().getLongitude()} )")

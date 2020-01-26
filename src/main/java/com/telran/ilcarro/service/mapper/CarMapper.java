@@ -30,6 +30,7 @@ public interface CarMapper {
     @Mapping(target = "pricePerDay.currency", constant = "ILS")
     @Mapping(target = "pickUpPlace", expression = "java(new double[]{dto.getPickUpPlaceDto().getLatitude(), dto.getPickUpPlaceDto().getLongitude()} )")
     @Mapping(target = "placeId", expression = "java(dto.getPickUpPlaceDto().getPlace_id())")
+    @Mapping(target = "pricePerDaySimple", source = "pricePerDay")
     FullCarEntity map(AddUpdateCarDtoRequest dto);
 
     @Mapping(target = "pricePerDay", source = "pricePerDay")

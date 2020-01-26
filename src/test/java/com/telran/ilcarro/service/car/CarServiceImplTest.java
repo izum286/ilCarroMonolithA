@@ -680,7 +680,7 @@ class CarServiceImplTest {
                 .pickUpPlace(new double[]{pickUpPlaceEntity.getLatitude(), pickUpPlaceEntity.getLongitude()})
                 .isDeleted(false)
                 .owner(ownerEntity)
-                .pricePerDaySimple("100$")
+                .pricePerDaySimple(100)
                 .build();
 
         car2 = FullCarEntity.builder()
@@ -709,7 +709,7 @@ class CarServiceImplTest {
                 .pickUpPlace(new double[]{pickUpPlaceEntity.getLatitude(), pickUpPlaceEntity.getLongitude()})
                 .isDeleted(false)
                 .owner(ownerEntity)
-                .pricePerDaySimple("100$")
+                .pricePerDaySimple(100)
                 .build();
 
         car3 = FullCarEntity.builder()
@@ -738,7 +738,7 @@ class CarServiceImplTest {
                 .pickUpPlace(new double[]{pickUpPlaceEntity.getLatitude(), pickUpPlaceEntity.getLongitude()})
                 .isDeleted(false)
                 .owner(ownerEntity)
-                .pricePerDaySimple("100$")
+                .pricePerDaySimple(100)
                 .build();
 
         ownerEntity = OwnerEntity.builder()
