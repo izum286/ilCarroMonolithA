@@ -25,6 +25,10 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     UserEntityRepository userEntityRepository;
 
+    /**
+     * TODO
+     *  1.worth adding a annotation for Null @CheckForNull
+     */
     @Override
     public List<FullCommentDTO> getLatestComments(Integer num) {
         try {
@@ -46,6 +50,14 @@ public class CommentServiceImpl implements CommentService {
             throw new ServiceException(t.getMessage(), t.getCause());
         }
     }
+
+    /**
+     * TODO
+     *  1. method must down on NotFoundServiceException, please add new catch with NotFoundServiceException ex
+     *        for example }catch (NotFoundServiceException ex){
+     *                  throw new NotFoundServiceException(ex.getMessage());
+     *  2. worth adding a annotation for Null @CheckForNull
+     */
 
     @Override
     public boolean postComment(String serialNumber, String ownerEmail, AddCommentDTO comment) {
