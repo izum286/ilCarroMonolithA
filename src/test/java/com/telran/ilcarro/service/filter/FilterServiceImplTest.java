@@ -19,10 +19,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.indexOfSubList;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -50,10 +52,26 @@ class FilterServiceImplTest {
 
     @Test
     void addFilter() {
+        init();
+        doReturn(Optional.of(rootNode)).when(filterRepository).findById("root");
+        assertDoesNotThrow(()->filterService.addFilter(addUpdateCarDtoRequest));
+
     }
 
     @Test
     void addFilterIfDtoIsNull() {
+        init();
+        doReturn(Optional.of(rootNode)).when(filterRepository).findById("root");
+        assertThrows(RuntimeException.class,()->filterService.addFilter(null));
+    }
+
+    @Test
+    void addFilterIfDtoHaveOnlyNullFieldsWithSerial() {
+        init();
+        AddUpdateCarDtoRequest withNulls = new AddUpdateCarDtoRequest();
+        withNulls.setSerialNumber("22-222-33");
+        doReturn(Optional.of(rootNode)).when(filterRepository).findById("root");
+        assertThrows(RuntimeException.class,()->filterService.addFilter(withNulls));
     }
 
     @Test
