@@ -136,6 +136,20 @@ public class CommentServiceImplTest {
     }
 
     @Test
+    public void getLatestCommentsIfValueIsMoreThanMaxInteger() {
+        init();
+        doReturn(List.of(userEntity, tester)).when(userEntityRepository).findAll();
+        assertThrows(ServiceException.class, () -> commentService.getLatestComments(Integer.MAX_VALUE + 1));
+    }
+
+    @Test
+    public void getLatestCommentsIfValueIsLessThanZero() {
+        init();
+        doReturn(List.of(userEntity, tester)).when(userEntityRepository).findAll();
+        assertThrows(ServiceException.class, () -> commentService.getLatestComments(-1));
+    }
+
+    @Test
     public void postComment() {
         init();
         doReturn(Optional.of(userEntity)).when(userEntityRepository).getUserEntityByOwnCarsContains("111-222-333");

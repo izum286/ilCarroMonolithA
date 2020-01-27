@@ -27,7 +27,7 @@ public class CommentServiceImpl implements CommentService {
 
     /**
      * TODO
-     *  1.worth adding a annotation for Null @CheckForNull
+     * 1.worth adding a annotation for Null @CheckForNull
      */
     @Override
     public List<FullCommentDTO> getLatestComments(Integer num) {
@@ -53,9 +53,8 @@ public class CommentServiceImpl implements CommentService {
 
     /**
      * TODO
-     *  1. worth adding a annotation for Null @CheckForNull
+     * 1. worth adding a annotation for Null @CheckForNull
      */
-
     @Override
     public boolean postComment(String serialNumber, String ownerEmail, AddCommentDTO comment) {
         try {
