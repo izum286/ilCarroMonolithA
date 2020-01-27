@@ -140,7 +140,7 @@ class UserServiceImplTest {
         init();
         doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
         doReturn(true).when(userDetailsRepository).existsById("vasyapupkin1234@mail.com");
-        assertDoesNotThrow(() -> userService.updateUser("vasyapupkin1234@mail.com", null));
+        assertThrows(ServiceException.class,() -> userService.updateUser("vasyapupkin1234@mail.com", null));
     }
 
     @Test
@@ -226,7 +226,7 @@ class UserServiceImplTest {
         if (check != null){
             assertEquals("23-222-23", check.get(0).getCarId());
             assertEquals("23-333-23", check.get(1).getCarId());
-        };
+        }
     }
 
     @Test

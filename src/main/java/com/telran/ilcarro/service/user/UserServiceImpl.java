@@ -1,6 +1,7 @@
 package com.telran.ilcarro.service.user;
 
 
+import com.telran.ilcarro.annotaion.CheckForNull;
 import com.telran.ilcarro.model.car.BookedCarDto;
 import com.telran.ilcarro.model.user.FullUserDTO;
 import com.telran.ilcarro.model.user.RegUserDTO;
@@ -42,12 +43,14 @@ public class UserServiceImpl implements UserService {
     CarService carService;
 
     @Override
+    @CheckForNull
     public Optional<FullUserDTO> addUser(String email, RegUserDTO regUser) {
         UserEntity entity = userRepository.save(UserMapper.INSTANCE.map(email, regUser));
         return getUser(entity.getEmail());
     }
 
     @Override
+    @CheckForNull
     public Optional<FullUserDTO> getUser(String email) {
         UserEntity entity = userRepository.findById(email)
                 .orElseThrow(() -> new NotFoundServiceException(String.format("User %s not found", email)));
@@ -67,22 +70,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CheckForNull
     public Optional<FullUserDTO> updateUser(String email, UpdUserDTO updUser) {
-        try {
-            if (!userDetailsRepository.existsById(email)) {
-                throw new NotFoundServiceException(String.format("User %s not found", email));
-            }
-            UserEntity userToUpd = userRepository.findById(email)
-                    .orElseThrow(() -> new NotFoundServiceException(String.format("User profile %s not found", email)));
-            UserMapper.INSTANCE.updUserInfo(userToUpd, updUser);
-            userRepository.save(userToUpd);
-            return getUser(userToUpd.getEmail());
-        } catch (Throwable t) {
-            throw new ServiceException(t.getMessage(), t.getCause());
+        if (!userDetailsRepository.existsById(email)) {
+            throw new NotFoundServiceException(String.format("User %s not found", email));
         }
+        UserEntity userToUpd = userRepository.findById(email)
+                .orElseThrow(() -> new NotFoundServiceException(String.format("User profile %s not found", email)));
+        UserMapper.INSTANCE.updUserInfo(userToUpd, updUser);
+        userRepository.save(userToUpd);
+        return getUser(userToUpd.getEmail());
     }
 
     @Override
+    @CheckForNull
     public boolean deleteUser(String email) {
         UserEntity entity = userRepository.findById(email)
                 .orElseThrow(() -> new NotFoundServiceException(String.format("User profile %s not found", email)));
@@ -95,6 +96,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CheckForNull
     public boolean addUserCar(String userID, String carId) {
         if (ifUserCarsExist(userID, carId)) {
             throw new ConflictServiceException(String.format("Car with id %s already added", carId));
@@ -112,6 +114,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CheckForNull
     public boolean ifUserCarsExist(String userID, String carID) {
         UserEntity entity = userRepository.findById(userID)
                 .orElseThrow(() -> new NotFoundServiceException(String.format("User profile %s not found", userID)));
@@ -123,6 +126,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CheckForNull
     public Optional<List<BookedCarDto>> getUserBookedCarsPeriods(String userID) {
         UserEntity entity = userRepository.findById(userID)
                 .orElseThrow(() -> new NotFoundServiceException(String.format("User profile %s not found", userID)));
@@ -137,6 +141,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CheckForNull
     public boolean addBookedPeriodToUserHistory(String userID, BookedPeriodEntity bookedPeriodEntity) {
         UserEntity entity = userRepository.findById(userID)
                 .orElseThrow(() -> new NotFoundServiceException(String.format("User profile %s not found", userID)));
