@@ -149,7 +149,7 @@ public class CommentServiceImplTest {
         init();
         doThrow(NotFoundServiceException.class).when(userEntityRepository).getUserEntityByOwnCarsContains("999-222-333");
         doReturn(Optional.of(tester)).when(userEntityRepository).findById("petya@mail.com");
-        Assertions.assertThrows(NotFoundServiceException.class, () -> commentService.postComment("999-222-333", "petya@mail.com",
+        Assertions.assertThrows(ServiceException.class, () -> commentService.postComment("999-222-333", "petya@mail.com",
                 AddCommentDTO.builder().post("good Car").build()));
 
     }
@@ -159,7 +159,7 @@ public class CommentServiceImplTest {
         init();
         doThrow(NotFoundServiceException.class).when(userEntityRepository).findById("aaaa@ddd.com");
         doReturn(Optional.of(userEntity)).when(userEntityRepository).findById("vasyapupkin1234@mail.com");
-        Assertions.assertThrows(NotFoundServiceException.class, () -> commentService.postComment("333-222-111",
+        Assertions.assertThrows(ServiceException.class, () -> commentService.postComment("333-222-111",
                 "aaaa@ddd.com", AddCommentDTO.builder().post("good Car").build()));
     }
 

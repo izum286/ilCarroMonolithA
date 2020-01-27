@@ -53,10 +53,7 @@ public class CommentServiceImpl implements CommentService {
 
     /**
      * TODO
-     *  1. method must down on NotFoundServiceException, please add new catch with NotFoundServiceException ex
-     *        for example }catch (NotFoundServiceException ex){
-     *                  throw new NotFoundServiceException(ex.getMessage());
-     *  2. worth adding a annotation for Null @CheckForNull
+     *  1. worth adding a annotation for Null @CheckForNull
      */
 
     @Override
