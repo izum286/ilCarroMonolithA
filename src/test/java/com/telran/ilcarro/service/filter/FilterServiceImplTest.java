@@ -32,17 +32,17 @@ class FilterServiceImplTest {
     @MockBean
     FilterRepository filterRepository;
 
-    AddUpdateCarDtoRequest addUpdateCarDtoRequest;
-    FilterDTO filterDTO;
-    FilterDTO filterDTO2;
-    FilterDTO filterDTO3;
-    FilterDTO filterDTO4;
-    FilterDTO filterDTO5;
-    FilterDTO filterDTO6;
-    FilterDTO filterDTO7;
-    FilterDTO filterDTO8;
-    FilterNodeEntity filterNodeEntity;
-    FilterNodeEntity filterNodeEntityToMerge;
+    private AddUpdateCarDtoRequest addUpdateCarDtoRequest;
+    private FilterDTO filterDTO;
+    private FilterDTO filterDTO2;
+    private FilterDTO filterDTO3;
+    private FilterDTO filterDTO4;
+    private FilterDTO filterDTO5;
+    private FilterDTO filterDTO6;
+    private FilterDTO filterDTO7;
+    private FilterDTO filterDTO8;
+    private FilterNodeEntity filterNodeEntity;
+    private FilterNodeEntity filterNodeEntityToMerge;
 
 
     @Test
@@ -70,7 +70,7 @@ class FilterServiceImplTest {
     }
 
     @Before
-    void init(){
+    public void init(){
 
         //added only for ctrl c - ctrl v, because is very lazy to write a new dto.......
         //**************************************************************************
