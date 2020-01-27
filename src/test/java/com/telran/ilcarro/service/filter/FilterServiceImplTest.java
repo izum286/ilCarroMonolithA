@@ -7,8 +7,10 @@ import com.telran.ilcarro.model.user.PersonWhoBookedDto;
 import com.telran.ilcarro.repository.FilterRepository;
 import com.telran.ilcarro.repository.entity.*;
 import org.junit.Before;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -41,12 +43,17 @@ class FilterServiceImplTest {
     private FilterDTO filterDTO6;
     private FilterDTO filterDTO7;
     private FilterDTO filterDTO8;
+    private FilterNodeEntity rootNode;
     private FilterNodeEntity filterNodeEntity;
     private FilterNodeEntity filterNodeEntityToMerge;
 
 
     @Test
     void addFilter() {
+    }
+
+    @Test
+    void addFilterIfDtoIsNull() {
     }
 
     @Test
@@ -72,7 +79,8 @@ class FilterServiceImplTest {
     @Before
     public void init(){
 
-        //added only for ctrl c - ctrl v, because is very lazy to write a new dto.......
+        //added only for ctrl c - ctrl v, because is very lazy to write a new dto....... copied from carServiceImplTest
+        //data is cheked
         //**************************************************************************
         List<String> carSerialLiesList = new ArrayList<>();
         List<BookedPeriodEntity> bookedPeriodLieList = new ArrayList<>();
@@ -301,5 +309,14 @@ class FilterServiceImplTest {
 //                .type("make")
 //                .value()
                 .build();
+
+        FilterServiceImpl forOneMethod = new FilterServiceImpl();
+
+        rootNode = new FilterNodeEntity("root", "root");
+        try {
+            rootNode.getChilds().add(forOneMethod.map(filterDTO));
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 }
