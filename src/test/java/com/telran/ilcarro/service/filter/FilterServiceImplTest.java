@@ -37,14 +37,9 @@ class FilterServiceImplTest {
     FilterRepository filterRepository;
 
     private AddUpdateCarDtoRequest addUpdateCarDtoRequest;
+    private AddUpdateCarDtoRequest addUpdateCarDtoRequestToMerge;
     private FilterDTO filterDTO;
     private FilterDTO filterDTO2;
-    private FilterDTO filterDTO3;
-    private FilterDTO filterDTO4;
-    private FilterDTO filterDTO5;
-    private FilterDTO filterDTO6;
-    private FilterDTO filterDTO7;
-    private FilterDTO filterDTO8;
     private FilterNodeEntity rootNode;
     private FilterNodeEntity filterNodeEntity;
     private FilterNodeEntity filterNodeEntityToMerge;
@@ -82,20 +77,28 @@ class FilterServiceImplTest {
         assertThrows(Throwable.class,()->filterService.addFilter(addUpdateCarDtoRequest));
     }
 
+    //Checked with System.out.println
     @Test
     void provideFilter() {
         init();
         doReturn(Optional.of(rootNode)).when(filterRepository).findById("root");
         filterService.addFilter(addUpdateCarDtoRequest);
         assertDoesNotThrow(()-> filterService.provideFilter());
+//        assertDoesNotThrow(()-> System.out.println(filterService.provideFilter()));
     }
 
-    @Test
-    void addNode() {
-    }
+//    @Test
+//    void addNode() {
+//        //cheked with method addFilter
+//    }
 
+    //Checked with System.out.println
     @Test
     void mergeNodes() {
+        init();
+        doReturn(Optional.of(rootNode)).when(filterRepository).findById("root");
+        assertDoesNotThrow(()->filterService.mergeNodes(filterNodeEntity,filterNodeEntityToMerge));
+//        System.out.println(filterNodeEntity);
     }
 
     @Test
@@ -235,6 +238,29 @@ class FilterServiceImplTest {
                 .year(fullCarDTOResponse.getYear())
                 .build();
 
+        addUpdateCarDtoRequestToMerge = AddUpdateCarDtoRequest.builder()
+                .about(fullCarDTOResponse.getAbout())
+                .carClass(fullCarDTOResponse.getCarClass())
+                .distanceIncluded(fullCarDTOResponse.getDistanceIncluded())
+                .doors(2)
+                .engine("1.6L")
+                .features(fullCarDTOResponse.getFeatures())
+                .fuel("diesel")
+                .fuelConsumption(fullCarDTOResponse.getFuelConsumption())
+                .gear("automat")
+                .horsePower(fullCarDTOResponse.getHorsePower())
+                .imageUrl(fullCarDTOResponse.getImageUrl())
+                .make(fullCarDTOResponse.getMake())
+                .model("6")
+                .pickUpPlaceDto(fullCarDTOResponse.getPickUpPlace())
+                .pricePerDay(fullCarDTOResponse.getDistanceIncluded())
+                .seats(fullCarDTOResponse.getSeats())
+                .serialNumber(fullCarDTOResponse.getSerialNumber())
+                .torque(fullCarDTOResponse.getTorque())
+                .wheelsDrive(fullCarDTOResponse.getWheelsDrive())
+                .year(fullCarDTOResponse.getYear())
+                .build();
+
         filterDTO = FilterDTO.builder()
                 .engine("2l")
                 .fuel("kerosine")
@@ -259,88 +285,14 @@ class FilterServiceImplTest {
                 .year("2010")
                 .build();
 
-        filterDTO3 = FilterDTO.builder()
-                .engine("2l")
-                .fuel("benzine")
-                .fuel_consumption("1L/100Km")
-                .gear("manual")
-                .horsepower("94")
-                .make("mazda")
-                .model("3")
-                .wheels_drive("FWD")
-                .year("2010")
-                .build();
-        filterDTO4 = FilterDTO.builder()
-                .engine("2l")
-                .fuel("benzine")
-                .fuel_consumption("1L/100Km")
-                .gear("automat")
-                .horsepower("96")
-                .make("mazda")
-                .model("3")
-                .wheels_drive("FWD")
-                .year("2010")
-                .build();
-        filterDTO5 = FilterDTO.builder()
-                .engine("2l")
-                .fuel("diesel")
-                .fuel_consumption("1L/100Km")
-                .gear("automat")
-                .horsepower("96")
-                .make("mazda")
-                .model("3")
-                .wheels_drive("FWD")
-                .year("2010")
-                .build();
-        filterDTO6 = FilterDTO.builder()
-                .engine("1.6L")
-                .fuel("diesel")
-                .fuel_consumption("1L/100Km")
-                .gear("automat")
-                .horsepower("78")
-                .make("mazda")
-                .model("3")
-                .wheels_drive("FWD")
-                .year("2010")
-                .build();
-        filterDTO7 = FilterDTO.builder()
-                .engine("2l")
-                .fuel("diesel")
-                .fuel_consumption("1L/100Km")
-                .gear("manual")
-                .horsepower("91")
-                .make("mazda")
-                .model("3")
-                .wheels_drive("FWD")
-                .year("2010")
-                .build();
-        filterDTO8 = FilterDTO.builder()
-                .engine("1.6L")
-                .fuel("kerosine")
-                .fuel_consumption("1L/100Km")
-                .gear("manual")
-                .horsepower("92")
-                .make("mazda")
-                .model("3")
-                .wheels_drive("FWD")
-                .year("2010")
-                .build();
-
-        filterNodeEntity = FilterNodeEntity.builder()
-//                .childs(List.of())
-//                .type("make")
-//                .value(filterDTO)
-                .build();
-
-
-
-        filterNodeEntityToMerge = FilterNodeEntity.builder()
-//                .childs(List.of())
-//                .type("make")
-//                .value()
-                .build();
-
         FilterServiceImpl forOneMethod = new FilterServiceImpl();
+
+        try {
+            filterNodeEntity = forOneMethod.map(forOneMethod.map(addUpdateCarDtoRequest));
+            filterNodeEntityToMerge = forOneMethod.map(forOneMethod.map(addUpdateCarDtoRequestToMerge));
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
 
         rootNode = new FilterNodeEntity("root", "root");
         try {
