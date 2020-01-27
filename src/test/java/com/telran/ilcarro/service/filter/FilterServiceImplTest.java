@@ -62,7 +62,7 @@ class FilterServiceImplTest {
     void addFilterIfDtoIsNull() {
         init();
         doReturn(Optional.of(rootNode)).when(filterRepository).findById("root");
-        assertThrows(RuntimeException.class,()->filterService.addFilter(null));
+        assertThrows(Throwable.class,()->filterService.addFilter(null));
     }
 
     @Test
@@ -71,11 +71,23 @@ class FilterServiceImplTest {
         AddUpdateCarDtoRequest withNulls = new AddUpdateCarDtoRequest();
         withNulls.setSerialNumber("22-222-33");
         doReturn(Optional.of(rootNode)).when(filterRepository).findById("root");
-        assertThrows(RuntimeException.class,()->filterService.addFilter(withNulls));
+        assertThrows(Throwable.class,()->filterService.addFilter(withNulls));
+    }
+
+    @Test
+    void addFilterIfDtoHaveNullSerialNumber() {
+        init();
+        addUpdateCarDtoRequest.setSerialNumber(null);
+        doReturn(Optional.of(rootNode)).when(filterRepository).findById("root");
+        assertThrows(Throwable.class,()->filterService.addFilter(addUpdateCarDtoRequest));
     }
 
     @Test
     void provideFilter() {
+        init();
+        doReturn(Optional.of(rootNode)).when(filterRepository).findById("root");
+        filterService.addFilter(addUpdateCarDtoRequest);
+        assertDoesNotThrow(()-> filterService.provideFilter());
     }
 
     @Test
