@@ -1,5 +1,6 @@
 package com.telran.ilcarro.service.car;
 
+import com.telran.ilcarro.annotaion.CheckForNull;
 import com.telran.ilcarro.model.car.*;
 import com.telran.ilcarro.repository.BookedPeriodsRepository;
 import com.telran.ilcarro.repository.CarRepository;
@@ -44,6 +45,7 @@ public class CarServiceImpl implements CarService {
      * @return optional of added car
      */
     @Override
+    @CheckForNull
     public Optional<FullCarDTOResponse> addCar(AddUpdateCarDtoRequest carToAdd, String userEmail) {
         FullCarEntity entity = CarMapper.INSTANCE.map(carToAdd);
         UserEntity user = userRepository.findById(userEmail).orElseThrow(
@@ -66,6 +68,7 @@ public class CarServiceImpl implements CarService {
      * @return optional of updated car
      */
     @Override
+    @CheckForNull
     public Optional<FullCarDTOResponse> updateCar(AddUpdateCarDtoRequest carToUpdate, String userEmail) {
         if (!userRepository.findById(userEmail)
                 .orElseThrow(() -> new NotFoundServiceException(String.format("User profile %s not found", userEmail))).getOwnCars()
@@ -88,6 +91,7 @@ public class CarServiceImpl implements CarService {
      * @return true\false
      */
     @Override
+    @CheckForNull
     public boolean deleteCar(String carId, String userEmail) {
         if (!userRepository.findById(userEmail).orElseThrow(
                 () -> new NotFoundServiceException(String.format("User profile %s not found", userEmail))
@@ -99,6 +103,9 @@ public class CarServiceImpl implements CarService {
         FullCarEntity carEntity = carRepository.findById(carId).orElseThrow(
                 () -> new NotFoundServiceException(String.format("Car with id %s not found in carRepository", carId))
         );
+        if (carEntity.isDeleted()) {
+            return false;
+        }
         carEntity.setDeleted(true);
         carRepository.save(carEntity);
         return true;
@@ -111,6 +118,7 @@ public class CarServiceImpl implements CarService {
      * @return Optional<FullCarDTOResponse>
      */
     @Override
+    @CheckForNull
     public Optional<FullCarDTOResponse> getCarByIdForUsers(String carId) {
         FullCarEntity entity = carRepository.findById(carId).orElseThrow(
                 () -> new NotFoundServiceException(String.format("Car with id %s not found in carRepository", carId))
@@ -126,6 +134,7 @@ public class CarServiceImpl implements CarService {
      * @author - izum286
      */
     @Override
+    @CheckForNull
     public Optional<FullCarDTOResponse> getCarByIdForOwner(String carId, String userEmail) {
         FullCarEntity entity = carRepository.findById(carId).orElseThrow(
                 () -> new NotFoundServiceException(String.format("Car with id %s not found in carRepository", carId))
@@ -145,6 +154,7 @@ public class CarServiceImpl implements CarService {
      * @author - izum286
      */
     @Override
+    @CheckForNull
     public List<FullCarDTOResponse> ownerGetCars(String userEmail) {
         List<String> ownerCars = userRepository.findById(userEmail).orElseThrow(
                 () -> new NotFoundServiceException(String.format("User %s not found", userEmail))
@@ -168,6 +178,7 @@ public class CarServiceImpl implements CarService {
      * @return List<BookedPeriodDto>
      */
     @Override
+    @CheckForNull
     public List<BookedPeriodDto> getBookedPeriodsByCarId(String carId, String userEmail) {
         if (!userRepository.findById(userEmail).orElseThrow(
                 () -> new NotFoundServiceException(String.format("User %s not found", userEmail))
@@ -193,6 +204,7 @@ public class CarServiceImpl implements CarService {
      * @return BookResponseDTO
      */
     @Override
+    @CheckForNull
     public Optional<BookResponseDTO> makeReservation(String carId, BookRequestDTO dto, String userEmail) {
         //TODO CarStatistics ??? To Rodion add to protocol rating
         FullCarEntity carToBookEntity = carRepository.findById(carId).orElseThrow(

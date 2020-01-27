@@ -32,15 +32,13 @@ public class FullCarEntity {
     private PricePerDayEntity pricePerDay;
     private int distanceIncluded;
     private String about;
-    private PickUpPlaceEntity pickUpPlace;
+    private String placeId;
+    private double[] pickUpPlace;
     private List<String> imageUrl;
     private boolean isDeleted; //TODO check logic
-    private String pricePerDaySimple;
+    private double pricePerDaySimple;
     private OwnerEntity owner;
     private List<BookedPeriodEntity> bookedPeriods;
     private CarStatEntity statistics;
     private int trips;
-
-
-
 }
