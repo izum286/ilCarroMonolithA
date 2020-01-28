@@ -1,5 +1,6 @@
 package com.telran.ilcarro.service.comment;
 
+import com.telran.ilcarro.annotaion.CheckForNull;
 import com.telran.ilcarro.model.comment.AddCommentDTO;
 import com.telran.ilcarro.model.comment.FullCommentDTO;
 import com.telran.ilcarro.repository.UserEntityRepository;
@@ -25,6 +26,10 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     UserEntityRepository userEntityRepository;
 
+    /**
+     * TODO
+     * 1.worth adding a annotation for Null @CheckForNull
+     */
     @Override
     public List<FullCommentDTO> getLatestComments(Integer num) {
         try {
@@ -47,7 +52,12 @@ public class CommentServiceImpl implements CommentService {
         }
     }
 
+    /**
+     * TODO
+     * 1. worth adding a annotation for Null @CheckForNull
+     */
     @Override
+    @CheckForNull
     public boolean postComment(String serialNumber, String ownerEmail, AddCommentDTO comment) {
         try {
             //TODO need check
