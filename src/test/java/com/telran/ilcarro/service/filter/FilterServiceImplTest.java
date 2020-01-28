@@ -96,17 +96,34 @@ class FilterServiceImplTest {
     @Test
     void mergeNodes() {
         init();
-        doReturn(Optional.of(rootNode)).when(filterRepository).findById("root");
         assertDoesNotThrow(()->filterService.mergeNodes(filterNodeEntity,filterNodeEntityToMerge));
-//        System.out.println(filterNodeEntity);
+        assertEquals("3",filterNodeEntity.getChilds().get(0).getValue());
+        assertEquals("6",filterNodeEntity.getChilds().get(1).getChilds().get(0).getValue());
     }
 
     @Test
     void findNextIndx() {
+        init();
+        int i = assertDoesNotThrow(()->filterService.findNextIndx(filterNodeEntity,filterNodeEntityToMerge));
+        assertEquals(1,i);
     }
 
     @Test
-    void deleteFilters() {
+    void findNextIndxIfFirstArgIsNull() {
+        init();
+        assertThrows(RuntimeException.class,()->filterService.findNextIndx(null,filterNodeEntityToMerge));
+    }
+
+    @Test
+    void findNextIndxIfSecondArgIsNull() {
+        init();
+        assertThrows(RuntimeException.class,()->filterService.findNextIndx(filterNodeEntity,null));
+    }
+
+    @Test
+    void findNextIndxIfAllArgsNull() {
+        init();
+        assertThrows(RuntimeException.class,()->filterService.findNextIndx(null,null));
     }
 
     @Before
