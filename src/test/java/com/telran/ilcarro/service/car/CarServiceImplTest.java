@@ -137,9 +137,9 @@ class CarServiceImplTest {
             assertNotEquals("2L", carDTOResponse.getEngine());
             assertNotEquals("5",carDTOResponse.getDoors());
             assertNotEquals("96",carDTOResponse.getHorsePower());
-            assertEquals(fullCarEntity.getEngine(),carDTOResponse.getEngine());
-            assertEquals(fullCarEntity.getHorsePower(),carDTOResponse.getHorsePower());
-            assertEquals(fullCarEntity.getDoors(),carDTOResponse.getDoors());
+            assertEquals("1.6V",carDTOResponse.getEngine());
+            assertEquals(10000,carDTOResponse.getHorsePower());
+            assertEquals(8,carDTOResponse.getDoors());
         });
     }
 
