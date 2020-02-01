@@ -1,21 +1,29 @@
 package com.telran.ilcarro.service.search;
 
 import com.telran.ilcarro.model.car.FeatureDto;
+import com.telran.ilcarro.model.car.FullCarDTOResponse;
 import com.telran.ilcarro.model.car.PickUpPlaceDto;
+import com.telran.ilcarro.model.car.SearchResponse;
+import com.telran.ilcarro.model.filter.FilterDTO;
 import com.telran.ilcarro.repository.CarRepository;
 import com.telran.ilcarro.repository.FilterRepository;
 import com.telran.ilcarro.repository.entity.*;
 import com.telran.ilcarro.service.mapper.FeatureMapper;
 import com.telran.ilcarro.service.mapper.OwnerMapper;
 import org.junit.Before;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatcher;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
@@ -25,6 +33,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -43,15 +53,31 @@ class SearchServiceImplTest {
     private FullCarEntity fullCarEntity2;
     private FullCarEntity fullCarEntity3;
     private UserEntity userEntity;
-    private PageImpl<FullCarEntity> pageForResponse;
+    private Page<FullCarEntity> pageForResponse;
+    private FilterDTO filterDTO;
 
     @Test
     void cityDatesPriceSortByPrice() {
-
+//        init();
+//        when(carRepository.cityDatesPriceSortByPrice(eq("2314.43333"),eq("3323.431234"),
+//                eq(100),any(),any(),eq(50),eq(1000),eq(PageRequest.of(1,3)),eq(false)))
+//                .thenReturn(pageForResponse);
+//
+//        SearchResponse check = assertDoesNotThrow(()->searchService.cityDatesPriceSortByPrice(
+//                "2314.43333","3323.431234",100,
+//                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+//                50,1000,false,3,1));
+//        List<FullCarDTOResponse> toCheck = check.getCars();
+//        assertEquals(3,toCheck.size());
     }
 
     @Test
     void geoAndRadius() {
+        init();
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
+        SearchResponse check = searchService.geoAndRadius("234235.235235","3345.562345235","1000",3,1);
+        List<FullCarDTOResponse> toCheck = check.getCars();
+        assertEquals(3,toCheck.size());
     }
 
     @Test
@@ -64,6 +90,18 @@ class SearchServiceImplTest {
 
     @Before
     public void init(){
+
+        filterDTO = FilterDTO.builder()
+                .engine("2l")
+                .fuel("kerosine")
+                .fuel_consumption("1L/100Km")
+                .gear("manual")
+                .horsepower("96")
+                .make("mazda")
+                .model("3")
+                .wheels_drive("FWD")
+                .year("2010")
+                .build();
 
         List<FeatureDto> featureDtos = List.of(
                 FeatureDto.builder().feature("MAGNITOLA!!!").build(),
@@ -257,7 +295,9 @@ class SearchServiceImplTest {
         list.add(fullCarEntity2);
         list.add(fullCarEntity3);
 
-        pageForResponse = new PageImpl(list, PageRequest.of(1,3),list.size());
+        PageRequest pageRequest = PageRequest.of(1,3);
+
+        pageForResponse = new PageImpl<>(list,pageRequest,3);
 
     }
 }
