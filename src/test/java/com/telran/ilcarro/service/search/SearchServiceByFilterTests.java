@@ -1,14 +1,19 @@
 package com.telran.ilcarro.service.search;
 
 import com.telran.ilcarro.model.car.FeatureDto;
+import com.telran.ilcarro.model.car.FullCarDTOResponse;
 import com.telran.ilcarro.model.car.PickUpPlaceDto;
+import com.telran.ilcarro.model.car.SearchResponse;
 import com.telran.ilcarro.model.filter.FilterDTO;
 import com.telran.ilcarro.repository.CarRepository;
 import com.telran.ilcarro.repository.FilterRepository;
 import com.telran.ilcarro.repository.entity.*;
+import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
+import com.telran.ilcarro.service.exceptions.ServiceException;
 import com.telran.ilcarro.service.mapper.FeatureMapper;
 import com.telran.ilcarro.service.mapper.OwnerMapper;
 import org.junit.Before;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,10 +30,108 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class SearchServiceByFilterTests {
+
+    @Test
+    void byFilter() {
+        init();
+        doReturn(pageForResponse).when(carRepository).byFilter(any(),any());
+        SearchResponse check = assertDoesNotThrow(()->searchService.byFilter(filterDTO,3,1));
+        List<FullCarDTOResponse> toCheck = check.getCars();
+        assertEquals(3,toCheck.size());
+    }
+
+    @Test
+    void byFilterWithAllFieldsOfDtoIsNulls(){
+        init();
+        doReturn(pageForResponse).when(carRepository).byFilter(any(),any());
+        FilterDTO tmp = new FilterDTO();
+        assertThrows(ServiceException.class,()->searchService.byFilter(tmp,3,1));
+    }
+
+    @Test
+    void byFilterIfItemsOnPageIsNegativeValue(){
+        init();
+        doReturn(pageForResponse).when(carRepository).byFilter(any(),any());
+        assertThrows(ServiceException.class,()->searchService.byFilter(filterDTO,-5,1));
+    }
+
+    @Test
+    void byFilterIfItemsOnPageMoreThanMaxInteger(){
+        init();
+        doReturn(pageForResponse).when(carRepository).byFilter(any(),any());
+        assertThrows(ServiceException.class,()->searchService.byFilter(filterDTO,Integer.MAX_VALUE+1,1));
+    }
+
+    @Test
+    void byFilterIfItemsOnPageLesThenMinInteger(){
+        init();
+        doReturn(pageForResponse).when(carRepository).byFilter(any(),any());
+        assertThrows(ServiceException.class,()->searchService.byFilter(filterDTO,Integer.MIN_VALUE-1,1));
+    }
+
+    @Test
+    void byFilterIfCurrPageIsNegativeValue(){
+        init();
+        doReturn(pageForResponse).when(carRepository).byFilter(any(),any());
+        assertThrows(ServiceException.class,()->searchService.byFilter(filterDTO,3,-5));
+    }
+
+    @Test
+    void byFilterIfCurrPageMoreThanMaxInteger(){
+        init();
+        doReturn(pageForResponse).when(carRepository).byFilter(any(),any());
+        assertThrows(ServiceException.class,()->searchService.byFilter(filterDTO,3,Integer.MAX_VALUE+1));
+    }
+
+    @Test
+    void byFilterIfCurrPageLessThanMinInteger(){
+        init();
+        doReturn(pageForResponse).when(carRepository).byFilter(any(),any());
+        assertThrows(ServiceException.class,()->searchService.byFilter(filterDTO,3,Integer.MIN_VALUE-1));
+    }
+
+    @Test
+    void byFilterIfCurrPageIsNull(){
+        init();
+        doReturn(pageForResponse).when(carRepository).byFilter(any(),any());
+        assertThrows(ServiceException.class,()->searchService.byFilter(filterDTO,3,0));
+    }
+
+    @Test
+    void byFilterIfItemsOnPageIsNull(){
+        init();
+        doReturn(pageForResponse).when(carRepository).byFilter(any(),any());
+        assertThrows(ServiceException.class,()->searchService.byFilter(filterDTO,0,1));
+    }
+
+    @Test
+    void byFilterIfDtoIsNull(){
+        init();
+        doReturn(pageForResponse).when(carRepository).byFilter(any(),any());
+        assertThrows(ServiceException.class,()->searchService.byFilter(null,3,1));
+    }
+
+    @Test
+    void byFilterIfAllArgsIsNull(){
+        init();
+        doReturn(pageForResponse).when(carRepository).byFilter(any(),any());
+        assertThrows(ServiceException.class,()->searchService.byFilter(null,0,0));
+    }
+
+    @Test
+    void byFilterIfCarsNotFound(){
+        List<FullCarEntity> tmp = new ArrayList<>();
+        doReturn(new PageImpl<>(tmp)).when(carRepository).byFilter(any(),any());
+        assertThrows(NotFoundServiceException.class,()->searchService.byFilter(filterDTO,3,1));
+    }
 
     @Autowired
     SearchService searchService;
