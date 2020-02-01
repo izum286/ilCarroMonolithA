@@ -90,6 +90,13 @@ class SearchServiceImplTest {
 
     @Test
     void searchAllSortByPrice() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        SearchResponse check = assertDoesNotThrow(()->searchService.searchAllSortByPrice(3,1,filterDTO,"45235.53235","43454.345345","1000",LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+        List<FullCarDTOResponse> toCheck = check.getCars();
+        assertEquals(3,toCheck.size());
     }
 
     @Before
