@@ -778,7 +778,6 @@ class SearchServiceImplTest {
         init();
         doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
         assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235","45.562345235","1000",3,Integer.MAX_VALUE+1));
-
     }
 
     @Test
@@ -787,6 +786,13 @@ class SearchServiceImplTest {
         doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
         assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235","45.562345235","1000",3,Integer.MIN_VALUE-1));
 
+    }
+
+    @Test
+    void geoAndRadiusIfCarsNotFound(){
+        List<FullCarEntity> tmp = new ArrayList<>();
+        doReturn(new PageImpl<>(tmp)).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
+        assertThrows(NotFoundServiceException.class,()->searchService.geoAndRadius("35.235235","45.562345235","1000",3,1));
     }
 
     //*********************************************************************************************************************************
@@ -799,6 +805,61 @@ class SearchServiceImplTest {
         SearchResponse check = assertDoesNotThrow(()->searchService.byFilter(filterDTO,3,1));
         List<FullCarDTOResponse> toCheck = check.getCars();
         assertEquals(3,toCheck.size());
+    }
+
+    @Test
+    void byFilterWithAllFieldsOfDtoIsNulls(){
+
+    }
+
+    @Test
+    void byFilterIfItemsOnPageIsNegativeValue(){
+
+    }
+
+    @Test
+    void byFilterIfItemsOnPageMoreThanMaxInteger(){
+
+    }
+
+    @Test
+    void byFilterIfItemsOnPageLesThenMinInteger(){
+
+    }
+
+    @Test
+    void byFilterIfCurrPageIsNegativeValue(){
+
+    }
+
+    @Test
+    void byFilterIfCurrPageMoreThanMaxInteger(){
+
+    }
+
+    @Test
+    void byFilterIfCurrPageLessThanMinInteger(){
+
+    }
+
+    @Test
+    void byFilterIfCurrPageIsNull(){
+
+    }
+
+    @Test
+    void byFilterIfItemsOnPageIsNull(){
+
+    }
+
+    @Test
+    void byFilterIfDtoIsNull(){
+
+    }
+
+    @Test
+    void byFilterIfAllArgsIsNull(){
+
     }
 
     //*********************************************************************************************************************************
