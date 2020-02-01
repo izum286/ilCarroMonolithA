@@ -1,11 +1,7 @@
 package com.telran.ilcarro.service.search;
 
-import com.telran.ilcarro.model.car.BookedPeriodDto;
 import com.telran.ilcarro.model.car.FeatureDto;
-import com.telran.ilcarro.model.car.FullCarDTOResponse;
 import com.telran.ilcarro.model.car.PickUpPlaceDto;
-import com.telran.ilcarro.model.user.OwnerDtoResponse;
-import com.telran.ilcarro.model.user.PersonWhoBookedDto;
 import com.telran.ilcarro.repository.CarRepository;
 import com.telran.ilcarro.repository.FilterRepository;
 import com.telran.ilcarro.repository.entity.*;
@@ -19,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
@@ -29,8 +25,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -49,9 +43,11 @@ class SearchServiceImplTest {
     private FullCarEntity fullCarEntity2;
     private FullCarEntity fullCarEntity3;
     private UserEntity userEntity;
+    private PageImpl<FullCarEntity> pageForResponse;
 
     @Test
     void cityDatesPriceSortByPrice() {
+
     }
 
     @Test
@@ -255,6 +251,13 @@ class SearchServiceImplTest {
                 .owner(ownerEntity)
                 .pricePerDaySimple(100)
                 .build();
+
+        List<FullCarEntity> list = new ArrayList<>();
+        list.add(fullCarEntity1);
+        list.add(fullCarEntity2);
+        list.add(fullCarEntity3);
+
+        pageForResponse = new PageImpl(list, PageRequest.of(1,3),list.size());
 
     }
 }
