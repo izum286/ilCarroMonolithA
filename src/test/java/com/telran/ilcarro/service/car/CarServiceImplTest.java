@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;
@@ -59,6 +60,7 @@ class CarServiceImplTest {
     private OwnerEntity ownerEntity;
     private AddUpdateCarDtoRequest addUpdateCarDtoRequest;
     private BookRequestDTO bookRequestDTO;
+    private BookedPeriodEntity bookedPeriodEntityForTestBookedData;
 
 
     @Test
@@ -479,6 +481,27 @@ class CarServiceImplTest {
     }
 
     @Test
+    void makeReservationIfCarAlreadyBookedWithCurrentDate(){
+        init();
+        //*****************************************************
+        List<BookedPeriodEntity> listtmp = new ArrayList<>();
+        listtmp.add(bookedPeriodEntityForTestBookedData);
+        fullCarEntity.setBookedPeriods(listtmp);
+        bookRequestDTO.setStart_date_time(LocalDateTime.now());
+        bookRequestDTO.setEnd_date_time(LocalDateTime.now().plusMonths(1));
+        bookRequestDTO.setPerson_who_booked(PersonWhoBookedDto.builder()
+                .phone("5246246245")
+                .email("jigurda@mail.com")
+                .first_name("Nikita")
+                .second_name("Jigurda")
+                .build());
+        //*****************************************************
+        doReturn(Optional.of(fullCarEntity)).when(carRepository).findById("32-222-23");
+        doReturn(Optional.of(userEntity)).when(userRepository).findById(anyString());
+        assertThrows(ConflictServiceException.class,()->carService.makeReservation("32-222-23",bookRequestDTO,"jigurda@mail.com"));
+    }
+
+    @Test
     void getThreeBestCars() {
         init();
         doReturn(List.of(fullCarEntity,car2,car3)).when(carRepository).findAll();
@@ -500,6 +523,24 @@ class CarServiceImplTest {
 
     @Before
     public void init() {
+
+        bookedPeriodEntityForTestBookedData = BookedPeriodEntity.builder()
+                .active(true)
+                .carId("32-222-23")
+                .startDateTime(LocalDateTime.now().minusDays(1))
+                .personWhoBooked(PersonWhoBooked.builder()
+                        .second_name("Pupkin")
+                        .phone("12345678")
+                        .first_name("Vasya")
+                        .email("vasyapupkin1234@mail.com")
+                        .build())
+                .orderId(UUID.randomUUID().toString())
+                .endDateTime(LocalDateTime.now().minusDays(20))
+                .amount(2000)
+                .bookingDate(LocalDateTime.now().minusDays(2))
+                .paid(true)
+                .build();
+
         List<String> carSerialLiesList = new ArrayList<>();
         List<BookedPeriodEntity> bookedPeriodLieList = new ArrayList<>();
         bookedPeriodLieList.add(BookedPeriodEntity.builder()

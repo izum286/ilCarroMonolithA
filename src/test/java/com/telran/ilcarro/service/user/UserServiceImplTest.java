@@ -130,6 +130,16 @@ class UserServiceImplTest {
     }
 
     @Test
+    void updateUserIfNameAndSecondNameIsEmptyString(){
+        init();
+        doReturn(Optional.of(userEntity)).when(userRepository).findById("vasyapupkin1234@mail.com");
+        doReturn(true).when(userDetailsRepository).existsById("vasyapupkin1234@mail.com");
+        updUserDTO.setFirstName("");
+        updUserDTO.setLastName("");
+        assertThrows(ServiceException.class,()->userService.updateUser("vasyapupkin1234@mail.com",updUserDTO));
+    }
+
+    @Test
     void updateUserIfEmailNull() {
         init();
         assertThrows(ServiceException.class, () -> userService.updateUser(null, updUserDTO));
