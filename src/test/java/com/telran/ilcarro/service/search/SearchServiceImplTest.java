@@ -9,6 +9,8 @@ import com.telran.ilcarro.repository.CarRepository;
 import com.telran.ilcarro.repository.CarRepositoryCustom;
 import com.telran.ilcarro.repository.FilterRepository;
 import com.telran.ilcarro.repository.entity.*;
+import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
+import com.telran.ilcarro.service.exceptions.ServiceException;
 import com.telran.ilcarro.service.mapper.FeatureMapper;
 import com.telran.ilcarro.service.mapper.OwnerMapper;
 import org.junit.Before;
@@ -69,6 +71,374 @@ class SearchServiceImplTest {
         List<FullCarDTOResponse> toCheck = check.getCars();
         assertEquals(3,toCheck.size());
     }
+
+    @Test
+    void cityDatesPriceSortByPriceWithAllArgsNull(){
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(0,0,null,null,null,null,null,null,0,0,true));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceWithNullItemsOnPage(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                "2314.43333","3323.431234",100,
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false,0,1));
+    }
+
+
+    @Test
+    void cityDatesPriceSortByPriceIfCurrPageIsNull() {
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                "2314.43333","3323.431234",100,
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false,1,0));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceWithEmptyLong(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                "42352.542335","",100,
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceWithEmptyLat(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                "","42352.542335",100,
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceWithEmptyLongAndLat(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                "","",100,
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceWithRadiusMinusValue(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                "4235.54245","5434534.634534",-1000,
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceWithRadiusMoreThenMaxDouble(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                "4235.54245","5434534.634534",Double.MAX_VALUE+1,
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false,3,1));
+    }
+    @Test
+    void cityDatesPriceSortByPriceWithRadiusLessThenMinDouble(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                "4235.54245","5434534.634534",Double.MIN_VALUE-1,
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceWithNullStartDate(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                "4235.54245","5434534.634534",1000,
+               null,LocalDateTime.now().plusHours(3),
+                50,1000,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceWithNullEndDate(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                "4235.54245","5434534.634534",1000,
+                LocalDateTime.now().plusHours(1),null,
+                50,1000,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceWithNullAddDates(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                "4235.54245","5434534.634534",1000,
+                null,null,
+                50,1000,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceWithMinPriceWithMinusValue(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                "2314.43333","3323.431234",100,
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                -100,1000,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceWithMaxPriceWithMinusValue(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                "2314.43333","3323.431234",100,
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                500,-1000,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceWithMaxAndMinPriceWithMinusValue(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                "2314.43333","3323.431234",100,
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                -1500,-1000,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceIfMinPriceMoreThenMaxPrice(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                "2314.43333","3323.431234",100,
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                1000,50,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceIfStartDateMoreThenEndData(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                "2314.43333","3323.431234",100,
+                LocalDateTime.now().plusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceIfLatitudeIsNotValidData(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                "vasyapupkin1234@mail.com","3323.431234",100,
+                LocalDateTime.now().plusHours(1),LocalDateTime.now().plusHours(3),
+                50,1000,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceIfLongitudeIsNotValidData(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                "3323.431234","vasyapupkin1234@mail.com",100,
+                LocalDateTime.now().plusHours(1),LocalDateTime.now().plusHours(3),
+                50,1000,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceIfLatitudeAndLongitudeIsNotValidData(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                NullPointerException.class.getName(),"vasyapupkin1234@mail.com",100,
+                LocalDateTime.now().plusHours(1),LocalDateTime.now().plusHours(3),
+                50,1000,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceIfCarsNotFound(){
+        init();
+        List<FullCarEntity> tmp = new ArrayList<>();
+        doReturn(new PageImpl<FullCarEntity>(tmp)).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(NotFoundServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                "2314.43333","3323.431234",100,
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceWithArgsNumber1IsNull(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                null,"3323.431234",100,
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceWithArgsNumber2IsNull(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                "2314.43333",null,100,
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceWithArgsNumber1_2IsNull(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                null,null,100,
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceWithArgsNumber1_2_4IsNull(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                null,null,100,
+                null,LocalDateTime.now().plusHours(3),
+                50,1000,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceWithArgsNumber1_2_5IsNull(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                null,null,100,
+                LocalDateTime.now().minusDays(2),null,
+                50,1000,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceWithArgsNumber1_4_5IsNull(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                null,"3323.431234",100,
+                null,null,
+                50,1000,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceWithArgsNumber4_5IsNull(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                "2314.43333","3323.431234",100,
+                null,null,
+                50,1000,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceWithArgsNumber5IsNull(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                "2314.43333","3323.431234",100,
+                LocalDateTime.now().minusDays(2),null,
+                50,1000,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceWithArgsNumber4IsNull(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                "2314.43333","3323.431234",100,
+                null,LocalDateTime.now().plusHours(3),
+                50,1000,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceWithArgsNumber1_4IsNull(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                null,"3323.431234",100,
+                null,LocalDateTime.now().plusHours(3),
+                50,1000,false,3,1));
+    }
+
+    @Test
+    void cityDatesPriceSortByPriceWithArgsNumber1_5IsNull(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                null,"3323.431234",100,
+                LocalDateTime.now().minusDays(2),null,
+                50,1000,false,3,1));
+    }
+    @Test
+    void cityDatesPriceSortByPriceWithArgsNumber2_4IsNull(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                "2314.43333",null,100,
+                null,LocalDateTime.now().plusHours(3),
+                50,1000,false,3,1));
+    }
+    @Test
+    void cityDatesPriceSortByPriceWithArgsNumber2_5IsNull(){
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.cityDatesPriceSortByPrice(
+                "2314.43333",null,100,
+                LocalDateTime.now().minusDays(2),null,
+                50,1000,false,3,1));
+    }
+
 
     @Test
     void geoAndRadius() {
