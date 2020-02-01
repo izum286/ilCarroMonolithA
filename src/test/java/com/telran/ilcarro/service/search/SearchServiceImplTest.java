@@ -59,6 +59,8 @@ class SearchServiceImplTest {
     private Page<FullCarEntity> pageForResponse;
     private FilterDTO filterDTO;
 
+    //******************************************************************************************************************
+
     @Test
     void cityDatesPriceSortByPrice() {
         init();
@@ -145,7 +147,7 @@ class SearchServiceImplTest {
     }
 
     @Test
-    void cityDatesPriceSortByPriceWithRadiusMoreThenMaxDouble(){
+    void cityDatesPriceSortByPriceWithRadiusMoreThanMaxDouble(){
         init();
         doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
                 anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
@@ -155,7 +157,7 @@ class SearchServiceImplTest {
                 50,1000,false,3,1));
     }
     @Test
-    void cityDatesPriceSortByPriceWithRadiusLessThenMinDouble(){
+    void cityDatesPriceSortByPriceWithRadiusLessThanMinDouble(){
         init();
         doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
                 anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
@@ -232,7 +234,7 @@ class SearchServiceImplTest {
     }
 
     @Test
-    void cityDatesPriceSortByPriceIfMinPriceMoreThenMaxPrice(){
+    void cityDatesPriceSortByPriceIfMinPriceMoreThanMaxPrice(){
         init();
         doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
                 anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
@@ -243,7 +245,7 @@ class SearchServiceImplTest {
     }
 
     @Test
-    void cityDatesPriceSortByPriceIfStartDateMoreThenEndData(){
+    void cityDatesPriceSortByPriceIfStartDateMoreThanEndData(){
         init();
         doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
                 anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
@@ -290,7 +292,7 @@ class SearchServiceImplTest {
     void cityDatesPriceSortByPriceIfCarsNotFound(){
         init();
         List<FullCarEntity> tmp = new ArrayList<>();
-        doReturn(new PageImpl<FullCarEntity>(tmp)).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+        doReturn(new PageImpl<>(tmp)).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
                 anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
         assertThrows(NotFoundServiceException.class,()->searchService.cityDatesPriceSortByPrice(
                 "14.43333","23.431234",100,
@@ -450,8 +452,9 @@ class SearchServiceImplTest {
                 50,1000,false,-1,1));
     }
 
+    //TODO message is "errPage size must not be less than one" but we check More maxInteger
     @Test
-    void cityDatesPriceSortByPriceWithItemsOnPageWithMoreThenMaxIntegerValue(){
+    void cityDatesPriceSortByPriceWithItemsOnPageWithMoreThanMaxIntegerValue(){
         init();
         doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
                 anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
@@ -462,7 +465,7 @@ class SearchServiceImplTest {
     }
 
     @Test
-    void cityDatesPriceSortByPriceWithItemsOnPageWithLessThenMinIntegerValue(){
+    void cityDatesPriceSortByPriceWithItemsOnPageWithLessThanMinIntegerValue(){
         init();
         doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
                 anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
@@ -473,7 +476,7 @@ class SearchServiceImplTest {
     }
 
     @Test
-    void cityDatesPriceSortByPriceWithCurrPageWithMoreThenMaxIntegerValue(){
+    void cityDatesPriceSortByPriceWithCurrPageWithMoreThanMaxIntegerValue(){
         init();
         doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
                 anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
@@ -484,7 +487,7 @@ class SearchServiceImplTest {
     }
 
     @Test
-    void cityDatesPriceSortByPriceWithCurrPageWithLessThenMinIntegerValue(){
+    void cityDatesPriceSortByPriceWithCurrPageWithLessThanMinIntegerValue(){
         init();
         doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
                 anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
@@ -577,7 +580,7 @@ class SearchServiceImplTest {
     }
 
     @Test
-    void cityDatesPriceSortByPriceIfAltitudeMoreThen90(){
+    void cityDatesPriceSortByPriceIfAltitudeMoreThan90(){
         init();
         LocalDateTime now = LocalDateTime.now();
         doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
@@ -589,7 +592,7 @@ class SearchServiceImplTest {
     }
 
     @Test
-    void cityDatesPriceSortByPriceIfAltitudeLessThenNegative90(){
+    void cityDatesPriceSortByPriceIfAltitudeLessThanNegative90(){
         init();
         LocalDateTime now = LocalDateTime.now();
         doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
@@ -601,7 +604,7 @@ class SearchServiceImplTest {
     }
 
     @Test
-    void cityDatesPriceSortByPriceIfLatitudeMoreThen180(){
+    void cityDatesPriceSortByPriceIfLatitudeMoreThan180(){
         init();
         LocalDateTime now = LocalDateTime.now();
         doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
@@ -613,7 +616,7 @@ class SearchServiceImplTest {
     }
 
     @Test
-    void cityDatesPriceSortByPriceIfLatitudeLessThenNegative180(){
+    void cityDatesPriceSortByPriceIfLatitudeLessThanNegative180(){
         init();
         LocalDateTime now = LocalDateTime.now();
         doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
@@ -624,15 +627,170 @@ class SearchServiceImplTest {
                 50,1000,false,3,1));
     }
 
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
 
     @Test
     void geoAndRadius() {
         init();
         doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
-        SearchResponse check = assertDoesNotThrow(()->searchService.geoAndRadius("234235.235235","3345.562345235","1000",3,1));
+        SearchResponse check = assertDoesNotThrow(()->searchService.geoAndRadius("35.235235","45.562345235","1000",3,1));
         List<FullCarDTOResponse> toCheck = check.getCars();
         assertEquals(3,toCheck.size());
     }
+
+    @Test
+    void geoAndRadiusWithAllArgsNull(){
+        init();
+        assertThrows(ServiceException.class,()->searchService.geoAndRadius(null,null,null,0,0));
+    }
+
+    @Test
+    void geoAndRadiusWithLatArgIsNull(){
+        init();
+        assertThrows(ServiceException.class,()->searchService.geoAndRadius(null,"45.562345235","1000",3,1));
+
+    }
+
+    @Test
+    void geoAndRadiusWithLongArgIsNull(){
+        init();
+        assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235",null,"1000",3,1));
+
+    }
+
+    @Test
+    void geoAndRadiusWithLatAndLongArgsIsNull(){
+        init();
+        assertThrows(ServiceException.class,()->searchService.geoAndRadius(null,null,"1000",3,1));
+
+    }
+
+    @Test
+    void geoAndRadiusWithLatAndRadiusArgsIsNull(){
+        init();
+        assertThrows(ServiceException.class,()->searchService.geoAndRadius(null,"45.562345235",null,3,1));
+
+    }
+
+    @Test
+    void geoAndRadiusWithLongAndRadiusArgsIsNull(){
+        init();
+        assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235",null,null,3,1));
+
+    }
+
+    @Test
+    void geoAndRadiusWithRadiusIsNull(){
+        init();
+        assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235","45.562345235",null,3,1));
+
+    }
+
+    @Test
+    void geoAndRadiusIfRadiusMoreThanMaxValue(){
+        init();
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
+        Double tmp = Double.MAX_VALUE+1;
+        assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235","45.562345235",tmp.toString(),3,1));
+
+    }
+
+    @Test
+    void geoAndRadiusIfRadiusLessThanMinValue(){
+        init();
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
+        Double tmp = Double.MIN_VALUE-1;
+        assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235","45.562345235",tmp.toString(),3,1));
+
+    }
+
+    @Test
+    void geoAndRadiusIfLatitudeMoreThan90(){
+        init();
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
+        assertThrows(ServiceException.class,()->searchService.geoAndRadius("135.235235","45.562345235","1000",3,1));
+    }
+
+    @Test
+    void geoAndRadiusIfLatitudeLessThanNegative90(){
+        init();
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
+        assertThrows(ServiceException.class,()->searchService.geoAndRadius("-835.235235","45.562345235","1000",3,1));
+
+    }
+
+    @Test
+    void geoAndRadiusIfLongitudeMoreThan180(){
+        init();
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
+        assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235","545.562345235","1000",3,1));
+
+    }
+
+    @Test
+    void geoAndRadiusIfLongitudeLessThanNegative180(){
+        init();
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
+        assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235","-545.562345235","1000",3,1));
+
+    }
+
+    @Test
+    void geoAndRadiusIfLatitudeAndLongitudeIsNegativeValues(){
+        init();
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
+        assertDoesNotThrow(()->searchService.geoAndRadius("-35.235235","-45.562345235","1000",3,1));
+    }
+
+    @Test
+    void geoAndRadiusIfItemsOnPageIsNegative(){
+        init();
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
+        assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235","45.562345235","1000",-3,1));
+    }
+
+    @Test
+    void geoAndRadiusIfItemsOnPageIsMoreThanMaxValue(){
+        init();
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
+        assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235","45.562345235","1000",Integer.MAX_VALUE+1,1));
+
+    }
+
+    @Test
+    void geoAndRadiusIfItemsOnPageIsLessThanMinValue(){
+        init();
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
+        assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235","45.562345235","1000",Integer.MIN_VALUE-1,1));
+    }
+
+    @Test
+    void geoAndRadiusIfCurrPageIsNegativeValue(){
+        init();
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
+        assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235","45.562345235","1000",3,-1));
+
+    }
+
+    @Test
+    void geoAndRadiusIfCurrPageMoreThanMaxValue(){
+        init();
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
+        assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235","45.562345235","1000",3,Integer.MAX_VALUE+1));
+
+    }
+
+    @Test
+    void geoAndRadiusIfCurrPageLessThanMinValue(){
+        init();
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
+        assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235","45.562345235","1000",3,Integer.MIN_VALUE-1));
+
+    }
+
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
 
     @Test
     void byFilter() {
@@ -642,6 +800,9 @@ class SearchServiceImplTest {
         List<FullCarDTOResponse> toCheck = check.getCars();
         assertEquals(3,toCheck.size());
     }
+
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
 
     @Test
     void searchAllSortByPrice() {
@@ -653,6 +814,8 @@ class SearchServiceImplTest {
         List<FullCarDTOResponse> toCheck = check.getCars();
         assertEquals(3,toCheck.size());
     }
+
+    //*********************************************************************************************************************************
 
     @Before
     public void init(){
