@@ -81,6 +81,11 @@ class SearchServiceImplTest {
 
     @Test
     void byFilter() {
+        init();
+        doReturn(pageForResponse).when(carRepository).byFilter(any(),any());
+        SearchResponse check = assertDoesNotThrow(()->searchService.byFilter(filterDTO,3,1));
+        List<FullCarDTOResponse> toCheck = check.getCars();
+        assertEquals(3,toCheck.size());
     }
 
     @Test
