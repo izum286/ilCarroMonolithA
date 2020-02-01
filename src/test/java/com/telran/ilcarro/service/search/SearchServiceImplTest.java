@@ -6,6 +6,7 @@ import com.telran.ilcarro.model.car.PickUpPlaceDto;
 import com.telran.ilcarro.model.car.SearchResponse;
 import com.telran.ilcarro.model.filter.FilterDTO;
 import com.telran.ilcarro.repository.CarRepository;
+import com.telran.ilcarro.repository.CarRepositoryCustom;
 import com.telran.ilcarro.repository.FilterRepository;
 import com.telran.ilcarro.repository.entity.*;
 import com.telran.ilcarro.service.mapper.FeatureMapper;
@@ -58,24 +59,22 @@ class SearchServiceImplTest {
 
     @Test
     void cityDatesPriceSortByPrice() {
-//        init();
-//        when(carRepository.cityDatesPriceSortByPrice(eq("2314.43333"),eq("3323.431234"),
-//                eq(100),any(),any(),eq(50),eq(1000),eq(PageRequest.of(1,3)),eq(false)))
-//                .thenReturn(pageForResponse);
-//
-//        SearchResponse check = assertDoesNotThrow(()->searchService.cityDatesPriceSortByPrice(
-//                "2314.43333","3323.431234",100,
-//                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
-//                50,1000,false,3,1));
-//        List<FullCarDTOResponse> toCheck = check.getCars();
-//        assertEquals(3,toCheck.size());
+        init();
+        doReturn(pageForResponse).when(carRepository).cityDatesPriceSortByPrice(anyString(),anyString(),
+                anyDouble(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        SearchResponse check = assertDoesNotThrow(()->searchService.cityDatesPriceSortByPrice(
+                "2314.43333","3323.431234",100,
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false,3,1));
+        List<FullCarDTOResponse> toCheck = check.getCars();
+        assertEquals(3,toCheck.size());
     }
 
     @Test
     void geoAndRadius() {
         init();
         doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
-        SearchResponse check = searchService.geoAndRadius("234235.235235","3345.562345235","1000",3,1);
+        SearchResponse check = assertDoesNotThrow(()->searchService.geoAndRadius("234235.235235","3345.562345235","1000",3,1));
         List<FullCarDTOResponse> toCheck = check.getCars();
         assertEquals(3,toCheck.size());
     }
