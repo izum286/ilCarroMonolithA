@@ -900,10 +900,786 @@ class SearchServiceImplTest {
         init();
         doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
                 any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
-        SearchResponse check = assertDoesNotThrow(()->searchService.searchAllSortByPrice(3,1,filterDTO,"45235.53235","43454.345345","1000",LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+        SearchResponse check = assertDoesNotThrow(()->searchService.searchAllSortByPrice(3,1,filterDTO,"35.53235","54.345345","1000",LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
                 50,1000,false));
         List<FullCarDTOResponse> toCheck = check.getCars();
         assertEquals(3,toCheck.size());
+    }
+
+    @Test
+    void searchAllSortByPriceIfItemsOnPageIsNegative() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(-3,1,filterDTO,"35.53235","54.345345","1000",LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfItemsOnPageMoreThanMaxInteger() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(Integer.MAX_VALUE+1,1,filterDTO,"35.53235","54.345345","1000",LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfItemsOnPageLessThanMinInteger() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(Integer.MIN_VALUE-1,1,filterDTO,"35.53235","54.345345","1000",LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfCurrPageIsNegativeValue() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,-21,filterDTO,"35.53235","54.345345","1000",LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfCurrPageMoreThanMaxInteger() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,Integer.MAX_VALUE+1,filterDTO,"35.53235","54.345345","1000",LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfCurrPageLessTheMinInteger() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,Integer.MIN_VALUE-1,filterDTO,"35.53235","54.345345","1000",LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfDtoIsNull() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,null,"35.53235","54.345345","1000",LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfDtoHaveOnlyNullFields() {
+        init();
+        FilterDTO tmp = new FilterDTO();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,tmp,"35.53235","54.345345","1000",LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfLatitudeIsNull() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,null,"54.345345","1000",
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfLongitudeIsNull(){
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235",null,"1000",
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfLatitudeAndLongitudeIsNull() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,null,null,"1000",
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfLatitudeHaveNotValidValue() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,CarRepositoryCustom.class.getName(),"54.345345","1000",
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfLongitudeHaveNotValidValue() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235",NotFoundServiceException.class.getName(),"1000",
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfLatitudeMoreThan90() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"135.53235","54.345345","1000",
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfLatitudeLessThenNegative90() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"-535.53235","54.345345","1000",
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfLongitudeMoreThan180() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235","454.345345","1000",
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfLongitudeLessThen180() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235","-754.345345","1000",
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfAltitudeNadLongitudeIsNegativeValidValues() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"-35.53235","-54.345345","1000",
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfRadiusIsNegativeValue() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235","54.345345","-1000",
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfRadiusIsMoreMaxValue() {
+        init();
+        Double tmp = Double.MAX_VALUE+1;
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235","54.345345",tmp.toString(),
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfRadiusIsLessMinValue() {
+        init();
+        Double tmp = Double.MIN_VALUE-1;
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235","54.345345",tmp.toString(),
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfRadiusIsNotValidValue() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235","54.345345","vasyaPupkinPeredaetPrivet",
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfStartDateMoreThanEndDate() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235","54.345345","1000",
+                LocalDateTime.now().plusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfStartDateValueAndEndDateValueIsMaxValueWithDifferenceDay() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235","54.345345","1000",
+                LocalDateTime.MAX,LocalDateTime.MAX.plusDays(1),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfStartDateValueAndEndDateValueIsMinValueWithDifferenceDay() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235","54.345345","1000",
+                LocalDateTime.MIN.minusDays(1),LocalDateTime.MIN,
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfStartDateIsNull() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235","54.345345","1000",
+                null,LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfEndDateIsNull() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235","54.345345","1000",
+                LocalDateTime.now().minusDays(2),null,
+                50,1000,false));
+
+    }
+
+    @Test
+    void searchAllSortByPriceIfDateIsIdenticallyDates() {
+        init();
+        LocalDateTime now = LocalDateTime.now();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertDoesNotThrow(()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235","54.345345","1000",
+                now,now,
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfMinPriceIsNegative() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235","54.345345","1000",
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                -50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfMinPriceIsMaxValue() {
+        init();
+        Double tmp = Double.MAX_VALUE;
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235","54.345345","1000",
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),tmp,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfMinPriceIsMinValue() {
+        init();
+        Double tmp = Double.MIN_VALUE;
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235","54.345345","1000",
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                tmp,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfMinPriceIsNull() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertDoesNotThrow(()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235","54.345345","1000",
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                0,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfMaxPriceIsNegativeValue() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235","54.345345","1000",
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,-1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfMaxPriceMoreThanMaxValue() {
+        init();
+        Double tmp = Double.MAX_VALUE+1;
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235","54.345345","1000",
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,tmp,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfMaxPriceLessThanMinValue() {
+        init();
+        Double tmp = Double.MIN_VALUE-1;
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235","54.345345","1000",
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,tmp,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfMaxPriceLessThanMinPrice() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235","54.345345","1000",
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,10,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfMaxPriceAndMinPriceIsNull() {
+        init();
+        doReturn(pageForResponse).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertDoesNotThrow(()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235","54.345345","1000",
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                0,0,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfArgsNum_3_4_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                null,null,"54.345345","1000",
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfArgsNum_3_5_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                null,"35.53235",null,"1000",
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfArgsNum_3_6_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                null,"35.53235","54.345345",null,
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_3_7_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                null,"35.53235","54.345345","1000",
+                null,LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_3_8_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                null,"35.53235","54.345345","1000",
+                LocalDateTime.now().minusDays(2),null,
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_4_5_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,null,null,"1000",
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_4_6_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,null,"54.345345",null,
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_4_7_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,null,"54.345345","1000",
+                null,LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_4_8_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,null,"54.345345","1000",
+                LocalDateTime.now().minusDays(2),null,
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_5_6_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235",null,"1000",
+                null,LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_5_7_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235",null,"1000",
+                null,LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_5_8_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235",null,"1000",
+                LocalDateTime.now().minusDays(2),null,
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfArgsNum_6_7_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235","54.345345",null,
+                null,LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_6_8_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235","54.345345",null,
+                LocalDateTime.now().minusDays(2),null,
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_7_8_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235","54.345345","1000",
+                null,null,
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_3_4_5_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                null,null,null,"1000",
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_3_4_6_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                null,null,"54.345345",null,
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_3_4_7_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+               null,null,"54.345345","1000",
+               null,LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_3_4_8_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                null,null,"54.345345","1000",
+                LocalDateTime.now().minusDays(2),null,
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_3_5_6_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                null,"35.53235",null,null,
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_3_5_7_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                null,"35.53235",null,"1000",
+                null,LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_3_5_8_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                null,"35.53235",null,"1000",
+                LocalDateTime.now().minusDays(2),null,
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_3_6_7_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                null,"35.53235","54.345345",null,
+                null,LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_3_6_8_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+               null,"35.53235","54.345345",null,
+                LocalDateTime.now().minusDays(2),null,
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_4_5_6_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,null,null,null,
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_4_5_7_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,null,null,"1000",
+                null,LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_4_5_8_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,null,null,"1000",
+                LocalDateTime.now().minusDays(2),null,
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_4_6_7_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,null,"54.345345",null,
+                null,LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_4_6_8_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,null,"54.345345",null,
+                LocalDateTime.now().minusDays(2),null,
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_5_6_7_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235",null,null,
+                null,LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_5_6_8_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235",null,null,
+                LocalDateTime.now().minusDays(2),null,
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_6_7_8_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235","54.345345",null,
+                null,null,
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_3_4_5_6_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                null,null,null,null,
+                LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_3_4_5_7_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                null,null,null,"1000",
+                null,LocalDateTime.now().minusDays(2),
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_3_4_5_8_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                null,null,null,"1000",
+                LocalDateTime.now().minusDays(2),null,
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_3_5_6_7_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                null,"35.53235",null,null,
+                null,LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_3_5_6_8_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                null,"35.53235",null,null,
+                LocalDateTime.now().minusDays(2),null,
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_3_6_7_8_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                null,"35.53235","54.345345",null,
+                null,null,
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_4_5_6_7_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,null,null,null,
+                null,LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_4_5_6_8_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,null,null,null,
+                LocalDateTime.now().minusDays(2),null,
+                50,1000,false));
+    }
+    @Test
+    void searchAllSortByPriceIfArgsNum_5_6_7_8_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,"35.53235",null,null,
+                null,null,
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfArgsNum_3_4_5_6_7_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                null,null,null,null,
+                null,LocalDateTime.now().plusHours(3),
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfArgsNum_3_4_5_6_8_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                null,null,null,null,
+                LocalDateTime.now().minusDays(2),null,
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfArgsNum_4_5_6_7_8_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                filterDTO,null,null,null,
+                null,null,
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfArgsNum_3_4_5_6_7_8_isNull() {
+        init();
+        assertThrows(ServiceException.class,()->searchService.searchAllSortByPrice(3,1,
+                null,null,null,null,
+                null,null,
+                50,1000,false));
+    }
+
+    @Test
+    void searchAllSortByPriceIfCarsNotFound(){
+        List<FullCarEntity> tmp = new ArrayList<>();
+        doReturn(new PageImpl<>(tmp)).when(carRepository).searchAllSortByPrice(anyInt(),anyInt(),any(),anyString(),
+                any(),anyString(),any(),any(),anyDouble(),anyDouble(),any(),anyBoolean());
+        assertThrows(NotFoundServiceException.class,()->searchService.searchAllSortByPrice(3,1,filterDTO,"35.53235","54.345345","1000",LocalDateTime.now().minusDays(2),LocalDateTime.now().plusHours(3),
+                50,1000,false));
     }
 
     //*********************************************************************************************************************************
