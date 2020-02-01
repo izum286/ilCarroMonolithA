@@ -104,7 +104,7 @@ public class SearchServiceImpl implements  SearchService{
             Page<FullCarEntity> cars  = carRepository
                         .byFilter(filter, PageRequest.of(currentPage,itemsOnPage));
 
-            if (cars == null) throw new RepositoryException("No such Cars according to search request");
+            if (cars == null) throw new NotFoundServiceException("No such Cars according to search request");
             List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> CarMapper.INSTANCE.map(e)).collect(Collectors.toList());
             res.setCars(carDTOResponses);
             res.setCurrentPage(cars.getPageable().getPageNumber());
@@ -113,7 +113,7 @@ public class SearchServiceImpl implements  SearchService{
             res.setMegaFilter(filterService.provideFilter());
             return res;
         } catch (Throwable t) {
-            throw new RepositoryException("Something went wrong");
+            throw new NotFoundServiceException("Something went wrong");
         }
     }
 
