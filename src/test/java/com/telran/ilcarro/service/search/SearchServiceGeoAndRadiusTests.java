@@ -37,171 +37,171 @@ import static org.mockito.Mockito.doReturn;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SearchServiceGeoAndRadiusTests {
+class SearchServiceGeoAndRadiusTests {
 
     @Test
     void geoAndRadius() {
         init();
-        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
-        SearchResponse check = assertDoesNotThrow(()->searchService.geoAndRadius("35.235235","45.562345235","1000",3,1));
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(), any());
+        SearchResponse check = assertDoesNotThrow(() -> searchService.geoAndRadius("35.235235", "45.562345235", "1000", 3, 1));
         List<FullCarDTOResponse> toCheck = check.getCars();
-        assertEquals(3,toCheck.size());
+        assertEquals(3, toCheck.size());
     }
 
     @Test
-    void geoAndRadiusWithAllArgsNull(){
+    void geoAndRadiusWithAllArgsNull() {
         init();
-        assertThrows(ServiceException.class,()->searchService.geoAndRadius(null,null,null,0,0));
+        assertThrows(ServiceException.class, () -> searchService.geoAndRadius(null, null, null, 0, 0));
     }
 
     @Test
-    void geoAndRadiusWithLatArgIsNull(){
+    void geoAndRadiusWithLatArgIsNull() {
         init();
-        assertThrows(ServiceException.class,()->searchService.geoAndRadius(null,"45.562345235","1000",3,1));
+        assertThrows(ServiceException.class, () -> searchService.geoAndRadius(null, "45.562345235", "1000", 3, 1));
 
     }
 
     @Test
-    void geoAndRadiusWithLongArgIsNull(){
+    void geoAndRadiusWithLongArgIsNull() {
         init();
-        assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235",null,"1000",3,1));
+        assertThrows(ServiceException.class, () -> searchService.geoAndRadius("35.235235", null, "1000", 3, 1));
 
     }
 
     @Test
-    void geoAndRadiusWithLatAndLongArgsIsNull(){
+    void geoAndRadiusWithLatAndLongArgsIsNull() {
         init();
-        assertThrows(ServiceException.class,()->searchService.geoAndRadius(null,null,"1000",3,1));
+        assertThrows(ServiceException.class, () -> searchService.geoAndRadius(null, null, "1000", 3, 1));
 
     }
 
     @Test
-    void geoAndRadiusWithLatAndRadiusArgsIsNull(){
+    void geoAndRadiusWithLatAndRadiusArgsIsNull() {
         init();
-        assertThrows(ServiceException.class,()->searchService.geoAndRadius(null,"45.562345235",null,3,1));
+        assertThrows(ServiceException.class, () -> searchService.geoAndRadius(null, "45.562345235", null, 3, 1));
 
     }
 
     @Test
-    void geoAndRadiusWithLongAndRadiusArgsIsNull(){
+    void geoAndRadiusWithLongAndRadiusArgsIsNull() {
         init();
-        assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235",null,null,3,1));
+        assertThrows(ServiceException.class, () -> searchService.geoAndRadius("35.235235", null, null, 3, 1));
 
     }
 
     @Test
-    void geoAndRadiusWithRadiusIsNull(){
+    void geoAndRadiusWithRadiusIsNull() {
         init();
-        assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235","45.562345235",null,3,1));
+        assertThrows(ServiceException.class, () -> searchService.geoAndRadius("35.235235", "45.562345235", null, 3, 1));
 
     }
 
     @Test
-    void geoAndRadiusIfRadiusMoreThanMaxValue(){
+    void geoAndRadiusIfRadiusMoreThanMaxValue() {
         init();
-        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
-        Double tmp = Double.MAX_VALUE+1;
-        assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235","45.562345235",tmp.toString(),3,1));
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(), any());
+        Double tmp = Double.MAX_VALUE + 1;
+        assertThrows(ServiceException.class, () -> searchService.geoAndRadius("35.235235", "45.562345235", tmp.toString(), 3, 1));
 
     }
 
     @Test
-    void geoAndRadiusIfRadiusLessThanMinValue(){
+    void geoAndRadiusIfRadiusLessThanMinValue() {
         init();
-        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
-        Double tmp = Double.MIN_VALUE-1;
-        assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235","45.562345235",tmp.toString(),3,1));
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(), any());
+        Double tmp = Double.MIN_VALUE - 1;
+        assertThrows(ServiceException.class, () -> searchService.geoAndRadius("35.235235", "45.562345235", tmp.toString(), 3, 1));
 
     }
 
     @Test
-    void geoAndRadiusIfLatitudeMoreThan90(){
+    void geoAndRadiusIfLatitudeMoreThan90() {
         init();
-        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
-        assertThrows(ServiceException.class,()->searchService.geoAndRadius("135.235235","45.562345235","1000",3,1));
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(), any());
+        assertThrows(ServiceException.class, () -> searchService.geoAndRadius("135.235235", "45.562345235", "1000", 3, 1));
     }
 
     @Test
-    void geoAndRadiusIfLatitudeLessThanNegative90(){
+    void geoAndRadiusIfLatitudeLessThanNegative90() {
         init();
-        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
-        assertThrows(ServiceException.class,()->searchService.geoAndRadius("-835.235235","45.562345235","1000",3,1));
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(), any());
+        assertThrows(ServiceException.class, () -> searchService.geoAndRadius("-835.235235", "45.562345235", "1000", 3, 1));
 
     }
 
     @Test
-    void geoAndRadiusIfLongitudeMoreThan180(){
+    void geoAndRadiusIfLongitudeMoreThan180() {
         init();
-        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
-        assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235","545.562345235","1000",3,1));
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(), any());
+        assertThrows(ServiceException.class, () -> searchService.geoAndRadius("35.235235", "545.562345235", "1000", 3, 1));
 
     }
 
     @Test
-    void geoAndRadiusIfLongitudeLessThanNegative180(){
+    void geoAndRadiusIfLongitudeLessThanNegative180() {
         init();
-        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
-        assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235","-545.562345235","1000",3,1));
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(), any());
+        assertThrows(ServiceException.class, () -> searchService.geoAndRadius("35.235235", "-545.562345235", "1000", 3, 1));
 
     }
 
     @Test
-    void geoAndRadiusIfLatitudeAndLongitudeIsNegativeValues(){
+    void geoAndRadiusIfLatitudeAndLongitudeIsNegativeValues() {
         init();
-        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
-        assertDoesNotThrow(()->searchService.geoAndRadius("-35.235235","-45.562345235","1000",3,1));
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(), any());
+        assertDoesNotThrow(() -> searchService.geoAndRadius("-35.235235", "-45.562345235", "1000", 3, 1));
     }
 
     @Test
-    void geoAndRadiusIfItemsOnPageIsNegative(){
+    void geoAndRadiusIfItemsOnPageIsNegative() {
         init();
-        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
-        assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235","45.562345235","1000",-3,1));
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(), any());
+        assertThrows(ServiceException.class, () -> searchService.geoAndRadius("35.235235", "45.562345235", "1000", -3, 1));
     }
 
     @Test
-    void geoAndRadiusIfItemsOnPageIsMoreThanMaxValue(){
+    void geoAndRadiusIfItemsOnPageIsMoreThanMaxValue() {
         init();
-        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
-        assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235","45.562345235","1000",Integer.MAX_VALUE+1,1));
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(), any());
+        assertThrows(ServiceException.class, () -> searchService.geoAndRadius("35.235235", "45.562345235", "1000", Integer.MAX_VALUE + 1, 1));
 
     }
 
     @Test
-    void geoAndRadiusIfItemsOnPageIsLessThanMinValue(){
+    void geoAndRadiusIfItemsOnPageIsLessThanMinValue() {
         init();
-        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
-        assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235","45.562345235","1000",Integer.MIN_VALUE-1,1));
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(), any());
+        assertThrows(ServiceException.class, () -> searchService.geoAndRadius("35.235235", "45.562345235", "1000", Integer.MIN_VALUE - 1, 1));
     }
 
     @Test
-    void geoAndRadiusIfCurrPageIsNegativeValue(){
+    void geoAndRadiusIfCurrPageIsNegativeValue() {
         init();
-        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
-        assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235","45.562345235","1000",3,-1));
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(), any());
+        assertThrows(ServiceException.class, () -> searchService.geoAndRadius("35.235235", "45.562345235", "1000", 3, -1));
 
     }
 
     @Test
-    void geoAndRadiusIfCurrPageMoreThanMaxValue(){
+    void geoAndRadiusIfCurrPageMoreThanMaxValue() {
         init();
-        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
-        assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235","45.562345235","1000",3,Integer.MAX_VALUE+1));
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(), any());
+        assertThrows(ServiceException.class, () -> searchService.geoAndRadius("35.235235", "45.562345235", "1000", 3, Integer.MAX_VALUE + 1));
     }
 
     @Test
-    void geoAndRadiusIfCurrPageLessThanMinValue(){
+    void geoAndRadiusIfCurrPageLessThanMinValue() {
         init();
-        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
-        assertThrows(ServiceException.class,()->searchService.geoAndRadius("35.235235","45.562345235","1000",3,Integer.MIN_VALUE-1));
+        doReturn(pageForResponse).when(carRepository).findAllByPickUpPlaceWithin(any(), any());
+        assertThrows(ServiceException.class, () -> searchService.geoAndRadius("35.235235", "45.562345235", "1000", 3, Integer.MIN_VALUE - 1));
 
     }
 
     @Test
-    void geoAndRadiusIfCarsNotFound(){
+    void geoAndRadiusIfCarsNotFound() {
         List<FullCarEntity> tmp = new ArrayList<>();
-        doReturn(new PageImpl<>(tmp)).when(carRepository).findAllByPickUpPlaceWithin(any(),any());
-        assertThrows(NotFoundServiceException.class,()->searchService.geoAndRadius("35.235235","45.562345235","1000",3,1));
+        doReturn(new PageImpl<>(tmp)).when(carRepository).findAllByPickUpPlaceWithin(any(), any());
+        assertThrows(NotFoundServiceException.class, () -> searchService.geoAndRadius("35.235235", "45.562345235", "1000", 3, 1));
     }
 
     @Autowired
@@ -222,7 +222,7 @@ public class SearchServiceGeoAndRadiusTests {
 
 
     @Before
-    public void init(){
+    public void init() {
 
         filterDTO = FilterDTO.builder()
                 .engine("2l")
@@ -428,9 +428,9 @@ public class SearchServiceGeoAndRadiusTests {
         list.add(fullCarEntity2);
         list.add(fullCarEntity3);
 
-        PageRequest pageRequest = PageRequest.of(1,3);
+        PageRequest pageRequest = PageRequest.of(1, 3);
 
-        pageForResponse = new PageImpl<>(list,pageRequest,3);
+        pageForResponse = new PageImpl<>(list, pageRequest, 3);
 
     }
 }
