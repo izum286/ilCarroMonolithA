@@ -43,6 +43,7 @@ public class SearchServiceImpl implements  SearchService{
     public SearchResponse cityDatesPriceSortByPrice(String latitude, String longitude, double radius, LocalDateTime dateFrom, LocalDateTime dateTo,
                                                     double minPrice, double maxPrice, boolean sort,
                                                     int itemsOnPage, int currentPage) {
+        currentPage = (currentPage <= 0) ? 1: currentPage;
         Double rad = radius;
         double maxRad = rad+1500;
         Page<FullCarEntity> cars = new PageImpl<>(new ArrayList<>(), Pageable.unpaged(),0);
@@ -70,7 +71,8 @@ public class SearchServiceImpl implements  SearchService{
     @Override
     @CheckForNull
     public SearchResponse geoAndRadius(String latitude, String longitude, String radius, int itemsOnPage, int currentPage) {
-            Double rad = Double.valueOf(radius);
+        currentPage = (currentPage <= 0) ? 1: currentPage;
+        Double rad = Double.valueOf(radius);
             double maxRad = rad+1500;
             Page<FullCarEntity> cars = new PageImpl<>(new ArrayList<>(), Pageable.unpaged(),0);
             while ((cars.getTotalElements() == 0) & (rad<=maxRad)) {
@@ -101,6 +103,7 @@ public class SearchServiceImpl implements  SearchService{
     @Override
     @CheckForNull
     public SearchResponse byFilter(FilterDTO filter, int itemsOnPage, int currentPage) {
+        currentPage = (currentPage <= 0) ? 1: currentPage;
         Page<FullCarEntity> cars;
         try {
              cars  = carRepository
@@ -127,7 +130,8 @@ public class SearchServiceImpl implements  SearchService{
                                                String latt, String longt, String radius,
                                                LocalDateTime dateFrom, LocalDateTime dateTo,
                                                double minPrice, double maxPrice, boolean sort) {
-            Double rad = Double.valueOf(radius);
+        currentPage = (currentPage <= 0) ? 1: currentPage;
+        Double rad = Double.valueOf(radius);
             double maxRad = rad+1500;
             Page<FullCarEntity> cars = new PageImpl<>(new ArrayList<>(), Pageable.unpaged(),0);
             while ((cars.getTotalElements()==0) & (rad<=maxRad)) {
