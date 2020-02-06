@@ -3,6 +3,7 @@ package com.telran.ilcarro.service.filter;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.telran.ilcarro.annotaion.CheckForNull;
 import com.telran.ilcarro.model.car.AddUpdateCarDtoRequest;
 import com.telran.ilcarro.model.filter.FilterDTO;
 import com.telran.ilcarro.repository.FilterRepository;
@@ -31,6 +32,7 @@ public class FilterServiceImpl implements FilterService {
      * @author izum286
      */
     @Override
+    @CheckForNull
     public void addFilter(AddUpdateCarDtoRequest addUpdateCarDtoRequest) {
         addNode(map(addUpdateCarDtoRequest));
     }

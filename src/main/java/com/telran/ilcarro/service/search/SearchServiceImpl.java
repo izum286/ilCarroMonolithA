@@ -1,5 +1,6 @@
 package com.telran.ilcarro.service.search;
 
+import com.telran.ilcarro.annotaion.CheckForNull;
 import com.telran.ilcarro.model.car.FullCarDTOResponse;
 import com.telran.ilcarro.model.car.SearchResponse;
 import com.telran.ilcarro.model.filter.FilterDTO;
@@ -37,13 +38,12 @@ public class SearchServiceImpl implements  SearchService{
     @Autowired
     FilterService filterService;
 
-
     @Override
+    @CheckForNull
     public SearchResponse cityDatesPriceSortByPrice(String latitude, String longitude, double radius, LocalDateTime dateFrom, LocalDateTime dateTo,
                                                     double minPrice, double maxPrice, boolean sort,
                                                     int itemsOnPage, int currentPage) {
-
-        SearchResponse res = new SearchResponse();
+        currentPage = (currentPage <= 0) ? 1: currentPage;
         Double rad = radius;
         double maxRad = rad+1500;
         Page<FullCarEntity> cars = new PageImpl<>(new ArrayList<>(), Pageable.unpaged(),0);
@@ -58,6 +58,7 @@ public class SearchServiceImpl implements  SearchService{
             rad+=500;
         }
         if (cars.getTotalElements() == 0) throw new NotFoundServiceException("No such Cars according to search request");
+            SearchResponse res = new SearchResponse();
             List<FullCarDTOResponse> carDTOResponses = cars.getContent().stream().map(e -> CarMapper.INSTANCE.map(e)).collect(Collectors.toList());
             res.setCars(carDTOResponses);
             res.setCurrentPage(cars.getPageable().getPageNumber());
@@ -68,9 +69,10 @@ public class SearchServiceImpl implements  SearchService{
     }
 
     @Override
+    @CheckForNull
     public SearchResponse geoAndRadius(String latitude, String longitude, String radius, int itemsOnPage, int currentPage) {
-            SearchResponse res = new SearchResponse();
-            Double rad = Double.valueOf(radius);
+        currentPage = (currentPage <= 0) ? 1: currentPage;
+        Double rad = Double.valueOf(radius);
             double maxRad = rad+1500;
             Page<FullCarEntity> cars = new PageImpl<>(new ArrayList<>(), Pageable.unpaged(),0);
             while ((cars.getTotalElements() == 0) & (rad<=maxRad)) {
@@ -85,6 +87,7 @@ public class SearchServiceImpl implements  SearchService{
                 rad+=500;
             }
             if (cars.getTotalElements() == 0) throw new NotFoundServiceException("No such Cars according to search request");
+            SearchResponse res = new SearchResponse();
             List<FullCarDTOResponse> carDTOResponses = cars
                     .getContent().stream()
                     .map(e -> CarMapper.INSTANCE.map(e))
@@ -98,13 +101,19 @@ public class SearchServiceImpl implements  SearchService{
     }
 
     @Override
+    @CheckForNull
     public SearchResponse byFilter(FilterDTO filter, int itemsOnPage, int currentPage) {
+        currentPage = (currentPage <= 0) ? 1: currentPage;
+        Page<FullCarEntity> cars;
         try {
-            SearchResponse res = new SearchResponse();
-            Page<FullCarEntity> cars  = carRepository
+             cars  = carRepository
                         .byFilter(filter, PageRequest.of(currentPage,itemsOnPage));
 
-            if (cars == null) throw new NotFoundServiceException("No such Cars according to search request");
+            } catch (Throwable t) {
+                throw new NotFoundServiceException("Something went wrong");
+            }
+            if (cars.getTotalElements() == 0) throw new NotFoundServiceException("No such Cars according to search request");
+            SearchResponse res = new SearchResponse();
             List<FullCarDTOResponse> carDTOResponses = cars.stream().map(e -> CarMapper.INSTANCE.map(e)).collect(Collectors.toList());
             res.setCars(carDTOResponses);
             res.setCurrentPage(cars.getPageable().getPageNumber());
@@ -112,19 +121,17 @@ public class SearchServiceImpl implements  SearchService{
             res.setItemsTotal(cars.getTotalElements());
             res.setMegaFilter(filterService.provideFilter());
             return res;
-        } catch (Throwable t) {
-            throw new NotFoundServiceException("Something went wrong");
-        }
+
     }
 
     @Override
+    @CheckForNull
     public SearchResponse searchAllSortByPrice(int itemsOnPage, int currentPage, FilterDTO filter,
                                                String latt, String longt, String radius,
                                                LocalDateTime dateFrom, LocalDateTime dateTo,
                                                double minPrice, double maxPrice, boolean sort) {
-
-            SearchResponse res = new SearchResponse();
-            Double rad = Double.valueOf(radius);
+        currentPage = (currentPage <= 0) ? 1: currentPage;
+        Double rad = Double.valueOf(radius);
             double maxRad = rad+1500;
             Page<FullCarEntity> cars = new PageImpl<>(new ArrayList<>(), Pageable.unpaged(),0);
             while ((cars.getTotalElements()==0) & (rad<=maxRad)) {
@@ -139,7 +146,7 @@ public class SearchServiceImpl implements  SearchService{
             }
             if (cars.getTotalElements() == 0)
                 throw new NotFoundServiceException("No such Cars according to search request");
-
+            SearchResponse res = new SearchResponse();
             List<FullCarDTOResponse> carDTOResponses = cars
                     .getContent().stream()
                     .map(e -> CarMapper.INSTANCE.map(e)).collect(Collectors.toList());
