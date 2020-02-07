@@ -1,7 +1,10 @@
 package com.telran.ilcarro.model.user;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+
+import java.time.LocalDateTime;
 
 /**
  * @author vitalii_adler
@@ -20,5 +23,6 @@ public class OwnerDtoResponse {
     @JsonProperty("second_name")
     private String lastName;
     @JsonProperty("registration_date")
-    private String registrationDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDateTime registrationDate;
 }

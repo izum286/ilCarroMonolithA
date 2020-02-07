@@ -5,7 +5,6 @@ import com.telran.ilcarro.repository.entity.OwnerEntity;
 import com.telran.ilcarro.repository.entity.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(uses = CommentMapper.class)
