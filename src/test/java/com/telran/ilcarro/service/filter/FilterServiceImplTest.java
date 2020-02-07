@@ -224,7 +224,7 @@ class FilterServiceImplTest {
                 .carClass("Active")
                 .about("More more text about this car. Why not lorem ipsum? I dont know.")
                 .owner(OwnerDtoResponse.builder()
-                        .registrationDate(userEntity.getRegistrationDate().toString())
+                        .registrationDate(userEntity.getRegistrationDate())
                         .lastName(userEntity.getLastName())
                         .firstName(userEntity.getFirstName())
                         .build())
