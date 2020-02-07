@@ -12,12 +12,6 @@ import java.util.List;
 
 /**
  * FullUserDTO
- * need to do:
- * Update fields
- * private String ownCars;
- * private String bookedCars;
- * private String history;
- * to correct objects
  *
  * @author Konkin Anton
  * 19.12.2019
@@ -32,7 +26,7 @@ import java.util.List;
 public class FullUserDTO {
     private String first_name;
     private String second_name;
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime registration_date;
     private List<FullCommentDTO> comments;
     private String photo;
