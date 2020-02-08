@@ -60,23 +60,6 @@ class FilterServiceImplTest {
         assertThrows(Throwable.class,()->filterService.addFilter(null));
     }
 
-    @Test
-    void addFilterIfDtoHaveOnlyNullFieldsWithSerial() {
-        init();
-        AddUpdateCarDtoRequest withNulls = new AddUpdateCarDtoRequest();
-        withNulls.setSerialNumber("22-222-33");
-        doReturn(Optional.of(rootNode)).when(filterRepository).findById("root");
-        assertThrows(Throwable.class,()->filterService.addFilter(withNulls));
-    }
-
-    @Test
-    void addFilterIfDtoHaveNullSerialNumber() {
-        init();
-        addUpdateCarDtoRequest.setSerialNumber(null);
-        doReturn(Optional.of(rootNode)).when(filterRepository).findById("root");
-        assertThrows(Throwable.class,()->filterService.addFilter(addUpdateCarDtoRequest));
-    }
-
     //Checked with System.out.println
     @Test
     void provideFilter() {
