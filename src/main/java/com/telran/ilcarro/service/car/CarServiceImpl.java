@@ -112,7 +112,7 @@ public class CarServiceImpl implements CarService {
     }
 
     /**
-     * status - ready
+     * status - readyxc
      * code cleanup and refactoring by Konkin Anton
      *
      * @return Optional<FullCarDTOResponse>
@@ -123,6 +123,7 @@ public class CarServiceImpl implements CarService {
         FullCarEntity entity = carRepository.findById(carId).orElseThrow(
                 () -> new NotFoundServiceException(String.format("Car with id %s not found in carRepository", carId))
         );
+        //todo we need to provide comments too!! need to build custom response, or add comments list to FullCarDTOResponse
         FullCarDTOResponse toProvide = CarMapper.INSTANCE.mapForGetCarByIdForUsers(entity);
         return Optional.of(toProvide);
     }
