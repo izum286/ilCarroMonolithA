@@ -63,15 +63,15 @@ public class CommentServiceImpl implements CommentService {
             //TODO need check
             UserEntity userEntity = userEntityRepository.getUserEntityByOwnCarsContains(serialNumber)
                     .orElseThrow(() -> new NotFoundServiceException(String.format("Car id %s not found", serialNumber)));
-            if (userEntity.getComments() == null) {
-                userEntity.setComments(new ArrayList<>());
-            }
+
             UserEntity postOwner = userEntityRepository.findById(ownerEmail)
                     .orElseThrow(() -> new NotFoundServiceException(String.format("Owner %s not found", ownerEmail)));
-            userEntity.getComments().add(CommentMapper.INSTANCE.map(comment, serialNumber, postOwner));
+            List<CommentEntity> comm = userEntity.getComments();
+            comm.add(CommentMapper.INSTANCE.map(comment, serialNumber, postOwner));
+            userEntity.setComments(comm);
             userEntityRepository.save(userEntity);
             return true;
-        } catch (ConflictRepositoryException ex) {
+        } catch (Exception ex) {
             throw new ConflictServiceException(ex.getMessage());
         } catch (Throwable t) {
             throw new ServiceException(t.getMessage(), t.getCause());
