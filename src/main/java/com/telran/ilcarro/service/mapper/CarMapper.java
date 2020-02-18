@@ -39,7 +39,7 @@ public interface CarMapper {
     @Mapping(target = "pickUpPlace",expression = "java(new PickUpPlaceDto(entity.getPlaceId(), entity.getPickUpPlace()[0], entity.getPickUpPlace()[1]))")
     FullCarDTOResponse map(FullCarEntity entity);
 
-    @Mapping(target = "pricePerDay", source = "pricePerDay.value")
+    @Mapping(target = "pricePerDay", source = "pricePerDay")
     @Mapping(target = "statistics", source = "statistics", defaultExpression = "java(new CarStatDto(0, 0))")
     @Mapping(target = "bookedPeriodDto", source = "bookedPeriods",
             qualifiedByName = "mapForGetCarByIdForUsers",
