@@ -3,11 +3,6 @@ package com.telran.ilcarro.service.auth;
 import com.telran.ilcarro.service.exceptions.ConflictServiceException;
 import com.telran.ilcarro.service.exceptions.NotFoundServiceException;
 
-/**
- * AuthService interface
- * @author Konkin Anton
- * 19.12.2019
- */
 public interface AuthService {
     /**
      * Register new user as UserDetails

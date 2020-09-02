@@ -1,5 +1,7 @@
 package com.telran.ilcarro.repository.exception;
 
+import java.util.ArrayList;
+
 @Deprecated
 public class RepositoryException extends RuntimeException {
     public RepositoryException(String message) {
@@ -10,3 +12,6 @@ public class RepositoryException extends RuntimeException {
         super(message, cause);
     }
 }
+
+
+

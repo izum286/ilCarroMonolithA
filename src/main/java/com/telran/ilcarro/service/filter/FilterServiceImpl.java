@@ -54,7 +54,7 @@ public class FilterServiceImpl implements FilterService {
             FilterNodeEntity res = filterRepository.findById("root").orElseGet(()->new FilterNodeEntity("root", "root"));
             //return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(res);
             return mapper.writeValueAsString(res);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }
     }
@@ -156,7 +156,6 @@ public class FilterServiceImpl implements FilterService {
     /**
      * deleting all filters from db
      * use CAREFULLY!!!!!!
-     * @return
      */
     @Override
     public void deleteFilters() {
@@ -202,7 +201,7 @@ public class FilterServiceImpl implements FilterService {
      * @return new FilterDto
      * @author izum286
      */
-//TODO This mapper need to be described by MapStruct
+
     public FilterDTO map(AddUpdateCarDtoRequest from) {
         return FilterDTO.builder()
                 .make(from.getMake())

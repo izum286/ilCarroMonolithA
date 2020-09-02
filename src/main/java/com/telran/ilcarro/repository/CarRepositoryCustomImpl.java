@@ -120,7 +120,6 @@ public class CarRepositoryCustomImpl implements CarRepositoryCustom{
             query.with(Sort.by(Sort.Direction.ASC, "pricePerDaySimple"));
         }
 
-
         if(latt!=null && longt!=null && radius!=null){
             Point point = new Point(Double.parseDouble(latt), Double.parseDouble(longt));
             Distance distance = new Distance(Double.parseDouble(radius), Metrics.KILOMETERS);

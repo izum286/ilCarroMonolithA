@@ -4,12 +4,7 @@ import com.telran.ilcarro.service.user.AccountCredentials;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
-/**
- *
- * TokenService interface implementation
- * @author Konkin Anton
- * 19.12.2019
- */
+
 
 @Service
 public class TokenServiceImpl implements TokenService {
